@@ -1,0 +1,295 @@
+{
+  "architecture": "amd64",
+  "config": {
+    "Env": [
+      "PATH=/emsdk:/emsdk/upstream/emscripten:/emsdk/node/22.16.0_64bit/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "EMSDK=/emsdk",
+      "CMAKE_BUILD_TYPE=Release",
+      "MESON_BUILD_TYPE=release",
+      "CFLAGS=-fexceptions -O3",
+      "CXXFLAGS=-fexceptions -O3",
+      "LDFLAGS=-fexceptions -O3"
+    ],
+    "Entrypoint": [
+      "/emsdk/docker/entrypoint.sh"
+    ],
+    "WorkingDir": "/home/ubuntu",
+    "Labels": {
+      "maintainer": "kontakt@trzeci.eu",
+      "org.label-schema.description": "The official container with Emscripten SDK",
+      "org.label-schema.docker.dockerfile": "/docker/Dockerfile",
+      "org.label-schema.name": "emscripten",
+      "org.label-schema.url": "https://emscripten.org",
+      "org.label-schema.vcs-url": "https://github.com/emscripten-core/emsdk",
+      "org.opencontainers.image.ref.name": "ubuntu",
+      "org.opencontainers.image.version": "22.04"
+    }
+  },
+  "created": "2025-06-14T20:57:48.223924494Z",
+  "history": [
+    {
+      "created": "2025-05-30T22:30:42.898627637Z",
+      "created_by": "/bin/sh -c #(nop)  ARG RELEASE",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-05-30T22:30:42.9234878Z",
+      "created_by": "/bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-05-30T22:30:42.946285582Z",
+      "created_by": "/bin/sh -c #(nop)  LABEL org.opencontainers.image.ref.name=ubuntu",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-05-30T22:30:42.971145847Z",
+      "created_by": "/bin/sh -c #(nop)  LABEL org.opencontainers.image.version=22.04",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-05-30T22:30:45.205253722Z",
+      "created_by": "/bin/sh -c #(nop) ADD file:82f38ebced7b2756311fb492d3d44cc131b22654e8620baa93883537a3e355aa in / "
+    },
+    {
+      "created": "2025-05-30T22:30:45.500168088Z",
+      "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/bash\"]",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-07T00:18:01.341623143Z",
+      "created_by": "COPY /emsdk /emsdk # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-07T00:18:01.483530026Z",
+      "created_by": "ENV EMSDK=/emsdk PATH=/emsdk:/emsdk/upstream/emscripten:/emsdk/node/22.16.0_64bit/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-07T00:18:01.483530026Z",
+      "created_by": "RUN /bin/sh -c echo \"## Create emscripten user (1000:1000)\"     && groupadd --gid 1000 emscripten     && useradd --uid 1000 --gid emscripten --shell /bin/bash --create-home emscripten     && echo \"## Done\" # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-07T00:18:32.516545157Z",
+      "created_by": "RUN /bin/sh -c echo \"## Update and install packages\"     && apt-get -qq -y update     && DEBIAN_FRONTEND=\"noninteractive\" TZ=\"America/San_Francisco\" apt-get -qq install -y --no-install-recommends         sudo         libxml2         ca-certificates         python3         python3-pip         wget         curl         zip         unzip         git         git-lfs         ssh-client         build-essential         make         ant         libidn12         cmake         openjdk-11-jre-headless     && apt-get -y clean     && apt-get -y autoclean     && apt-get -y autoremove     && rm -rf /var/lib/apt/lists/*     && rm -rf /var/cache/debconf/*-old     && rm -rf /usr/share/doc/*     && rm -rf /usr/share/man/??     && rm -rf /usr/share/man/??_*     && echo \"## Done\" # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-07T00:18:32.561421589Z",
+      "created_by": "WORKDIR /src",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-07T00:18:32.561421589Z",
+      "created_by": "ENTRYPOINT [\"/emsdk/docker/entrypoint.sh\"]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-07T00:18:32.561421589Z",
+      "created_by": "LABEL maintainer=kontakt@trzeci.eu org.label-schema.name=emscripten org.label-schema.description=The official container with Emscripten SDK org.label-schema.url=https://emscripten.org org.label-schema.vcs-url=https://github.com/emscripten-core/emsdk org.label-schema.docker.dockerfile=/docker/Dockerfile",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:08.156627086Z",
+      "created_by": "ARG CMAKE_BUILD_TYPE=Release",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:08.156627086Z",
+      "created_by": "ARG MESON_BUILD_TYPE=release",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:08.156627086Z",
+      "created_by": "ARG EMSCRIPTEN_FLAGS=-fexceptions -O3",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:08.156627086Z",
+      "created_by": "RUN |3 CMAKE_BUILD_TYPE=Release MESON_BUILD_TYPE=release EMSCRIPTEN_FLAGS=-fexceptions -O3 /bin/sh -c apt-get update &&     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends         automake         autopoint         bison         build-essential         ninja-build         ccache         cmake         flex         gettext         git         gperf         gpg \tgpg-agent         libtool         ninja-build         pkg-config         prelink         python-is-python3         python3         python3-pip         texinfo         unzip         wget \tlibltdl-dev         libatk1.0-0         libxkbcommon0         libpango-1.0-0         libatk-bridge2.0-0         libxcomposite1         libxdamage1         libxfixes3         libxrandr2         libcairo2         libdrm2         libgbm1 # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:11.425826539Z",
+      "created_by": "RUN |3 CMAKE_BUILD_TYPE=Release MESON_BUILD_TYPE=release EMSCRIPTEN_FLAGS=-fexceptions -O3 /bin/sh -c pip3 install         meson         packaging # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:11.425826539Z",
+      "created_by": "ENV CMAKE_BUILD_TYPE=Release",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:11.425826539Z",
+      "created_by": "ENV MESON_BUILD_TYPE=release",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:11.425826539Z",
+      "created_by": "ENV CFLAGS=-fexceptions -O3",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:11.425826539Z",
+      "created_by": "ENV CXXFLAGS=-fexceptions -O3",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:11.425826539Z",
+      "created_by": "ENV LDFLAGS=-fexceptions -O3",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2025-06-14T20:44:11.455004688Z",
+      "created_by": "WORKDIR /home/ubuntu",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:13.197151096Z",
+      "created_by": "RUN |3 CMAKE_BUILD_TYPE=Release MESON_BUILD_TYPE=release EMSCRIPTEN_FLAGS=-fexceptions -O3 /bin/sh -c wget https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.xz # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:13.494943365Z",
+      "created_by": "RUN |3 CMAKE_BUILD_TYPE=Release MESON_BUILD_TYPE=release EMSCRIPTEN_FLAGS=-fexceptions -O3 /bin/sh -c tar -xf autoconf-2.72.tar.xz # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:13.625554122Z",
+      "created_by": "RUN |3 CMAKE_BUILD_TYPE=Release MESON_BUILD_TYPE=release EMSCRIPTEN_FLAGS=-fexceptions -O3 /bin/sh -c ls -al autoconf-2.72/ # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:13.643180904Z",
+      "created_by": "WORKDIR /home/ubuntu/autoconf-2.72/",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:15.245323058Z",
+      "created_by": "RUN |3 CMAKE_BUILD_TYPE=Release MESON_BUILD_TYPE=release EMSCRIPTEN_FLAGS=-fexceptions -O3 /bin/sh -c ./configure # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:16.677831405Z",
+      "created_by": "RUN |3 CMAKE_BUILD_TYPE=Release MESON_BUILD_TYPE=release EMSCRIPTEN_FLAGS=-fexceptions -O3 /bin/sh -c make # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:17.151516417Z",
+      "created_by": "RUN |3 CMAKE_BUILD_TYPE=Release MESON_BUILD_TYPE=release EMSCRIPTEN_FLAGS=-fexceptions -O3 /bin/sh -c sudo make install # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:44:17.167824417Z",
+      "created_by": "WORKDIR /home/ubuntu",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:47:51.970718386Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:54:13.736192321Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:38.975961248Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:40.769325879Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:41.681356322Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:42.499292716Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:43.336937303Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:44.18140075Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:45.262891824Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:46.119123117Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:47.070328838Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2025-06-14T20:57:48.223924494Z",
+      "created_by": "COPY /emsdk/upstream/emscripten/cache/sysroot /emsdk/upstream/emscripten/cache/sysroot # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    }
+  ],
+  "os": "linux",
+  "rootfs": {
+    "type": "layers",
+    "diff_ids": [
+      "sha256:f862e1968e4b4c3c3af141e37d2ec22b19ec0fd50d6a8aaf683de6729e296226",
+      "sha256:bd58d15b1d2e8ff6cfc09a55ea62eb788b3fae4eb6c9012c281d828be423b5fc",
+      "sha256:0b180da7a0bccf004e886bc7ccbe366a51de1693c6130539448607ed0f7b2da8",
+      "sha256:fdcdb34fa5df6f0cda7df6ee9be76ec17b524943c2b0f4bd3f23f09e4580ef55",
+      "sha256:dbad57035a6d78d6dfc811552d4d30b4d457eec9f6d53968b7076493948b879a",
+      "sha256:b58121fa419a8773f4db1e36499bb2f89d4e19658cc8568a506da5a22d70dce9",
+      "sha256:02b5b1c1f74177dd7b1c5e9c4d91e36aa3293d95d9d7f1e52d944be776a3b401",
+      "sha256:3d54346d6e26d800f36afc97ca617bdfd10e4c2109502587f92e731913587ff6",
+      "sha256:8d91e1b1d99175fcf9e8040e69d49c0733c79a78f6e845ed4ce1213653a1f41f",
+      "sha256:f3aa1e136b9222ba401b3103dc3c9fab80c6ff8c1db7acfb2b087cc553440bbc",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:bf02d6213b89b3271d9435de9497784c00ed198915c6b0d2463b3b1ab0747315",
+      "sha256:04054168331bc5ab96897d94ca6d73cf979243f2c98027dfc7efd131bb7019f8",
+      "sha256:4ec341bdf61a6ae3a8010266a28554f89c7dca69f6c07d9a32b2150e48c635cb",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:519939094050ffea7ac0adc93daa3acc07ed6c76ad28cc45f5788697effdde86",
+      "sha256:9f4219d909b66d04fdfd547ae9d83763400e182fd30ed9b37e637624ac829e8e",
+      "sha256:418cd5dcf95a2746b4091172c4d7eb35ac7a300bd5d96565f5ca1e401c8d4145",
+      "sha256:d1a4a42b0e1fbbd45e7c919809e2f96e5145b5a803d147761cb308e82b2e814c",
+      "sha256:f9fbf53976dfe7569e777f5bf6f2c39276656ec70309d5cd05cbb20fd23f8303",
+      "sha256:a643c4add7ce6c206c5e457e4ebfea9c27aa41fabbcb4f811cfe73b933eae8ef",
+      "sha256:b40e7c7c80712786fb69063141803608dbbc09cd8cf20fc7d763da0cd3dd774e",
+      "sha256:dc1cb42ee057bc8e8e7ba377f10df1d747ddfb25c04f7555e0066c12c74e4cf0",
+      "sha256:5f98cc88b2031f4571c80ea60ce6032efce871fa1e4fa22e1ce457eeb4849f6c",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:741908bdaef46f2084a0d27310f420ef1b8b061c07f77bdc1992528c77e5f73f",
+      "sha256:4efeec5e15510b212acd2bcd9b6ffbc9c7e36415ed5699411f0323e8ffcf03b8"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+* text=auto
+*.py text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.scad text eol=lf
+*.cmd text eol=crlf
+*.stl binary
+site/cas/* binary
+
+# Preserve exact pinned upstream bytes and their original whitespace.
+original-page.html -text -whitespace
+original-static/** -text -whitespace
+deployed-source/** -text -whitespace
+site/worker.636d994e7308.js -text -whitespace
+LICENSES/** -text -whitespace
+LICENSE -text -whitespace
+third_party/openscad/sources/** binary
+third_party/openscad/licenses/** -text -whitespace

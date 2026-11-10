@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "source_archives": 41,
+  "all_archive_hashes_verified": true,
+  "source_unpack_and_build_patches": true,
+  "exact_cgal_installed_source_headers_restored": 3603,
+  "patched_files_sha256": {
+    "wasm-build/libs/fontconfig/Makefile.am": "78796fd13374c764997840b68fdbe236bb97ef28ad7986ee78c434447bb77d3c",
+    "wasm-build/libs/lib3mf/Include/API/lib3mf_model.hpp": "814d310e4fe6b4bb8f3574ad79541ef7677941230193d561ca83c9ce6e3df09f",
+    "wasm-build/libs/boost/tools/build/src/tools/emscripten.jam": "35ed7bb41e7d27235b50bc4ce2c283eda0015a6773d159ef4431500ce0ed5ac8"
+  },
+  "windows_sdk_test_links_recorded": 2,
+  "cpp_recompilation_performed": false
+}

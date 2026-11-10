@@ -1,0 +1,2367 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gridfinity Extended Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            width: 100vw;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 6fr 4fr;
+            background-color: var(--page-bg);
+            color: var(--page-fg);
+        }
+        #pane-left {
+            resize: horizontal;
+        }
+        #pane-right {
+            overflow-y: scroll;
+            overflow-x: auto;
+            padding-right: 1em;
+            margin: 0;
+            border-left: 2px solid var(--border-color);
+            background-color: var(--page-bg);
+            align-content: flex-start;
+        }
+        #pane-right span.alert {
+            display: block;
+            margin: 1rem 0;
+        }
+        #controls {
+            position: absolute;
+            padding: 1em;
+            top: 0;
+        }
+        #model {
+            height: 100%;
+            width: 100%;
+        }
+
+        #pane-left {
+            position: relative;
+        }
+
+        #model.is-outdated {
+            opacity: 0.55;
+        }
+
+        #model-loading-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+        @media only screen and (max-width: 992px) {
+            body {
+                display: block;
+            }
+            #pane-left {
+                position: relative;
+                height: auto;
+                width: 100vw;
+            }
+            #controls {
+                position: relative;
+            }
+            #model {
+                height: 80vh;
+                width: 100vw;
+            }
+            #pane-right {
+                position: relative;
+                height: auto;
+                width: 100%;
+                overflow: auto;
+            }
+        }
+
+        .customizer-group .form-control,
+        .customizer-group .form-select,
+        .customizer-group .input-group-text {
+            transition: background-color 120ms ease-in-out;
+        }
+
+        .customizer-group.is-modified .form-control,
+        .customizer-group.is-modified .form-select,
+        .customizer-group.is-modified .input-group-text {
+            background-color: var(--customizer-modified-bg);
+        }
+
+        .customizer-reset svg {
+            display: block;
+        }
+
+        .help-link {
+            color: var(--bs-secondary-color);
+            border-bottom: 1px dotted var(--bs-secondary-color);
+        }
+
+        .param_underscore {
+            visibility: hidden;
+        }
+
+        .group-header {
+            display: inline-block;
+            width: 100%;
+            color: var(--bs-primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .group-header .collapse-indicator {
+            display: inline-block;
+            vertical-align: baseline;
+            transition: rotate 120ms ease-in-out;
+        }
+
+        .group-header.collapsed .collapse-indicator {
+            rotate: -90deg;
+        }
+
+        .group-header-control {
+            display: inline-block;
+            vertical-align: baseline;
+            width: 16px;
+            height: 16px;
+        }
+        .group-header-control input {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        :root {
+            color-scheme: light dark;
+            --page-bg: #ffffff;
+            --page-fg: #212529;
+            --border-color: #dee2e6;
+            --customizer-modified-bg: #fff7e0;
+            --render-log-bg: #f8f9fa;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --page-bg: #0f1113;
+                --page-fg: #f8f9fa;
+                --border-color: #2f3337;
+                --customizer-modified-bg: #3b2a06;
+                --render-log-bg: #1e2124;
+            }
+        }
+    </style>
+    <script>
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+        function setTheme() {
+            document.documentElement.setAttribute("data-bs-theme", prefersDark.matches ? "dark" : "light");
+        }
+        setTheme();
+        prefersDark.addEventListener("change", setTheme);
+    </script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    <script>
+        window.__WOSE_MODEL__ = {
+            workerUrl: "./worker.636d994e7308.js",
+            defaultCustomization: {
+                "render_choice":"everything",
+                "position":"center",
+                "drawer_inner_width":4.0,
+                "drawer_inner_depth":3.0,
+                "drawer_inner_height":4.0,
+                "drawer_count":3.0,
+                "drawer_enable_custom_sizes":false,
+                "drawer_custom_sizes":[1.0, 2.0, 3.0, 4.0],
+                "drawer_clearance":[0.25, 0.25, 0.25],
+                "chest_clearance":[0.25, 0.25, 0.25],
+                "chest_wall_thickness":2.0,
+                "chest_drawer_slide_thickness":0.0,
+                "chest_drawer_slide_width":10.0,
+                "handle_size":[4.0, 10.0, -1.0, -1.0],
+                "handle_vertical_center":false,
+                "handle_cut_factor":0.5,
+                "handle_rotate":false,
+                "drawer_wall_thickness":2.0,
+                "drawer_base":"default",
+                "drawer_enable_magnet":true,
+                "drawer_magnet_size":[6.5, 2.4],
+                "chest_top_wallpattern_style":"none",
+                "chest_top_style":"none",
+                "chest_top_base_plate_enable_magnets":true,
+                "chest_top_base_plate_magnet_size":[6.5, 2.4],
+                "chest_top_base_plate_reduced_wall_height":-1.0,
+                "chest_top_base_plate_reduced_wall_taper":false,
+                "chest_bottom_wallpattern_style":"none",
+                "chest_bottom_grid":"none",
+                "chest_leg_clearance":0.35,
+                "magnet_diameter":6.5,
+                "screw_depth":6.0,
+                "hole_overhang_remedy":2.0,
+                "chest_corner_attachments_only":true,
+                "sub_pitch":1.0,
+                "flat_base":"off",
+                "wallpattern_border_width":-1.0,
+                "efficient_back":true,
+                "wallpattern_enabled":false,
+                "wallpattern_style":"hexgrid",
+                "wallpattern_strength":2.0,
+                "wallpattern_walls":[1.0, 1.0, 1.0, 1.0],
+                "wallpattern_rotate_grid":false,
+                "wallpattern_cell_size":[10.0, 10.0],
+                "wallpattern_dividers_enabled":"disabled",
+                "wallpattern_hole_sides":6.0,
+                "wallpattern_hole_radius":0.5,
+                "wallpattern_fill":"none",
+                "wallpattern_border":0.0,
+                "wallpattern_depth":0.0,
+                "wallpattern_pattern_grid_chamfer":0.0,
+                "wallpattern_pattern_voronoi_noise":0.75,
+                "wallpattern_pattern_brick_weight":5.0,
+                "wallpattern_pattern_quality":0.4,
+                "fa":6.0,
+                "fs":0.1,
+                "fn":0.0,
+                
+            },
+            additionalParamNames: [
+                
+            ],
+            scadInputPath: "/gridfinity_drawers.scad",
+            previewStyle: "colors",
+            exportFileStem: {"fixed": "Gridfinity Extended"},
+            umamiTrackRender: null,
+            umamiTrackExport: null,
+        };
+    </script>
+    <script type="module" src="./static.34e2cb4f1210/editor/main.js"></script>
+    
+    <script defer src="https://um.ostat.com/script.js" data-website-id="69159224-8fa8-4f25-98b3-0589ce5a5909"></script>
+    
+</head>
+<body>
+<div id="pane-left">
+    <!-- the environment image disables the default lighting -->
+    <model-viewer id="model" camera-controls interaction-prompt="none" orientation="0deg -90deg 0deg"
+                  environment-image="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAIABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJVAA//Z"></model-viewer>
+    <div id="model-loading-overlay" class="d-none" aria-hidden="true">
+        <span class="spinner-border" aria-hidden="true"></span>
+    </div>
+    <div id="controls">
+        <button id="render" type="button" class="btn btn-secondary">Render<span id="render-state" class="d-none">ing… <span
+                class="spinner-border spinner-border-sm" aria-hidden="true"></span></span></button>
+        <label class="btn btn-secondary" for="auto-render">
+            <input class="form-check-input" type="checkbox" id="auto-render" checked>
+            Auto Render
+        </label>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#profiles-modal">Profiles</button>
+        <button id="download-stl" type="button" class="btn btn-primary">Save STL</button>
+        <div id="render-error" class="alert alert-danger mt-2 d-none" role="alert">
+            <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                <div>
+                    <strong>Render failed.</strong>
+                    <span id="render-error-summary"></span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#render-error-modal">Show log</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="pane-right" class="row">
+    <p class="mt-3">
+        This is the model generator for <a href="https://github.com/ostat/gridfinity_extended_openscad">Gridfinity Extended</a>.
+        Any changes you make are saved in the URL, so you can share that URL or create a bookmark to keep those changes around.
+        
+            <br>For detailed documentation, check the <a href='https://github.com/ostat/gridfinity_extended_openscad'>README</a>.
+        
+        
+            Other generators:
+            
+                
+                    <a href="gridfinity_basic_cup">gridfinity_basic_cup</a>,
+                
+            
+                
+                    <a href="gridfinity_baseplate">gridfinity_baseplate</a>,
+                
+            
+                
+                    <a href="gridfinity_item_holder">gridfinity_item_holder</a>,
+                
+            
+                
+                    <strong>gridfinity_drawers</strong>,
+                
+            
+                
+                    <a href="gridfinity_lid">gridfinity_lid</a>,
+                
+            
+                
+                    <a href="gridfinity_marble">gridfinity_marble</a>,
+                
+            
+                
+                    <a href="gridfinity_tray">gridfinity_tray</a>,
+                
+            
+                
+                    <a href="gridfinity_vertical_divider">gridfinity_vertical_divider</a>,
+                
+            
+                
+                    <a href="stanley_basic_cup">stanley_basic_cup</a>,
+                
+            
+                
+                    <a href="gridfinity_baseplate_flsun_q5">gridfinity_baseplate_flsun_q5</a>,
+                
+            
+                
+                    <a href="gridfinity_chess">gridfinity_chess</a>,
+                
+            
+                
+                    <a href="gridfinity_glue_stick">gridfinity_glue_stick</a>,
+                
+            
+                
+                    <a href="gridfinity_sieve">gridfinity_sieve</a>,
+                
+            
+                
+                    <a href="gridfinity_silverware_legacy">gridfinity_silverware_legacy</a>,
+                
+            
+                
+                    <a href="gridfinity_silverware">gridfinity_silverware</a>,
+                
+            
+                
+                    <a href="gridfinity_sliding_lid">gridfinity_sliding_lid</a>,
+                
+            
+                
+                    <a href="gridfinity_socket_holder">gridfinity_socket_holder</a>
+                
+            
+        
+    </p>
+    
+    
+
+    
+    
+        
+            
+            <h3 class="group-header" data-bs-target="#collapse-6d89eb7d0938564938636b4a5ee73c09e55c2e6e5aaa9e3016781bf54805e8d3" data-bs-toggle="collapse"><svg class="collapse-indicator" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M 0 5 H 20 L 10 15 Z"/></svg>Render</h3><div class="collapse show" id="collapse-6d89eb7d0938564938636b4a5ee73c09e55c2e6e5aaa9e3016781bf54805e8d3">
+        
+        
+        <div class="col-12">
+            <label for="parameter_render_choice">
+                render<span class="param_underscore">_</span>choice
+                <br><span class="form-text">select what to render</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="render_choice">
+                    <select class="form-select customizer" id="parameter_render_choice" attr-name="render_choice" autocomplete="off">
+                        
+                            <option value='"everything"'
+                                    selected>Everything</option>
+                        
+                            <option value='"onedrawer"'
+                                    >Single Drawer</option>
+                        
+                            <option value='"drawers"'
+                                    >All drawers</option>
+                        
+                            <option value='"chest"'
+                                    >Chest</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="render_choice" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_position">
+                position
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="position">
+                    <select class="form-select customizer" id="parameter_position" attr-name="position" autocomplete="off">
+                        
+                            <option value='"center"'
+                                    selected>center</option>
+                        
+                            <option value='"zero"'
+                                    >zero</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="position" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+            
+                </div> <!-- end of collapse -->
+            
+            <h3 class="group-header" data-bs-target="#collapse-378d83808237a4459f234bbfbf1380fff27049305cb4235819c3091f5856ba5f" data-bs-toggle="collapse"><svg class="collapse-indicator" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M 0 5 H 20 L 10 15 Z"/></svg>Chest</h3><div class="collapse show" id="collapse-378d83808237a4459f234bbfbf1380fff27049305cb4235819c3091f5856ba5f">
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_inner_width">
+                drawer<span class="param_underscore">_</span>inner<span class="param_underscore">_</span>width
+                <br><span class="form-text">Inner width of drawer in Gridfinity units</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_inner_width">
+                    <input class="form-control customizer" type="number" id="parameter_drawer_inner_width" value="4.0"
+                           attr-name="drawer_inner_width" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_inner_width" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_inner_depth">
+                drawer<span class="param_underscore">_</span>inner<span class="param_underscore">_</span>depth
+                <br><span class="form-text">Inner depth of drawer in Gridfinity units</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_inner_depth">
+                    <input class="form-control customizer" type="number" id="parameter_drawer_inner_depth" value="3.0"
+                           attr-name="drawer_inner_depth" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_inner_depth" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_inner_height">
+                drawer<span class="param_underscore">_</span>inner<span class="param_underscore">_</span>height
+                <br><span class="form-text">Inner height of drawer in Gridfinity units</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_inner_height">
+                    <input class="form-control customizer" type="number" id="parameter_drawer_inner_height" value="4.0"
+                           attr-name="drawer_inner_height" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_inner_height" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_count">
+                drawer<span class="param_underscore">_</span>count
+                <br><span class="form-text">Number of drawers</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_count">
+                    <input class="form-control customizer" type="number" id="parameter_drawer_count" value="3.0"
+                           attr-name="drawer_count" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_count" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_enable_custom_sizes">
+                drawer<span class="param_underscore">_</span>enable<span class="param_underscore">_</span>custom<span class="param_underscore">_</span>sizes
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_enable_custom_sizes">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_drawer_enable_custom_sizes"
+                                attr-name="drawer_enable_custom_sizes" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_enable_custom_sizes" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_custom_sizes">
+                drawer<span class="param_underscore">_</span>custom<span class="param_underscore">_</span>sizes
+                <br><span class="form-text">Inner height of drawer in Gridfinity units. Edit in script for more than 4 items.</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_custom_sizes">
+                    
+                        <input class="form-control customizer" type="number"
+                               id="parameter_drawer_custom_sizes" value="1.0" attr-name="drawer_custom_sizes"
+                               attr-index="0" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="2.0" attr-name="drawer_custom_sizes"
+                               attr-index="1" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="3.0" attr-name="drawer_custom_sizes"
+                               attr-index="2" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="4.0" attr-name="drawer_custom_sizes"
+                               attr-index="3" autocomplete="off">
+                    
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_custom_sizes" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_clearance">
+                drawer<span class="param_underscore">_</span>clearance
+                <br><span class="form-text">Add clearance inside the drawers for the bins. Width, depth and height. Default is 0.25</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_clearance">
+                    
+                        <input class="form-control customizer" type="number"
+                               id="parameter_drawer_clearance" value="0.25" attr-name="drawer_clearance"
+                               attr-index="0" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="0.25" attr-name="drawer_clearance"
+                               attr-index="1" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="0.25" attr-name="drawer_clearance"
+                               attr-index="2" autocomplete="off">
+                    
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_clearance" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_clearance">
+                chest<span class="param_underscore">_</span>clearance
+                <br><span class="form-text">Add clearance inside the chest for the drawer. width, depth and height. Default is 0.25</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_clearance">
+                    
+                        <input class="form-control customizer" type="number"
+                               id="parameter_chest_clearance" value="0.25" attr-name="chest_clearance"
+                               attr-index="0" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="0.25" attr-name="chest_clearance"
+                               attr-index="1" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="0.25" attr-name="chest_clearance"
+                               attr-index="2" autocomplete="off">
+                    
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_clearance" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_wall_thickness">
+                chest<span class="param_underscore">_</span>wall<span class="param_underscore">_</span>thickness
+                <br><span class="form-text">Wall thickness of the chest.</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_wall_thickness">
+                    <input class="form-control customizer" type="number" id="parameter_chest_wall_thickness" value="2.0"
+                           attr-name="chest_wall_thickness" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_wall_thickness" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_drawer_slide_thickness">
+                chest<span class="param_underscore">_</span>drawer<span class="param_underscore">_</span>slide<span class="param_underscore">_</span>thickness
+                <br><span class="form-text">Thickness of drawer slides in mm. 0 is uses wall thickness.</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_drawer_slide_thickness">
+                    <input class="form-control customizer" type="number" id="parameter_chest_drawer_slide_thickness" value="0.0"
+                           attr-name="chest_drawer_slide_thickness" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_drawer_slide_thickness" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_drawer_slide_width">
+                chest<span class="param_underscore">_</span>drawer<span class="param_underscore">_</span>slide<span class="param_underscore">_</span>width
+                <br><span class="form-text">Width of drawer slies in mm. 0 is full chest width.</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_drawer_slide_width">
+                    <input class="form-control customizer" type="number" id="parameter_chest_drawer_slide_width" value="10.0"
+                           attr-name="chest_drawer_slide_width" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_drawer_slide_width" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+            
+                </div> <!-- end of collapse -->
+            
+            <h3 class="group-header" data-bs-target="#collapse-b36548cadb5783fca6d17a664ffc476982136702993af50b530417271e3b2c6f" data-bs-toggle="collapse"><svg class="collapse-indicator" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M 0 5 H 20 L 10 15 Z"/></svg>Drawer</h3><div class="collapse show" id="collapse-b36548cadb5783fca6d17a664ffc476982136702993af50b530417271e3b2c6f">
+        
+        
+        <div class="col-12">
+            <label for="parameter_handle_size">
+                handle<span class="param_underscore">_</span>size
+                <br><span class="form-text">Handle size width, depth, height, and radius. Height, less than 0 drawerHeight/abs(height). radius, -1 = depth/2.</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="handle_size">
+                    
+                        <input class="form-control customizer" type="number"
+                               id="parameter_handle_size" value="4.0" attr-name="handle_size"
+                               attr-index="0" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="10.0" attr-name="handle_size"
+                               attr-index="1" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="-1.0" attr-name="handle_size"
+                               attr-index="2" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="-1.0" attr-name="handle_size"
+                               attr-index="3" autocomplete="off">
+                    
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="handle_size" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_handle_vertical_center">
+                handle<span class="param_underscore">_</span>vertical<span class="param_underscore">_</span>center
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="handle_vertical_center">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_handle_vertical_center"
+                                attr-name="handle_vertical_center" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="handle_vertical_center" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_handle_cut_factor">
+                handle<span class="param_underscore">_</span>cut<span class="param_underscore">_</span>factor
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="handle_cut_factor">
+                    <input class="form-control customizer" type="number" id="parameter_handle_cut_factor" value="0.5"
+                           attr-name="handle_cut_factor" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="handle_cut_factor" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_handle_rotate">
+                handle<span class="param_underscore">_</span>rotate
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="handle_rotate">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_handle_rotate"
+                                attr-name="handle_rotate" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="handle_rotate" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_wall_thickness">
+                drawer<span class="param_underscore">_</span>wall<span class="param_underscore">_</span>thickness
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_wall_thickness">
+                    <input class="form-control customizer" type="number" id="parameter_drawer_wall_thickness" value="2.0"
+                           attr-name="drawer_wall_thickness" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_wall_thickness" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_base">
+                drawer<span class="param_underscore">_</span>base
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_base">
+                    <select class="form-select customizer" id="parameter_drawer_base" attr-name="drawer_base" autocomplete="off">
+                        
+                            <option value='"grid"'
+                                    >Grid only</option>
+                        
+                            <option value='"floor"'
+                                    >floor only</option>
+                        
+                            <option value='"default"'
+                                    selected>Grid and floor</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_base" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_enable_magnet">
+                drawer<span class="param_underscore">_</span>enable<span class="param_underscore">_</span>magnet
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_enable_magnet">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_drawer_enable_magnet"
+                               checked attr-name="drawer_enable_magnet" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_enable_magnet" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_drawer_magnet_size">
+                drawer<span class="param_underscore">_</span>magnet<span class="param_underscore">_</span>size
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="drawer_magnet_size">
+                    
+                        <input class="form-control customizer" type="number"
+                               id="parameter_drawer_magnet_size" value="6.5" attr-name="drawer_magnet_size"
+                               attr-index="0" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="2.4" attr-name="drawer_magnet_size"
+                               attr-index="1" autocomplete="off">
+                    
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="drawer_magnet_size" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+            
+                </div> <!-- end of collapse -->
+            
+            <h3 class="group-header" data-bs-target="#collapse-93df8528bf94560924dd89040106c79e4a951ab9b133f1d922498b8bf88e8c2f" data-bs-toggle="collapse"><svg class="collapse-indicator" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M 0 5 H 20 L 10 15 Z"/></svg>Chest Top Plate</h3><div class="collapse show" id="collapse-93df8528bf94560924dd89040106c79e4a951ab9b133f1d922498b8bf88e8c2f">
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_top_wallpattern_style">
+                chest<span class="param_underscore">_</span>top<span class="param_underscore">_</span>wallpattern<span class="param_underscore">_</span>style
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_top_wallpattern_style">
+                    <select class="form-select customizer" id="parameter_chest_top_wallpattern_style" attr-name="chest_top_wallpattern_style" autocomplete="off">
+                        
+                            <option value='"none"'
+                                    selected>none</option>
+                        
+                            <option value='"grid"'
+                                    >grid</option>
+                        
+                            <option value='"gridrotated"'
+                                    >gridrotated</option>
+                        
+                            <option value='"hexgrid"'
+                                    >hexgrid</option>
+                        
+                            <option value='"hexgridrotated"'
+                                    >hexgridrotated</option>
+                        
+                            <option value='"voronoi"'
+                                    >voronoi</option>
+                        
+                            <option value='"voronoigrid"'
+                                    >voronoigrid</option>
+                        
+                            <option value='"voronoihexgrid"'
+                                    >voronoihexgrid</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_top_wallpattern_style" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_top_style">
+                chest<span class="param_underscore">_</span>top<span class="param_underscore">_</span>style
+                <br><span class="form-text">Plate Style</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_top_style">
+                    <select class="form-select customizer" id="parameter_chest_top_style" attr-name="chest_top_style" autocomplete="off">
+                        
+                            <option value='"none"'
+                                    selected>None</option>
+                        
+                            <option value='"baseplate"'
+                                    >Base Plate</option>
+                        
+                            <option value='"lugs"'
+                                    >Supportless feet</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_top_style" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_top_base_plate_enable_magnets">
+                chest<span class="param_underscore">_</span>top<span class="param_underscore">_</span>base<span class="param_underscore">_</span>plate<span class="param_underscore">_</span>enable<span class="param_underscore">_</span>magnets
+                <br><span class="form-text">Enable magnets in the bin corner</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_top_base_plate_enable_magnets">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_chest_top_base_plate_enable_magnets"
+                               checked attr-name="chest_top_base_plate_enable_magnets" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_top_base_plate_enable_magnets" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_top_base_plate_magnet_size">
+                chest<span class="param_underscore">_</span>top<span class="param_underscore">_</span>base<span class="param_underscore">_</span>plate<span class="param_underscore">_</span>magnet<span class="param_underscore">_</span>size
+                <br><span class="form-text">(Zack's design uses magnet diameter of 6.5, 2.4)</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_top_base_plate_magnet_size">
+                    
+                        <input class="form-control customizer" type="number"
+                               id="parameter_chest_top_base_plate_magnet_size" value="6.5" attr-name="chest_top_base_plate_magnet_size"
+                               attr-index="0" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="2.4" attr-name="chest_top_base_plate_magnet_size"
+                               attr-index="1" autocomplete="off">
+                    
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_top_base_plate_magnet_size" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_top_base_plate_reduced_wall_height">
+                chest<span class="param_underscore">_</span>top<span class="param_underscore">_</span>base<span class="param_underscore">_</span>plate<span class="param_underscore">_</span>reduced<span class="param_underscore">_</span>wall<span class="param_underscore">_</span>height
+                <br><span class="form-text">Reduce the frame wall size to this value</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_top_base_plate_reduced_wall_height">
+                    <input class="form-control customizer" type="number" id="parameter_chest_top_base_plate_reduced_wall_height" value="-1.0"
+                           attr-name="chest_top_base_plate_reduced_wall_height" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_top_base_plate_reduced_wall_height" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_top_base_plate_reduced_wall_taper">
+                chest<span class="param_underscore">_</span>top<span class="param_underscore">_</span>base<span class="param_underscore">_</span>plate<span class="param_underscore">_</span>reduced<span class="param_underscore">_</span>wall<span class="param_underscore">_</span>taper
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_top_base_plate_reduced_wall_taper">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_chest_top_base_plate_reduced_wall_taper"
+                                attr-name="chest_top_base_plate_reduced_wall_taper" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_top_base_plate_reduced_wall_taper" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+            
+                </div> <!-- end of collapse -->
+            
+            <h3 class="group-header" data-bs-target="#collapse-478704d3e15d4e118e6fa1378f814a9a7520c115f45ae91242ca08a45e9b6f89" data-bs-toggle="collapse"><svg class="collapse-indicator" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M 0 5 H 20 L 10 15 Z"/></svg>Chest Base</h3><div class="collapse show" id="collapse-478704d3e15d4e118e6fa1378f814a9a7520c115f45ae91242ca08a45e9b6f89">
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_bottom_wallpattern_style">
+                chest<span class="param_underscore">_</span>bottom<span class="param_underscore">_</span>wallpattern<span class="param_underscore">_</span>style
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_bottom_wallpattern_style">
+                    <select class="form-select customizer" id="parameter_chest_bottom_wallpattern_style" attr-name="chest_bottom_wallpattern_style" autocomplete="off">
+                        
+                            <option value='"none"'
+                                    selected>none</option>
+                        
+                            <option value='"grid"'
+                                    >grid</option>
+                        
+                            <option value='"gridrotated"'
+                                    >gridrotated</option>
+                        
+                            <option value='"hexgrid"'
+                                    >hexgrid</option>
+                        
+                            <option value='"hexgridrotated"'
+                                    >hexgridrotated</option>
+                        
+                            <option value='"voronoi"'
+                                    >voronoi</option>
+                        
+                            <option value='"voronoigrid"'
+                                    >voronoigrid</option>
+                        
+                            <option value='"voronoihexgrid"'
+                                    >voronoihexgrid</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_bottom_wallpattern_style" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_bottom_grid">
+                chest<span class="param_underscore">_</span>bottom<span class="param_underscore">_</span>grid
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_bottom_grid">
+                    <select class="form-select customizer" id="parameter_chest_bottom_grid" attr-name="chest_bottom_grid" autocomplete="off">
+                        
+                            <option value='"none"'
+                                    selected>None</option>
+                        
+                            <option value='"grid"'
+                                    >Gridfinity grid</option>
+                        
+                            <option value='"lugs"'
+                                    >Supportless feet</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_bottom_grid" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_leg_clearance">
+                chest<span class="param_underscore">_</span>leg<span class="param_underscore">_</span>clearance
+                <br><span class="form-text">Fit clearance of chest feet</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_leg_clearance">
+                    <input class="form-control customizer" type="number" id="parameter_chest_leg_clearance" value="0.35"
+                           attr-name="chest_leg_clearance" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_leg_clearance" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_magnet_diameter">
+                magnet<span class="param_underscore">_</span>diameter
+                <br><span class="form-text">(Zack's design uses magnet diameter of 6.5)</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="magnet_diameter">
+                    <input class="form-control customizer" type="number" id="parameter_magnet_diameter" value="6.5"
+                           attr-name="magnet_diameter" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="magnet_diameter" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_screw_depth">
+                screw<span class="param_underscore">_</span>depth
+                <br><span class="form-text">(Zack's design uses depth of 6)</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="screw_depth">
+                    <input class="form-control customizer" type="number" id="parameter_screw_depth" value="6.0"
+                           attr-name="screw_depth" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="screw_depth" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_hole_overhang_remedy">
+                hole<span class="param_underscore">_</span>overhang<span class="param_underscore">_</span>remedy
+                <br><span class="form-text">Sequential Bridging hole overhang remedy is active only when both screws and magnets are nonzero (and this option is selected)</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="hole_overhang_remedy">
+                    <input class="form-control customizer" type="number" id="parameter_hole_overhang_remedy" value="2.0"
+                           attr-name="hole_overhang_remedy" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="hole_overhang_remedy" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_chest_corner_attachments_only">
+                chest<span class="param_underscore">_</span>corner<span class="param_underscore">_</span>attachments<span class="param_underscore">_</span>only
+                <br><span class="form-text">Only add attachments (magnets and screw) to chest corners (prints faster).</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="chest_corner_attachments_only">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_chest_corner_attachments_only"
+                               checked attr-name="chest_corner_attachments_only" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="chest_corner_attachments_only" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_sub_pitch">
+                sub<span class="param_underscore">_</span>pitch
+                <br><span class="form-text">AKA half pitch. Enable to subdivide bottom pads to allow sub-cell offsets</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="sub_pitch">
+                    <select class="form-select customizer" id="parameter_sub_pitch" attr-name="sub_pitch" autocomplete="off">
+                        
+                            <option value='1.0'
+                                    selected>disabled</option>
+                        
+                            <option value='2.0'
+                                    >half pitch</option>
+                        
+                            <option value='3.0'
+                                    >third pitch</option>
+                        
+                            <option value='4.0'
+                                    >quarter pitch</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="sub_pitch" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_flat_base">
+                flat<span class="param_underscore">_</span>base
+                <br><span class="form-text">Removes the internal grid from base the shape</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="flat_base">
+                    <input class="form-control customizer" type="text" id="parameter_flat_base" value="off"
+                           attr-name="flat_base" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="flat_base" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+            
+                </div> <!-- end of collapse -->
+            
+            <h3 class="group-header" data-bs-target="#collapse-84704554a9649b934374961318ad2ed2a3ffda61adb45d3ac485dbdd1519e103" data-bs-toggle="collapse"><svg class="collapse-indicator" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M 0 5 H 20 L 10 15 Z"/></svg>Chest Wall Pattern</h3><div class="collapse show" id="collapse-84704554a9649b934374961318ad2ed2a3ffda61adb45d3ac485dbdd1519e103">
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_border_width">
+                wallpattern<span class="param_underscore">_</span>border<span class="param_underscore">_</span>width
+                <br><span class="form-text">wall pattern border width. -1 defaults to chest_wall_thickness. less than 0 chest_wall_thickness/abs(wallpattern_border_width)</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_border_width">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_border_width" value="-1.0"
+                           attr-name="wallpattern_border_width" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_border_width" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_efficient_back">
+                efficient<span class="param_underscore">_</span>back
+                </label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="efficient_back">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_efficient_back"
+                               checked attr-name="efficient_back" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="efficient_back" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_enabled">
+                wallpattern<span class="param_underscore">_</span>enabled
+                <br><span class="form-text">Grid wall patter</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_enabled">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_wallpattern_enabled"
+                                attr-name="wallpattern_enabled" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_enabled" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_style">
+                wallpattern<span class="param_underscore">_</span>style
+                <br><span class="form-text">Style of the pattern</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_style">
+                    <select class="form-select customizer" id="parameter_wallpattern_style" attr-name="wallpattern_style" autocomplete="off">
+                        
+                            <option value='"hexgrid"'
+                                    selected>hexgrid</option>
+                        
+                            <option value='"grid"'
+                                    >grid</option>
+                        
+                            <option value='"voronoi"'
+                                    >voronoi</option>
+                        
+                            <option value='"voronoigrid"'
+                                    >voronoigrid</option>
+                        
+                            <option value='"voronoihexgrid"'
+                                    >voronoihexgrid</option>
+                        
+                            <option value='"brick"'
+                                    >brick</option>
+                        
+                            <option value='"brickoffset"'
+                                    >brickoffset</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_style" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_strength">
+                wallpattern<span class="param_underscore">_</span>strength
+                <br><span class="form-text">Spacing between pattern</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_strength">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_strength" value="2.0"
+                           attr-name="wallpattern_strength" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_strength" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_walls">
+                wallpattern<span class="param_underscore">_</span>walls
+                <br><span class="form-text">wall to enable on, front, back, left, right.</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_walls">
+                    
+                        <input class="form-control customizer" type="number"
+                               id="parameter_wallpattern_walls" value="1.0" attr-name="wallpattern_walls"
+                               attr-index="0" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="1.0" attr-name="wallpattern_walls"
+                               attr-index="1" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="1.0" attr-name="wallpattern_walls"
+                               attr-index="2" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="1.0" attr-name="wallpattern_walls"
+                               attr-index="3" autocomplete="off">
+                    
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_walls" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_rotate_grid">
+                wallpattern<span class="param_underscore">_</span>rotate<span class="param_underscore">_</span>grid
+                <br><span class="form-text">rotate the grid</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_rotate_grid">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0 customizer" type="checkbox" id="parameter_wallpattern_rotate_grid"
+                                attr-name="wallpattern_rotate_grid" autocomplete="off">
+                    </div>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_rotate_grid" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_cell_size">
+                wallpattern<span class="param_underscore">_</span>cell<span class="param_underscore">_</span>size
+                <br><span class="form-text">Size of the hole</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_cell_size">
+                    
+                        <input class="form-control customizer" type="number"
+                               id="parameter_wallpattern_cell_size" value="10.0" attr-name="wallpattern_cell_size"
+                               attr-index="0" autocomplete="off">
+                    
+                        <input class="form-control customizer" type="number" value="10.0" attr-name="wallpattern_cell_size"
+                               attr-index="1" autocomplete="off">
+                    
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_cell_size" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_dividers_enabled">
+                wallpattern<span class="param_underscore">_</span>dividers<span class="param_underscore">_</span>enabled
+                <br><span class="form-text">Add the pattern to the dividers</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_dividers_enabled">
+                    <select class="form-select customizer" id="parameter_wallpattern_dividers_enabled" attr-name="wallpattern_dividers_enabled" autocomplete="off">
+                        
+                            <option value='"disabled"'
+                                    selected>disabled</option>
+                        
+                            <option value='"horizontal"'
+                                    >horizontal</option>
+                        
+                            <option value='"vertical"'
+                                    >vertical</option>
+                        
+                            <option value='"both"'
+                                    >both</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_dividers_enabled" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_hole_sides">
+                wallpattern<span class="param_underscore">_</span>hole<span class="param_underscore">_</span>sides
+                <br><span class="form-text">Number of sides of the hole op</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_hole_sides">
+                    <select class="form-select customizer" id="parameter_wallpattern_hole_sides" attr-name="wallpattern_hole_sides" autocomplete="off">
+                        
+                            <option value='4.0'
+                                    >square</option>
+                        
+                            <option value='6.0'
+                                    selected>hex</option>
+                        
+                            <option value='8.0'
+                                    >octo</option>
+                        
+                            <option value='64.0'
+                                    >circle</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_hole_sides" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_hole_radius">
+                wallpattern<span class="param_underscore">_</span>hole<span class="param_underscore">_</span>radius
+                <br><span class="form-text">Radius of corners</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_hole_radius">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_hole_radius" value="0.5"
+                           attr-name="wallpattern_hole_radius" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_hole_radius" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_fill">
+                wallpattern<span class="param_underscore">_</span>fill
+                <br><span class="form-text">pattern fill mode</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_fill">
+                    <select class="form-select customizer" id="parameter_wallpattern_fill" attr-name="wallpattern_fill" autocomplete="off">
+                        
+                            <option value='"none"'
+                                    selected>none</option>
+                        
+                            <option value='"space"'
+                                    >space</option>
+                        
+                            <option value='"crop"'
+                                    >crop</option>
+                        
+                            <option value='"crophorizontal"'
+                                    >crophorizontal</option>
+                        
+                            <option value='"cropvertical"'
+                                    >cropvertical</option>
+                        
+                            <option value='"crophorizontal_spacevertical"'
+                                    >crophorizontal_spacevertical</option>
+                        
+                            <option value='"cropvertical_spacehorizontal"'
+                                    >cropvertical_spacehorizontal</option>
+                        
+                            <option value='"spacevertical"'
+                                    >spacevertical</option>
+                        
+                            <option value='"spacehorizontal"'
+                                    >spacehorizontal</option>
+                        
+                    </select>
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_fill" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_border">
+                wallpattern<span class="param_underscore">_</span>border
+                <br><span class="form-text">border around the wall pattern, default is wall thickness</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_border">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_border" value="0.0"
+                           attr-name="wallpattern_border" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_border" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_depth">
+                wallpattern<span class="param_underscore">_</span>depth
+                <br><span class="form-text">depth of imprint in mm, 0 = is wall width.</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_depth">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_depth" value="0.0"
+                           attr-name="wallpattern_depth" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_depth" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_pattern_grid_chamfer">
+                wallpattern<span class="param_underscore">_</span>pattern<span class="param_underscore">_</span>grid<span class="param_underscore">_</span>chamfer
+                <br><span class="form-text">grid pattern hole taper</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_pattern_grid_chamfer">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_pattern_grid_chamfer" value="0.0"
+                           attr-name="wallpattern_pattern_grid_chamfer" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_pattern_grid_chamfer" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_pattern_voronoi_noise">
+                wallpattern<span class="param_underscore">_</span>pattern<span class="param_underscore">_</span>voronoi<span class="param_underscore">_</span>noise
+                <br><span class="form-text">voronoi pattern noise,</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_pattern_voronoi_noise">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_pattern_voronoi_noise" value="0.75"
+                           attr-name="wallpattern_pattern_voronoi_noise" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_pattern_voronoi_noise" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_pattern_brick_weight">
+                wallpattern<span class="param_underscore">_</span>pattern<span class="param_underscore">_</span>brick<span class="param_underscore">_</span>weight
+                <br><span class="form-text">brick pattern center weight</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_pattern_brick_weight">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_pattern_brick_weight" value="5.0"
+                           attr-name="wallpattern_pattern_brick_weight" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_pattern_brick_weight" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_wallpattern_pattern_quality">
+                wallpattern<span class="param_underscore">_</span>pattern<span class="param_underscore">_</span>quality
+                <br><span class="form-text">$fs for floor pattern, min size face.</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="wallpattern_pattern_quality">
+                    <input class="form-control customizer" type="number" id="parameter_wallpattern_pattern_quality" value="0.4"
+                           attr-name="wallpattern_pattern_quality" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="wallpattern_pattern_quality" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+            
+                </div> <!-- end of collapse -->
+            
+            <h3 class="group-header" data-bs-target="#collapse-69171c5e30582b80989aae5efaada3c09102eecb13e4a5fc7947335db88db6e6" data-bs-toggle="collapse"><svg class="collapse-indicator" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" stroke="none"><path d="M 0 5 H 20 L 10 15 Z"/></svg>model detail</h3><div class="collapse show" id="collapse-69171c5e30582b80989aae5efaada3c09102eecb13e4a5fc7947335db88db6e6">
+        
+        
+        <div class="col-12">
+            <label for="parameter_fa">
+                fa
+                <br><span class="form-text">minimum angle for a fragment (fragments = 360/fa).  Low is more fragments</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="fa">
+                    <input class="form-control customizer" type="number" id="parameter_fa" value="6.0"
+                           attr-name="fa" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="fa" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_fs">
+                fs
+                <br><span class="form-text">minimum size of a fragment.  Low is more fragments</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="fs">
+                    <input class="form-control customizer" type="number" id="parameter_fs" value="0.1"
+                           attr-name="fs" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="fs" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+        
+        
+        
+        <div class="col-12">
+            <label for="parameter_fn">
+                fn
+                <br><span class="form-text">number of fragments, overrides $fa and $fs</span></label>
+        </div>
+        <div class="col-12 mb-3">
+            
+                <div class="input-group customizer-group" attr-name="fn">
+                    <input class="form-control customizer" type="number" id="parameter_fn" value="0.0"
+                           attr-name="fn" autocomplete="off">
+                    
+        <button class="btn btn-outline-secondary customizer-reset" type="button" attr-name="fn" disabled
+                aria-label="Revert to default" title="Revert to default">
+            <svg class="lucide lucide-rotate-ccw" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+            <span class="visually-hidden">Revert to default</span>
+        </button>
+                </div>
+            
+        </div>
+        
+    
+    
+        </div> <!-- end of collapse -->
+    
+</div>
+
+<div class="modal fade" id="render-error-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Render Log</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <pre id="render-error-log" class="border rounded p-2" style="white-space: pre-wrap; background-color: var(--render-log-bg);"></pre>
+            </div>
+            <div class="modal-footer">
+                <button id="render-error-copy" type="button" class="btn btn-outline-secondary">Copy</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="profiles-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Profiles</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="form-text mt-0">Profiles are saved in your browser. Use Apply/Clean Apply to load them, and enable “Apply by default” to auto-apply on an empty URL.</p>
+                <div id="profiles-list" class="list-group"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "289907792d964681bc54745437d68483"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>

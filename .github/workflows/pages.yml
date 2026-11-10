@@ -1,0 +1,51 @@
+name: Deploy VETKA Gridfinity Plus
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Build the landing page and generator
+        run: python build_release.py --with-landing --output dist/pages
+      - name: Verify package
+        shell: bash
+        run: |
+          cd dist/pages
+          test -f index.html && test -f assets/generator.png
+          (cd generator && sha256sum --check checksums.sha256)
+          test -f generator/index.html && test -f generator/licenses.html
+          test -f generator/source/gridfinity-drawers-source.zip
+          test -f generator/source/openscad-2026.01.19-source.zip
+          test -z "$(find . -type l -print -quit)"
+          test -z "$(find . -type f -links +1 -print -quit)"
+          test "$(du -sb . | cut -f1)" -lt 1000000000
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/pages
+      - name: Deploy Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

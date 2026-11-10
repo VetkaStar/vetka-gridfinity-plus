@@ -1,0 +1,5224 @@
+{
+  "metadata": {
+    "assembly_layout": {
+      "key": "assembly_layout",
+      "default": "",
+      "label": "Чертёж компоновки корпусов",
+      "description": "",
+      "type": "hidden",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Конструктор компоновки и размеров",
+      "currentSubsection": ""
+    },
+    "perforation_mode": {
+      "key": "perforation_mode",
+      "default": "legacy",
+      "label": "Управление перфорацией",
+      "description": "Узоры корпуса настраиваются в режиме ячеек. Независимые узоры позволяют задать каждую поверхность отдельно. Выключение убирает всю перфорацию.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "legacy",
+          "label": "Узоры корпуса"
+        },
+        {
+          "value": "off",
+          "label": "Вся перфорация выключена"
+        },
+        {
+          "value": "individual",
+          "label": "Независимые узоры поверхностей"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": ""
+    },
+    "case_back_perf_enabled": {
+      "key": "case_back_perf_enabled",
+      "default": false,
+      "label": "Задняя стенка корпуса — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка корпусавыключено"
+    },
+    "case_back_perf_style": {
+      "key": "case_back_perf_style",
+      "default": "hex",
+      "label": "Задняя стенка корпуса — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка корпусавыключено"
+    },
+    "case_back_perf_cell": {
+      "key": "case_back_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Задняя стенка корпуса — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка корпусавыключено"
+    },
+    "case_back_perf_web": {
+      "key": "case_back_perf_web",
+      "default": 2,
+      "label": "Задняя стенка корпуса — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка корпусавыключено"
+    },
+    "case_back_perf_border": {
+      "key": "case_back_perf_border",
+      "default": 5,
+      "label": "Задняя стенка корпуса — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка корпусавыключено"
+    },
+    "case_back_perf_rotate": {
+      "key": "case_back_perf_rotate",
+      "default": false,
+      "label": "Задняя стенка корпуса — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка корпусавыключено"
+    },
+    "case_left_perf_enabled": {
+      "key": "case_left_perf_enabled",
+      "default": false,
+      "label": "Левая стенка корпуса — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка корпусавыключено"
+    },
+    "case_left_perf_style": {
+      "key": "case_left_perf_style",
+      "default": "hex",
+      "label": "Левая стенка корпуса — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка корпусавыключено"
+    },
+    "case_left_perf_cell": {
+      "key": "case_left_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Левая стенка корпуса — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка корпусавыключено"
+    },
+    "case_left_perf_web": {
+      "key": "case_left_perf_web",
+      "default": 2,
+      "label": "Левая стенка корпуса — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка корпусавыключено"
+    },
+    "case_left_perf_border": {
+      "key": "case_left_perf_border",
+      "default": 5,
+      "label": "Левая стенка корпуса — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка корпусавыключено"
+    },
+    "case_left_perf_rotate": {
+      "key": "case_left_perf_rotate",
+      "default": false,
+      "label": "Левая стенка корпуса — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка корпусавыключено"
+    },
+    "case_right_perf_enabled": {
+      "key": "case_right_perf_enabled",
+      "default": false,
+      "label": "Правая стенка корпуса — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка корпусавыключено"
+    },
+    "case_right_perf_style": {
+      "key": "case_right_perf_style",
+      "default": "hex",
+      "label": "Правая стенка корпуса — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка корпусавыключено"
+    },
+    "case_right_perf_cell": {
+      "key": "case_right_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Правая стенка корпуса — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка корпусавыключено"
+    },
+    "case_right_perf_web": {
+      "key": "case_right_perf_web",
+      "default": 2,
+      "label": "Правая стенка корпуса — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка корпусавыключено"
+    },
+    "case_right_perf_border": {
+      "key": "case_right_perf_border",
+      "default": 5,
+      "label": "Правая стенка корпуса — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка корпусавыключено"
+    },
+    "case_right_perf_rotate": {
+      "key": "case_right_perf_rotate",
+      "default": false,
+      "label": "Правая стенка корпуса — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка корпусавыключено"
+    },
+    "case_top_perf_enabled": {
+      "key": "case_top_perf_enabled",
+      "default": false,
+      "label": "Крыша корпуса — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Крыша корпусавыключено"
+    },
+    "case_top_perf_style": {
+      "key": "case_top_perf_style",
+      "default": "hex",
+      "label": "Крыша корпуса — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Крыша корпусавыключено"
+    },
+    "case_top_perf_cell": {
+      "key": "case_top_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Крыша корпуса — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Крыша корпусавыключено"
+    },
+    "case_top_perf_web": {
+      "key": "case_top_perf_web",
+      "default": 2,
+      "label": "Крыша корпуса — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Крыша корпусавыключено"
+    },
+    "case_top_perf_border": {
+      "key": "case_top_perf_border",
+      "default": 5,
+      "label": "Крыша корпуса — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Крыша корпусавыключено"
+    },
+    "case_top_perf_rotate": {
+      "key": "case_top_perf_rotate",
+      "default": false,
+      "label": "Крыша корпуса — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Крыша корпусавыключено"
+    },
+    "case_bottom_perf_enabled": {
+      "key": "case_bottom_perf_enabled",
+      "default": false,
+      "label": "Дно корпуса — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно корпусавыключено"
+    },
+    "case_bottom_perf_style": {
+      "key": "case_bottom_perf_style",
+      "default": "hex",
+      "label": "Дно корпуса — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно корпусавыключено"
+    },
+    "case_bottom_perf_cell": {
+      "key": "case_bottom_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Дно корпуса — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно корпусавыключено"
+    },
+    "case_bottom_perf_web": {
+      "key": "case_bottom_perf_web",
+      "default": 2,
+      "label": "Дно корпуса — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно корпусавыключено"
+    },
+    "case_bottom_perf_border": {
+      "key": "case_bottom_perf_border",
+      "default": 5,
+      "label": "Дно корпуса — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно корпусавыключено"
+    },
+    "case_bottom_perf_rotate": {
+      "key": "case_bottom_perf_rotate",
+      "default": false,
+      "label": "Дно корпуса — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно корпусавыключено"
+    },
+    "shelf_perf_enabled": {
+      "key": "shelf_perf_enabled",
+      "default": false,
+      "label": "Полки и направляющие — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "shelf_perf_style": {
+      "key": "shelf_perf_style",
+      "default": "square",
+      "label": "Полки и направляющие — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "shelf_perf_cell": {
+      "key": "shelf_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Полки и направляющие — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "shelf_perf_web": {
+      "key": "shelf_perf_web",
+      "default": 2,
+      "label": "Полки и направляющие — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "shelf_perf_border": {
+      "key": "shelf_perf_border",
+      "default": 5,
+      "label": "Полки и направляющие — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "shelf_perf_rotate": {
+      "key": "shelf_perf_rotate",
+      "default": false,
+      "label": "Полки и направляющие — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "drawer_front_perf_enabled": {
+      "key": "drawer_front_perf_enabled",
+      "default": false,
+      "label": "Передняя стенка ящиков — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Передняя стенка ящиковвыключено"
+    },
+    "drawer_front_perf_style": {
+      "key": "drawer_front_perf_style",
+      "default": "hex",
+      "label": "Передняя стенка ящиков — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Передняя стенка ящиковвыключено"
+    },
+    "drawer_front_perf_cell": {
+      "key": "drawer_front_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Передняя стенка ящиков — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Передняя стенка ящиковвыключено"
+    },
+    "drawer_front_perf_web": {
+      "key": "drawer_front_perf_web",
+      "default": 2,
+      "label": "Передняя стенка ящиков — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Передняя стенка ящиковвыключено"
+    },
+    "drawer_front_perf_border": {
+      "key": "drawer_front_perf_border",
+      "default": 5,
+      "label": "Передняя стенка ящиков — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Передняя стенка ящиковвыключено"
+    },
+    "drawer_front_perf_rotate": {
+      "key": "drawer_front_perf_rotate",
+      "default": false,
+      "label": "Передняя стенка ящиков — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Передняя стенка ящиковвыключено"
+    },
+    "drawer_back_perf_enabled": {
+      "key": "drawer_back_perf_enabled",
+      "default": false,
+      "label": "Задняя стенка ящиков — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка ящиковвыключено"
+    },
+    "drawer_back_perf_style": {
+      "key": "drawer_back_perf_style",
+      "default": "hex",
+      "label": "Задняя стенка ящиков — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка ящиковвыключено"
+    },
+    "drawer_back_perf_cell": {
+      "key": "drawer_back_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Задняя стенка ящиков — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка ящиковвыключено"
+    },
+    "drawer_back_perf_web": {
+      "key": "drawer_back_perf_web",
+      "default": 2,
+      "label": "Задняя стенка ящиков — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка ящиковвыключено"
+    },
+    "drawer_back_perf_border": {
+      "key": "drawer_back_perf_border",
+      "default": 5,
+      "label": "Задняя стенка ящиков — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка ящиковвыключено"
+    },
+    "drawer_back_perf_rotate": {
+      "key": "drawer_back_perf_rotate",
+      "default": false,
+      "label": "Задняя стенка ящиков — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Задняя стенка ящиковвыключено"
+    },
+    "drawer_left_perf_enabled": {
+      "key": "drawer_left_perf_enabled",
+      "default": false,
+      "label": "Левая стенка ящиков — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка ящиковвыключено"
+    },
+    "drawer_left_perf_style": {
+      "key": "drawer_left_perf_style",
+      "default": "hex",
+      "label": "Левая стенка ящиков — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка ящиковвыключено"
+    },
+    "drawer_left_perf_cell": {
+      "key": "drawer_left_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Левая стенка ящиков — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка ящиковвыключено"
+    },
+    "drawer_left_perf_web": {
+      "key": "drawer_left_perf_web",
+      "default": 2,
+      "label": "Левая стенка ящиков — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка ящиковвыключено"
+    },
+    "drawer_left_perf_border": {
+      "key": "drawer_left_perf_border",
+      "default": 5,
+      "label": "Левая стенка ящиков — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка ящиковвыключено"
+    },
+    "drawer_left_perf_rotate": {
+      "key": "drawer_left_perf_rotate",
+      "default": false,
+      "label": "Левая стенка ящиков — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Левая стенка ящиковвыключено"
+    },
+    "drawer_right_perf_enabled": {
+      "key": "drawer_right_perf_enabled",
+      "default": false,
+      "label": "Правая стенка ящиков — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка ящиковвыключено"
+    },
+    "drawer_right_perf_style": {
+      "key": "drawer_right_perf_style",
+      "default": "hex",
+      "label": "Правая стенка ящиков — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка ящиковвыключено"
+    },
+    "drawer_right_perf_cell": {
+      "key": "drawer_right_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Правая стенка ящиков — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка ящиковвыключено"
+    },
+    "drawer_right_perf_web": {
+      "key": "drawer_right_perf_web",
+      "default": 2,
+      "label": "Правая стенка ящиков — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка ящиковвыключено"
+    },
+    "drawer_right_perf_border": {
+      "key": "drawer_right_perf_border",
+      "default": 5,
+      "label": "Правая стенка ящиков — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка ящиковвыключено"
+    },
+    "drawer_right_perf_rotate": {
+      "key": "drawer_right_perf_rotate",
+      "default": false,
+      "label": "Правая стенка ящиков — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Правая стенка ящиковвыключено"
+    },
+    "drawer_floor_perf_enabled": {
+      "key": "drawer_floor_perf_enabled",
+      "default": false,
+      "label": "Дно ящиков — перфорация",
+      "description": "Включить отверстия только на этой поверхности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно ящиковвыключено"
+    },
+    "drawer_floor_perf_style": {
+      "key": "drawer_floor_perf_style",
+      "default": "hex",
+      "label": "Дно ящиков — тип узора",
+      "description": "Узор не связан с узорами других частей.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "square",
+          "label": "Простая квадратная сетка"
+        },
+        {
+          "value": "hex",
+          "label": "Соты"
+        },
+        {
+          "value": "circle",
+          "label": "Круглые отверстия"
+        },
+        {
+          "value": "slots",
+          "label": "Продолговатые отверстия"
+        },
+        {
+          "value": "voronoi",
+          "label": "Нерегулярный узор Вороного"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно ящиковвыключено"
+    },
+    "drawer_floor_perf_cell": {
+      "key": "drawer_floor_perf_cell",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Дно ящиков — размер отверстий",
+      "description": "Ширина и высота отверстий в мм. Для продолговатых отверстий удобно задать разные значения.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно ящиковвыключено"
+    },
+    "drawer_floor_perf_web": {
+      "key": "drawer_floor_perf_web",
+      "default": 2,
+      "label": "Дно ящиков — перемычки",
+      "description": "Толщина перемычек между отверстиями в мм.",
+      "type": "number",
+      "min": "0.4",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно ящиковвыключено"
+    },
+    "drawer_floor_perf_border": {
+      "key": "drawer_floor_perf_border",
+      "default": 5,
+      "label": "Дно ящиков — сплошная рамка",
+      "description": "Отступ от краёв в мм. Вокруг ключей и ручек дополнительно остаются защитные зоны.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно ящиковвыключено"
+    },
+    "drawer_floor_perf_rotate": {
+      "key": "drawer_floor_perf_rotate",
+      "default": false,
+      "label": "Дно ящиков — повернуть узор",
+      "description": "Повернуть рисунок на 90 градусов.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Дно ящиковвыключено"
+    },
+    "guide_contact_width": {
+      "key": "guide_contact_width",
+      "default": 4,
+      "label": "Сплошная дорожка направляющей, мм",
+      "description": "Ширина непрерывной опорной полосы от внутренней боковой стенки. Узкие направляющие могут остаться полностью сплошными.",
+      "type": "number",
+      "min": "2",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": ""
+    },
+    "guide_structure": {
+      "key": "guide_structure",
+      "default": "pattern",
+      "label": "Конструкция полок и направляющих",
+      "description": "Обычная полка сохраняет прежние настройки. Полозья идут от фасада к задней стенке: длинные просветы, ровная поверхность скольжения, необязательные поперечины ниже неё.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "pattern",
+          "label": "Обычная полка / выбранный узор"
+        },
+        {
+          "value": "rails",
+          "label": "Продольные полозья с длинными просветами"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "guide_rail_count": {
+      "key": "guide_rail_count",
+      "default": 6,
+      "label": "Количество продольных полозьев",
+      "description": "Всего, включая два обязательных крайних. От 2 до 32; полозья распределяются по ширине.",
+      "type": "number",
+      "min": "2",
+      "max": "32",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "guide_rail_width_mm": {
+      "key": "guide_rail_width_mm",
+      "default": 4,
+      "label": "Ширина продольного полозья, мм",
+      "description": "Крайние дорожки не уже значения «Сплошная дорожка направляющей». Высота полозьев равна толщине направляющих.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "guide_end_frame_width_mm": {
+      "key": "guide_end_frame_width_mm",
+      "default": 4,
+      "label": "Передняя и задняя перемычки рамки, мм",
+      "description": "Сплошная рамка соединяет концы полозьев. Её верх в одной плоскости с полозьями.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "guide_crossbars_enabled": {
+      "key": "guide_crossbars_enabled",
+      "default": true,
+      "label": "Поперечины ниже полозьев",
+      "description": "Необязательные поперечные связи. Не выступают над поверхностью скольжения и не опускаются в нижний ящик.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "guide_crossbar_count": {
+      "key": "guide_crossbar_count",
+      "default": 2,
+      "label": "Количество нижних поперечин",
+      "description": "Равномерно по глубине между передней и задней рамкой.",
+      "type": "number",
+      "min": "1",
+      "max": "20",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "guide_crossbar_width_mm": {
+      "key": "guide_crossbar_width_mm",
+      "default": 3,
+      "label": "Ширина поперечины по глубине, мм",
+      "description": "Размер поперечной полосы вдоль движения ящика.",
+      "type": "number",
+      "min": "0.6",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "guide_crossbar_thickness_mm": {
+      "key": "guide_crossbar_thickness_mm",
+      "default": 0,
+      "label": "Толщина нижней поперечины, мм",
+      "description": "0 — половина толщины направляющих. Иначе задайте не менее 0,4 мм.",
+      "type": "number",
+      "min": "0",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "guide_crossbar_recess_mm": {
+      "key": "guide_crossbar_recess_mm",
+      "default": 0,
+      "label": "Утопить поперечины от поверхности скольжения, мм",
+      "description": "0 — расположить их у нижней плоскости направляющих. Явный отступ — не менее 0,2 мм. Толщина плюс отступ не должны превышать толщину направляющих.",
+      "type": "number",
+      "min": "0",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": "Полки и направляющиевыключено"
+    },
+    "drawer_handle_keepout": {
+      "key": "drawer_handle_keepout",
+      "default": 4,
+      "label": "Рамка вокруг крепления ручки, мм",
+      "description": "На передней стенке сохраняется сплошная вертикальная полоса вокруг ручки.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Независимая перфорация",
+      "currentSubsection": ""
+    },
+    "custom_drawer_heights_enabled": {
+      "key": "custom_drawer_heights_enabled",
+      "default": false,
+      "label": "Разные высоты ящиков в миллиметрах",
+      "description": "Только в произвольном режиме. Значения задают полезную внутреннюю высоту, снизу вверх. 0 — разделить оставшуюся высоту между такими ящиками.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Разные высоты и отдельный ящик",
+      "currentSubsection": ""
+    },
+    "custom_drawer_heights_mm": {
+      "key": "custom_drawer_heights_mm",
+      "default": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "label": "Внутренние высоты снизу вверх, мм",
+      "description": "Например: 100; 0 — большой нижний ящик с внутренней высотой 100 мм и маленький сверху из остатка. Доступно до 16 ящиков.",
+      "type": "number",
+      "min": "0",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Разные высоты и отдельный ящик",
+      "currentSubsection": ""
+    },
+    "single_drawer_number": {
+      "key": "single_drawer_number",
+      "default": 1,
+      "label": "Номер отдельного ящика",
+      "description": "Для «Один ящик»: номер снизу вверх, начиная с 1.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Разные высоты и отдельный ящик",
+      "currentSubsection": ""
+    },
+    "connectors_enabled": {
+      "key": "connectors_enabled",
+      "default": false,
+      "label": "Утопленные соединительные ключи",
+      "description": "Добавить наружные карманы под плоские ключи «бабочка». Внутренних выступов нет; стенка должна быть достаточно толстой.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_planes": {
+      "key": "connector_planes",
+      "default": [
+        1,
+        0,
+        0
+      ],
+      "label": "Плоскости карманов: сзади, снизу, сверху",
+      "description": "1 — добавить карманы, 0 — не добавлять. Задние соединяют соседей и ярусы. Ключи в дне/крыше соединяют соседей в одной плоскости.",
+      "type": "number",
+      "min": "0",
+      "max": "1",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_edges": {
+      "key": "connector_edges",
+      "default": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "label": "Края с ключами: слева, справа, нижний, верхний",
+      "description": "Для задней плоскости — левый/правый/нижний/верхний край; для дна и крыши — левый/правый/передний/задний. 1 — включено.",
+      "type": "number",
+      "min": "0",
+      "max": "1",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_ports": {
+      "key": "connector_ports",
+      "default": 2,
+      "label": "Ключей на выбранном краю",
+      "description": "Равномерные позиции. У соседей должны совпадать количество, размер и положение ключей.",
+      "type": "number",
+      "min": "1",
+      "max": "4",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_length": {
+      "key": "connector_length",
+      "default": 20,
+      "label": "Длина ключа, мм",
+      "description": "Полная длина поперёк стыка двух корпусов.",
+      "type": "number",
+      "min": "6",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_width": {
+      "key": "connector_width",
+      "default": 10,
+      "label": "Ширина ключа, мм",
+      "description": "Ширина широких концов «бабочки».",
+      "type": "number",
+      "min": "3",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_waist": {
+      "key": "connector_waist",
+      "default": 5,
+      "label": "Ширина шейки ключа, мм",
+      "description": "Узкая часть на линии стыка; должна быть меньше полной ширины.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_depth": {
+      "key": "connector_depth",
+      "default": 2,
+      "label": "Глубина кармана, мм",
+      "description": "Ключ целиком утоплен. Карман не должен вскрывать внутреннюю полость.",
+      "type": "number",
+      "min": "0.5",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_skin": {
+      "key": "connector_skin",
+      "default": 1.5,
+      "label": "Остаток стенки за карманом, мм",
+      "description": "Минимальная сплошная толщина. Стенка корпуса должна быть не тоньше суммы этого значения и глубины кармана.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_fit": {
+      "key": "connector_fit",
+      "default": 0.1,
+      "label": "Посадочный зазор ключа, мм",
+      "description": "На сторону: положительный — свободнее, отрицательный — плотнее. Посадку подбирают тестовой печатью.",
+      "type": "number",
+      "min": "-0.2",
+      "max": "0.5",
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_keepout": {
+      "key": "connector_keepout",
+      "default": 2,
+      "label": "Сплошная зона вокруг кармана, мм",
+      "description": "Перфорация не пересекает карманы. Без дополнительного утолщения стенок.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "connector_key_count": {
+      "key": "connector_key_count",
+      "default": 8,
+      "label": "Количество ключей для печати",
+      "description": "Используется при выборе «Только ключи».",
+      "type": "number",
+      "min": "1",
+      "max": "40",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Соединительные ключи без выступов",
+      "currentSubsection": ""
+    },
+    "case_structure": {
+      "key": "case_structure",
+      "default": "sheet",
+      "label": "Конструкция корпуса",
+      "description": "Новые конструкции доступны в произвольных миллиметрах. Каркас заменяет узоры боковых и задней стенок большими окнами.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "sheet",
+          "label": "Обычные стенки / перфорация"
+        },
+        {
+          "value": "frame",
+          "label": "Каркас с большими окнами"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_border_mm": {
+      "key": "frame_border_mm",
+      "default": 8,
+      "label": "Ширина стоек и рамок, мм",
+      "description": "В пределах прежней толщины стенки; внешних утолщений нет.",
+      "type": "number",
+      "min": "2",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_rib_mm": {
+      "key": "frame_rib_mm",
+      "default": 4,
+      "label": "Ширина дополнительных перемычек, мм",
+      "description": "Перемычки в плоскости стенки.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_side_vertical": {
+      "key": "frame_side_vertical",
+      "default": 0,
+      "label": "На каждой боковине — вертикальных перемычек",
+      "description": "Дополнительные перемычки в каждом окне между уровнями ящиков. 0 — открытая рамка.",
+      "type": "number",
+      "min": "0",
+      "max": "12",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_side_horizontal": {
+      "key": "frame_side_horizontal",
+      "default": 0,
+      "label": "На каждой боковине — горизонтальных перемычек",
+      "description": "Дополнительные перемычки внутри каждого окна, кроме обязательных рамок уровней.",
+      "type": "number",
+      "min": "0",
+      "max": "12",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_back_vertical": {
+      "key": "frame_back_vertical",
+      "default": 0,
+      "label": "На задней стенке — вертикальных перемычек",
+      "description": "Дополнительные перемычки в каждом окне между уровнями ящиков. 0 — открытая рамка.",
+      "type": "number",
+      "min": "0",
+      "max": "12",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_back_horizontal": {
+      "key": "frame_back_horizontal",
+      "default": 0,
+      "label": "На задней стенке — горизонтальных перемычек",
+      "description": "Дополнительные перемычки внутри каждого окна, кроме обязательных рамок уровней.",
+      "type": "number",
+      "min": "0",
+      "max": "12",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_side_bracing": {
+      "key": "frame_side_bracing",
+      "default": "none",
+      "label": "Диагонали боковин",
+      "description": "На каждой боковине. Ячейки образуются горизонтальными и вертикальными перемычками.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Без диагоналей"
+        },
+        {
+          "value": "diagonal",
+          "label": "Одна диагональ на всё окно"
+        },
+        {
+          "value": "cross",
+          "label": "Крест на всё окно"
+        },
+        {
+          "value": "cell_diagonal",
+          "label": "Диагональ в каждой ячейке"
+        },
+        {
+          "value": "cell_cross",
+          "label": "Крест в каждой ячейке"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_back_bracing": {
+      "key": "frame_back_bracing",
+      "default": "none",
+      "label": "Диагонали задней стенки",
+      "description": "Одна диагональ или крест: на всё окно между уровнями либо в каждой его ячейке.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Без диагоналей"
+        },
+        {
+          "value": "diagonal",
+          "label": "Одна диагональ на всё окно"
+        },
+        {
+          "value": "cross",
+          "label": "Крест на всё окно"
+        },
+        {
+          "value": "cell_diagonal",
+          "label": "Диагональ в каждой ячейке"
+        },
+        {
+          "value": "cell_cross",
+          "label": "Крест в каждой ячейке"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_shelf_bracing": {
+      "key": "frame_shelf_bracing",
+      "default": "none",
+      "label": "Диагонали рамочных полок",
+      "description": "В плоскости полки, без выступов над направляющими. Продольные полозья имеют приоритет: для диагоналей выберите обычную полку.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Без диагоналей"
+        },
+        {
+          "value": "diagonal",
+          "label": "Одна диагональ на всё окно"
+        },
+        {
+          "value": "cross",
+          "label": "Крест на всё окно"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_back_diagonal": {
+      "key": "frame_back_diagonal",
+      "default": false,
+      "label": "Диагональная связь сзади",
+      "description": "Помогает сопротивляться перекосу каркаса; не является гарантией несущей способности.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_top_open": {
+      "key": "frame_top_open",
+      "default": false,
+      "label": "Открытая рамка вместо крыши корпуса",
+      "description": "Убирает сплошной верх, сохраняя рамку по краям и площадки под установочные гнёзда. Работает только в режиме каркаса.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_bottom_open": {
+      "key": "frame_bottom_open",
+      "default": true,
+      "label": "Открытая рамка вместо дна корпуса",
+      "description": "Убирает центральную сплошную часть дна корпуса, сохраняя рамку по краям. На дно ящиков эта настройка не влияет.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_top_vertical": {
+      "key": "frame_top_vertical",
+      "default": 0,
+      "label": "Крыша — перемычек вдоль глубины",
+      "description": "Количество полос параллельно глубине. Только для открытой рамки этой панели.",
+      "type": "number",
+      "min": "0",
+      "max": "12",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_top_horizontal": {
+      "key": "frame_top_horizontal",
+      "default": 0,
+      "label": "Крыша — перемычек вдоль ширины",
+      "description": "Количество полос параллельно ширине. Настройки крыши и дна независимы.",
+      "type": "number",
+      "min": "0",
+      "max": "12",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_top_bracing": {
+      "key": "frame_top_bracing",
+      "default": "none",
+      "label": "Крыша — диагонали",
+      "description": "Одна диагональ или крест на весь проём либо в каждой ячейке между прямыми перемычками. Ширина полос задаётся общей шириной дополнительных перемычек.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Без диагоналей"
+        },
+        {
+          "value": "diagonal",
+          "label": "Одна диагональ на всё окно"
+        },
+        {
+          "value": "cross",
+          "label": "Крест на всё окно"
+        },
+        {
+          "value": "cell_diagonal",
+          "label": "Диагональ в каждой ячейке"
+        },
+        {
+          "value": "cell_cross",
+          "label": "Крест в каждой ячейке"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_bottom_vertical": {
+      "key": "frame_bottom_vertical",
+      "default": 0,
+      "label": "Дно корпуса — перемычек вдоль глубины",
+      "description": "Количество полос параллельно глубине. Только для открытой рамки этой панели.",
+      "type": "number",
+      "min": "0",
+      "max": "12",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_bottom_horizontal": {
+      "key": "frame_bottom_horizontal",
+      "default": 0,
+      "label": "Дно корпуса — перемычек вдоль ширины",
+      "description": "Количество полос параллельно ширине. Настройки крыши и дна независимы.",
+      "type": "number",
+      "min": "0",
+      "max": "12",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "frame_bottom_bracing": {
+      "key": "frame_bottom_bracing",
+      "default": "none",
+      "label": "Дно корпуса — диагонали",
+      "description": "Одна диагональ или крест на весь проём либо в каждой ячейке между прямыми перемычками. Ширина полос задаётся общей шириной дополнительных перемычек.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Без диагоналей"
+        },
+        {
+          "value": "diagonal",
+          "label": "Одна диагональ на всё окно"
+        },
+        {
+          "value": "cross",
+          "label": "Крест на всё окно"
+        },
+        {
+          "value": "cell_diagonal",
+          "label": "Диагональ в каждой ячейке"
+        },
+        {
+          "value": "cell_cross",
+          "label": "Крест в каждой ячейке"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "stack_system_enabled": {
+      "key": "stack_system_enabled",
+      "default": false,
+      "label": "Установочные ножки и гнёзда",
+      "description": "Высота ножки равна толщине стенки. При одинаковой толщине крышек концы ножек нижнего стыка заподлицо с потолком нижнего корпуса.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "stack_bottom_pegs": {
+      "key": "stack_bottom_pegs",
+      "default": true,
+      "label": "Ножки снизу",
+      "description": "Отключите у нижнего корпуса, если выступы под ним не нужны. Иначе они увеличивают полный габарит снизу на толщину стенки.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "stack_pegs_separate": {
+      "key": "stack_pegs_separate",
+      "default": false,
+      "label": "Печатать установочные ножки отдельно",
+      "description": "В дне появятся глухие пазы глубиной в половину толщины стенки. Длина отдельного штифта — полторы толщины: половина входит в дно, одна толщина остаётся снаружи. ZIP содержит четыре отдельные ножки.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "stack_top_sockets": {
+      "key": "stack_top_sockets",
+      "default": true,
+      "label": "Сквозные гнёзда в крышке",
+      "description": "Отключите у самого верхнего корпуса, если нужна закрытая крыша.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "stack_peg_size_mm": {
+      "key": "stack_peg_size_mm",
+      "default": 0,
+      "label": "Ширина квадратной ножки, мм",
+      "description": "0 — равна толщине стенки. Четыре ножки в угловых зонах.",
+      "type": "number",
+      "min": "0",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "stack_peg_inset_mm": {
+      "key": "stack_peg_inset_mm",
+      "default": 0,
+      "label": "Отступ центра ножки от краёв, мм",
+      "description": "0 — автоматически по толщине стенки и ножке. У стыкуемых корпусов должен совпадать.",
+      "type": "number",
+      "min": "0",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "stack_fit_mm": {
+      "key": "stack_fit_mm",
+      "default": 0.15,
+      "label": "Зазор гнезда на сторону, мм",
+      "description": "Небольшой зазор под клей и погрешности печати. Подбирайте на пробнике.",
+      "type": "number",
+      "min": "0",
+      "max": "0.5",
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "slide_shelves_enabled": {
+      "key": "slide_shelves_enabled",
+      "default": false,
+      "label": "Отдельные направляющие в цельном корпусе",
+      "description": "Только промежуточные направляющие печатаются отдельно и задвигаются спереди в длинные боковые пазы. Корпус не разбивается на панели. Несовместимо с полной панельной сборкой.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "slide_shelf_fit_mm": {
+      "key": "slide_shelf_fit_mm",
+      "default": 0.15,
+      "label": "Зазор длинных пазов, мм",
+      "description": "Зазор сбоку и сверху. Нижняя опорная плоскость сохранена, поэтому ярус не смещается вниз. Глубина паза — половина толщины стенки.",
+      "type": "number",
+      "min": "0",
+      "max": "0.5",
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "slide_shelf_number": {
+      "key": "slide_shelf_number",
+      "default": 1,
+      "label": "Номер отдельной съёмной направляющей",
+      "description": "Снизу вверх. Между N ящиками находится N−1 промежуточная направляющая.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_enabled": {
+      "key": "flatpack_enabled",
+      "default": false,
+      "label": "Панельная сборка шип–паз под клей",
+      "description": "Крыша, дно, боковины, задняя стенка и полки отдельно. После склеивания корпус неразборный. До 16 ящиков.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_base_mm": {
+      "key": "flatpack_base_mm",
+      "default": 1.5,
+      "label": "Опорный слой дна, мм",
+      "description": "Стенки стоят на этом слое. Добавляется к исходной высоте корпуса вместе с нижним пояском стенок.",
+      "type": "number",
+      "min": "0.6",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_belt_mm": {
+      "key": "flatpack_belt_mm",
+      "default": 1.5,
+      "label": "Поясок стенки под окном дна, мм",
+      "description": "Сплошной материал от нижнего края стенки до окна. Стенка надвигается сбоку на шип дна. Добавляется к исходной высоте корпуса.",
+      "type": "number",
+      "min": "0.6",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_tab_count": {
+      "key": "flatpack_tab_count",
+      "default": 2,
+      "label": "Шипов на стыке",
+      "description": "Крайние шипы: отступ от конца рабочей кромки до края шипа равен толщине стенки. Остальные равномерно между ними. Один шип — по центру.",
+      "type": "number",
+      "min": "1",
+      "max": "6",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_tab_count_side": {
+      "key": "flatpack_tab_count_side",
+      "default": 0,
+      "label": "Шипов на боковинах",
+      "description": "0 — как общее значение. Для длинных боковин можно поставить больше, чем на задней.",
+      "type": "number",
+      "min": "0",
+      "max": "6",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_tab_count_back": {
+      "key": "flatpack_tab_count_back",
+      "default": 0,
+      "label": "Шипов на задней стенке",
+      "description": "0 — как общее значение. Для короткой задней стенки можно поставить меньше.",
+      "type": "number",
+      "min": "0",
+      "max": "6",
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_tab_depth_mm": {
+      "key": "flatpack_tab_depth_mm",
+      "default": 0,
+      "label": "Глубина шипа, мм",
+      "description": "0 — половина толщины стенки. Можно задать меньше или на всю толщину. Глубже толщины стенки нельзя.",
+      "type": "number",
+      "min": "0",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_tab_width_mm": {
+      "key": "flatpack_tab_width_mm",
+      "default": 8,
+      "label": "Ширина шипа, мм",
+      "description": "У дна шипы входят в сквозные окна трёх стенок; высота шипа равна толщине стенки. Остальные соединения используют настройку глубины шипа.",
+      "type": "number",
+      "min": "2",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_fit_mm": {
+      "key": "flatpack_fit_mm",
+      "default": 0.15,
+      "label": "Зазор паза на сторону, мм",
+      "description": "Под клей и погрешности печати. Без добавления выступов в рабочий отсек.",
+      "type": "number",
+      "min": "0",
+      "max": "0.5",
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "flatpack_part_index": {
+      "key": "flatpack_part_index",
+      "default": 1,
+      "label": "Номер отдельной панели",
+      "description": "1 — крыша, 2 — дно, 3 — левая, 4 — правая, 5 — задняя, далее полки снизу вверх.",
+      "type": "number",
+      "min": "1",
+      "max": null,
+      "step": "1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Каркас, установочные ножки и панельная сборка",
+      "currentSubsection": ""
+    },
+    "plywood_enabled": {
+      "key": "plywood_enabled",
+      "default": false,
+      "label": "Фанерные вставки в пазах",
+      "description": "Лист ложится в паз печатной обрешётки, наружу ничего не выступает. Для каждой поверхности режим выбирается отдельно: снаружи без бортика, с накладным бортиком или внутри заподлицо.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_thickness_mm": {
+      "key": "plywood_thickness_mm",
+      "default": 3,
+      "label": "Толщина фанеры, мм",
+      "description": "Измерьте фактическую толщину листа. Допустимо от 1 до 5 мм.",
+      "type": "number",
+      "min": "1",
+      "max": "5",
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_fit_mm": {
+      "key": "plywood_fit_mm",
+      "default": 0.15,
+      "label": "Зазор фанеры на сторону, мм",
+      "description": "Паз шире листа на два зазора. Настройте по пробной посадке.",
+      "type": "number",
+      "min": "0",
+      "max": "0.5",
+      "step": "0.05",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_lip_mm": {
+      "key": "plywood_lip_mm",
+      "default": 2,
+      "label": "Нахлёст бортика на лист, мм",
+      "description": "Насколько бортик (или полка) перекрывает край листа. Меньше нахлёста — слабее удержание.",
+      "type": "number",
+      "min": "1",
+      "max": "6",
+      "step": "0.5",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_rim_mm": {
+      "key": "plywood_rim_mm",
+      "default": 1,
+      "label": "Толщина накладного бортика, мм",
+      "description": "Отдельная рамка, которая приклеивается поверх края листа. Толщина стенки остаётся прежней.",
+      "type": "number",
+      "min": "0.8",
+      "max": "3",
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_sides_mode": {
+      "key": "plywood_sides_mode",
+      "default": "off",
+      "label": "Боковины: фанера",
+      "description": "Снаружи — лист в пазу, снаружи ничего не выступает. Внутри — лист заподлицо с внутренней плоскостью, по нему скользит ящик.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "off",
+          "label": "Выключено"
+        },
+        {
+          "value": "outside",
+          "label": "Снаружи, без бортика"
+        },
+        {
+          "value": "overlay",
+          "label": "Снаружи, накладной бортик"
+        },
+        {
+          "value": "inside",
+          "label": "Внутри, заподлицо"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_back_mode": {
+      "key": "plywood_back_mode",
+      "default": "off",
+      "label": "Задняя стенка: фанера",
+      "description": "Снаружи — лист в пазу, снаружи ничего не выступает. Внутри — лист заподлицо с внутренней плоскостью, по нему скользит ящик.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "off",
+          "label": "Выключено"
+        },
+        {
+          "value": "outside",
+          "label": "Снаружи, без бортика"
+        },
+        {
+          "value": "overlay",
+          "label": "Снаружи, накладной бортик"
+        },
+        {
+          "value": "inside",
+          "label": "Внутри, заподлицо"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_top_mode": {
+      "key": "plywood_top_mode",
+      "default": "off",
+      "label": "Крыша: фанера",
+      "description": "Снаружи — лист в пазу, снаружи ничего не выступает. Внутри — лист заподлицо с внутренней плоскостью, по нему скользит ящик.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "off",
+          "label": "Выключено"
+        },
+        {
+          "value": "outside",
+          "label": "Снаружи, без бортика"
+        },
+        {
+          "value": "overlay",
+          "label": "Снаружи, накладной бортик"
+        },
+        {
+          "value": "inside",
+          "label": "Внутри, заподлицо"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_bottom_mode": {
+      "key": "plywood_bottom_mode",
+      "default": "off",
+      "label": "Дно корпуса: фанера",
+      "description": "Снаружи — лист в пазу, снаружи ничего не выступает. Внутри — лист заподлицо с внутренней плоскостью, по нему скользит ящик.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "off",
+          "label": "Выключено"
+        },
+        {
+          "value": "outside",
+          "label": "Снаружи, без бортика"
+        },
+        {
+          "value": "overlay",
+          "label": "Снаружи, накладной бортик"
+        },
+        {
+          "value": "inside",
+          "label": "Внутри, заподлицо"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "plywood_shelves_mode": {
+      "key": "plywood_shelves_mode",
+      "default": "off",
+      "label": "Фанера промежуточных полок",
+      "description": "Лист лежит сверху полки заподлицо: ящик скользит по фанере. Полка собирается с листом заранее; без листа остаётся обычная открытая рамка.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "off",
+          "label": "Выключено"
+        },
+        {
+          "value": "on",
+          "label": "Фанера на полках"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Фанера в направляющих пазах",
+      "currentSubsection": ""
+    },
+    "size_mode": {
+      "key": "size_mode",
+      "default": "gridfinity",
+      "label": "Режим размеров",
+      "description": "Gridfinity — размеры в ячейках. Произвольный — внешние размеры корпуса в миллиметрах, без сетки в ящиках.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "gridfinity",
+          "label": "Gridfinity — шаг 42 мм"
+        },
+        {
+          "value": "custom",
+          "label": "Произвольный размер — мм"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Размеры и система",
+      "currentSubsection": ""
+    },
+    "chest_outer_width_mm": {
+      "key": "chest_outer_width_mm",
+      "default": 200,
+      "label": "Внешняя ширина корпуса, мм",
+      "description": "Полная ширина корпуса с его стенками. 200 мм = 20 см.",
+      "type": "number",
+      "min": "0.1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Размеры и система",
+      "currentSubsection": ""
+    },
+    "chest_outer_depth_mm": {
+      "key": "chest_outer_depth_mm",
+      "default": 150,
+      "label": "Внешняя глубина корпуса, мм",
+      "description": "Глубина самого корпуса. Выступающие ручки в этот размер не входят.",
+      "type": "number",
+      "min": "0.1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Размеры и система",
+      "currentSubsection": ""
+    },
+    "chest_outer_height_mm": {
+      "key": "chest_outer_height_mm",
+      "default": 120,
+      "label": "Высота тела корпуса, мм",
+      "description": "Исходная высота со стенками. В панельной сборке сверху к этому числу добавляются опорный слой дна и поясок стенок (по умолчанию всего 3 мм); размеры ящиков сохраняются. Нижние установочные ножки дополнительно увеличивают габарит на толщину стенки. Итог показан в справке и компоновке.",
+      "type": "number",
+      "min": "0.1",
+      "max": null,
+      "step": "0.1",
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Размеры и система",
+      "currentSubsection": ""
+    },
+    "render_choice": {
+      "key": "render_choice",
+      "default": "everything",
+      "label": "Что показать",
+      "description": "Вся сборка, отдельный ящик, все ящики или только корпус.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "everything",
+          "label": "Вся сборка"
+        },
+        {
+          "value": "onedrawer",
+          "label": "Один ящик"
+        },
+        {
+          "value": "drawers",
+          "label": "Все ящики"
+        },
+        {
+          "value": "chest",
+          "label": "Только корпус"
+        },
+        {
+          "value": "plywood_preview",
+          "label": "Предпросмотр с фанерой — не для печати"
+        },
+        {
+          "value": "plywood_rims",
+          "label": "Накладные бортики — для печати"
+        },
+        {
+          "value": "plywood_probe",
+          "label": "Пробник посадки фанеры и шипов"
+        },
+        {
+          "value": "shelf_probe",
+          "label": "Пробник паза полки"
+        },
+        {
+          "value": "keys",
+          "label": "Только ключи — для печати"
+        },
+        {
+          "value": "joint_test",
+          "label": "Пробник соединения — два края и ключ"
+        },
+        {
+          "value": "panels",
+          "label": "Панели корпуса лёжа — для склейки"
+        },
+        {
+          "value": "panel",
+          "label": "Одна панель корпуса лёжа"
+        },
+        {
+          "value": "stack_pin",
+          "label": "Одна установочная ножка — для печати"
+        },
+        {
+          "value": "stack_pins",
+          "label": "Четыре установочные ножки — для печати"
+        },
+        {
+          "value": "shelf_guide",
+          "label": "Одна съёмная направляющая яруса"
+        },
+        {
+          "value": "shelf_guides",
+          "label": "Все съёмные направляющие — для печати"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Отображение модели",
+      "currentSubsection": ""
+    },
+    "position": {
+      "key": "position",
+      "default": "center",
+      "label": "Положение модели",
+      "description": "Разместить модель по центру или у начала координат.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "center",
+          "label": "По центру"
+        },
+        {
+          "value": "zero",
+          "label": "У начала координат"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Отображение модели",
+      "currentSubsection": ""
+    },
+    "drawer_inner_width": {
+      "key": "drawer_inner_width",
+      "default": 4,
+      "label": "Внутренняя ширина ящика",
+      "description": "В ячейках Gridfinity. Одна ячейка по ширине — 42 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "drawer_inner_depth": {
+      "key": "drawer_inner_depth",
+      "default": 3,
+      "label": "Внутренняя глубина ящика",
+      "description": "В ячейках Gridfinity. Одна ячейка по глубине — 42 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "drawer_inner_height": {
+      "key": "drawer_inner_height",
+      "default": 4,
+      "label": "Внутренняя высота ящика",
+      "description": "В единицах высоты Gridfinity. Одна единица — 7 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "drawer_count": {
+      "key": "drawer_count",
+      "default": 3,
+      "label": "Количество ящиков",
+      "description": "Число выдвижных ящиков в корпусе.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "drawer_enable_custom_sizes": {
+      "key": "drawer_enable_custom_sizes",
+      "default": false,
+      "label": "Разная высота ящиков",
+      "description": "Использовать список высот ниже вместо общей высоты.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "drawer_custom_sizes": {
+      "key": "drawer_custom_sizes",
+      "default": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label": "Высоты отдельных ящиков",
+      "description": "В единицах высоты Gridfinity, по порядку снизу вверх. Для списка длиннее четырёх элементов нужно изменить исходный OpenSCAD-файл.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "drawer_clearance": {
+      "key": "drawer_clearance",
+      "default": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "label": "Зазор для контейнеров внутри ящика",
+      "description": "По ширине, глубине и высоте, в мм. По умолчанию: 0,25 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "chest_clearance": {
+      "key": "chest_clearance",
+      "default": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "label": "Зазор между ящиком и корпусом",
+      "description": "По ширине, глубине и высоте, в мм. По умолчанию: 0,25 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "chest_wall_thickness": {
+      "key": "chest_wall_thickness",
+      "default": 2,
+      "label": "Толщина стенок корпуса",
+      "description": "В миллиметрах.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "chest_drawer_slide_thickness": {
+      "key": "chest_drawer_slide_thickness",
+      "default": 0,
+      "label": "Толщина направляющих",
+      "description": "В мм. При 0 используется толщина стенок корпуса.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "chest_drawer_slide_width": {
+      "key": "chest_drawer_slide_width",
+      "default": 10,
+      "label": "Ширина направляющих",
+      "description": "В мм. При 0 направляющие занимают всю ширину корпуса.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Корпус и размеры",
+      "currentSubsection": ""
+    },
+    "handle_size": {
+      "key": "handle_size",
+      "default": [
+        4,
+        10,
+        -1,
+        -1
+      ],
+      "label": "Размеры ручки",
+      "description": "Ширина, глубина, высота и радиус скругления, в мм. Отрицательная высота: высота ящика / модуль значения. Радиус −1: половина глубины ручки.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Ящик и ручка",
+      "currentSubsection": ""
+    },
+    "handle_vertical_center": {
+      "key": "handle_vertical_center",
+      "default": false,
+      "label": "Ручка по центру высоты",
+      "description": "Расположить ручку по вертикальному центру передней стенки.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Ящик и ручка",
+      "currentSubsection": ""
+    },
+    "handle_cut_factor": {
+      "key": "handle_cut_factor",
+      "default": 0.5,
+      "label": "Коэффициент выреза ручки",
+      "description": "Доля высоты для внутреннего выреза ручки.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Ящик и ручка",
+      "currentSubsection": ""
+    },
+    "handle_rotate": {
+      "key": "handle_rotate",
+      "default": false,
+      "label": "Повернуть ручку",
+      "description": "Повернуть ручку на 90°.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Ящик и ручка",
+      "currentSubsection": ""
+    },
+    "drawer_wall_thickness": {
+      "key": "drawer_wall_thickness",
+      "default": 2,
+      "label": "Толщина стенок ящика",
+      "description": "В миллиметрах. Также задаёт толщину сплошного дна.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Ящик и ручка",
+      "currentSubsection": ""
+    },
+    "drawer_base": {
+      "key": "drawer_base",
+      "default": "default",
+      "label": "Дно ящика",
+      "description": "Решётка Gridfinity, сплошное дно или их сочетание.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "grid",
+          "label": "Только решётка Gridfinity"
+        },
+        {
+          "value": "floor",
+          "label": "Только сплошное дно"
+        },
+        {
+          "value": "default",
+          "label": "Решётка и сплошное дно"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Ящик и ручка",
+      "currentSubsection": ""
+    },
+    "drawer_enable_magnet": {
+      "key": "drawer_enable_magnet",
+      "default": true,
+      "label": "Магниты в ящике",
+      "description": "Добавить места для магнитов в основание Gridfinity.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Ящик и ручка",
+      "currentSubsection": ""
+    },
+    "drawer_magnet_size": {
+      "key": "drawer_magnet_size",
+      "default": [
+        6.5,
+        2.4
+      ],
+      "label": "Размер магнитов ящика",
+      "description": "Диаметр и толщина, в мм. По умолчанию: 6,5 × 2,4 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Ящик и ручка",
+      "currentSubsection": ""
+    },
+    "chest_top_wallpattern_style": {
+      "key": "chest_top_wallpattern_style",
+      "default": "none",
+      "label": "Узор верхней панели",
+      "description": "Тип перфорации верхней панели корпуса.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Без узора"
+        },
+        {
+          "value": "grid",
+          "label": "Прямоугольная сетка"
+        },
+        {
+          "value": "gridrotated",
+          "label": "Повёрнутая прямоугольная сетка"
+        },
+        {
+          "value": "hexgrid",
+          "label": "Соты"
+        },
+        {
+          "value": "hexgridrotated",
+          "label": "Повёрнутые соты"
+        },
+        {
+          "value": "voronoi",
+          "label": "Ячейки Вороного"
+        },
+        {
+          "value": "voronoigrid",
+          "label": "Вороной на прямоугольной сетке"
+        },
+        {
+          "value": "voronoihexgrid",
+          "label": "Вороной на шестиугольной сетке"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Верхняя панель корпуса",
+      "currentSubsection": ""
+    },
+    "chest_top_style": {
+      "key": "chest_top_style",
+      "default": "none",
+      "label": "Сверху — гнёзда и крепление",
+      "description": "Ответные гнёзда для ножек верхнего корпуса либо базовая плита Gridfinity. Верхние гнёзда можно включить без ножек снизу.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Нет"
+        },
+        {
+          "value": "baseplate",
+          "label": "Базовая плита Gridfinity"
+        },
+        {
+          "value": "lugs",
+          "label": "Ответные гнёзда под ножки"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Верхняя панель корпуса",
+      "currentSubsection": ""
+    },
+    "chest_top_base_plate_enable_magnets": {
+      "key": "chest_top_base_plate_enable_magnets",
+      "default": true,
+      "label": "Магниты в верхней плите",
+      "description": "Добавить места для магнитов в углах ячеек.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Верхняя панель корпуса",
+      "currentSubsection": ""
+    },
+    "chest_top_base_plate_magnet_size": {
+      "key": "chest_top_base_plate_magnet_size",
+      "default": [
+        6.5,
+        2.4
+      ],
+      "label": "Размер магнитов верхней плиты",
+      "description": "Диаметр и толщина, в мм. В исходном проекте: 6,5 × 2,4 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Верхняя панель корпуса",
+      "currentSubsection": ""
+    },
+    "chest_top_base_plate_reduced_wall_height": {
+      "key": "chest_top_base_plate_reduced_wall_height",
+      "default": -1,
+      "label": "Уменьшенная высота бортика",
+      "description": "Высота бортика верхней плиты, в мм. −1 сохраняет стандартную высоту.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Верхняя панель корпуса",
+      "currentSubsection": ""
+    },
+    "chest_top_base_plate_reduced_wall_taper": {
+      "key": "chest_top_base_plate_reduced_wall_taper",
+      "default": false,
+      "label": "Скос уменьшенного бортика",
+      "description": "Сделать наклонный переход бортика верхней плиты.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Верхняя панель корпуса",
+      "currentSubsection": ""
+    },
+    "chest_bottom_wallpattern_style": {
+      "key": "chest_bottom_wallpattern_style",
+      "default": "none",
+      "label": "Узор нижней панели",
+      "description": "Тип перфорации нижней панели корпуса.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Без узора"
+        },
+        {
+          "value": "grid",
+          "label": "Прямоугольная сетка"
+        },
+        {
+          "value": "gridrotated",
+          "label": "Повёрнутая прямоугольная сетка"
+        },
+        {
+          "value": "hexgrid",
+          "label": "Соты"
+        },
+        {
+          "value": "hexgridrotated",
+          "label": "Повёрнутые соты"
+        },
+        {
+          "value": "voronoi",
+          "label": "Ячейки Вороного"
+        },
+        {
+          "value": "voronoigrid",
+          "label": "Вороной на прямоугольной сетке"
+        },
+        {
+          "value": "voronoihexgrid",
+          "label": "Вороной на шестиугольной сетке"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "chest_bottom_grid": {
+      "key": "chest_bottom_grid",
+      "default": "none",
+      "label": "Снизу — ножки и крепление",
+      "description": "Без креплений, сетка Gridfinity или ножки для печати без поддержек.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Нет"
+        },
+        {
+          "value": "grid",
+          "label": "Сетка Gridfinity"
+        },
+        {
+          "value": "lugs",
+          "label": "Ножки без поддержек"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "chest_leg_clearance": {
+      "key": "chest_leg_clearance",
+      "default": 0.35,
+      "label": "Посадочный зазор ножек",
+      "description": "В миллиметрах.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "magnet_diameter": {
+      "key": "magnet_diameter",
+      "default": 6.5,
+      "label": "Диаметр магнитов основания",
+      "description": "В мм. В исходном проекте: 6,5 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "screw_depth": {
+      "key": "screw_depth",
+      "default": 6,
+      "label": "Глубина отверстий под винты",
+      "description": "В мм. В исходном проекте: 6 мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "hole_overhang_remedy": {
+      "key": "hole_overhang_remedy",
+      "default": 2,
+      "label": "Компенсация нависаний отверстий",
+      "description": "Последовательные мосты для печати отверстий. Работает при ненулевых размерах и магнитов, и отверстий под винты.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "chest_corner_attachments_only": {
+      "key": "chest_corner_attachments_only",
+      "default": true,
+      "label": "Крепления только по углам корпуса",
+      "description": "Добавлять магниты и отверстия под винты только в углах: печать будет быстрее.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "sub_pitch": {
+      "key": "sub_pitch",
+      "default": 1,
+      "label": "Дробный шаг основания",
+      "description": "Разделить опорные площадки для смещения на часть ячейки Gridfinity.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": 1,
+          "label": "Выключено"
+        },
+        {
+          "value": 2,
+          "label": "Половина шага"
+        },
+        {
+          "value": 3,
+          "label": "Треть шага"
+        },
+        {
+          "value": 4,
+          "label": "Четверть шага"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "flat_base": {
+      "key": "flat_base",
+      "default": "off",
+      "label": "Плоское основание",
+      "description": "Режим удаления внутренней сетки основания. Служебное значение off означает «выключено».",
+      "type": "text",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Основание корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_border_width": {
+      "key": "wallpattern_border_width",
+      "default": -1,
+      "label": "Ширина рамки узора",
+      "description": "В мм. −1: толщина стенки корпуса. Другое отрицательное значение: толщина стенки / модуль значения.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "efficient_back": {
+      "key": "efficient_back",
+      "default": true,
+      "label": "Облегчённая задняя стенка",
+      "description": "Использовать облегчённую конструкцию задней стенки корпуса.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_enabled": {
+      "key": "wallpattern_enabled",
+      "default": false,
+      "label": "Перфорация стенок",
+      "description": "Включить узор отверстий в стенках корпуса.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_style": {
+      "key": "wallpattern_style",
+      "default": "hexgrid",
+      "label": "Тип узора стенок",
+      "description": "Форма и расположение отверстий.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "hexgrid",
+          "label": "Соты"
+        },
+        {
+          "value": "grid",
+          "label": "Прямоугольная сетка"
+        },
+        {
+          "value": "voronoi",
+          "label": "Ячейки Вороного"
+        },
+        {
+          "value": "voronoigrid",
+          "label": "Вороной на прямоугольной сетке"
+        },
+        {
+          "value": "voronoihexgrid",
+          "label": "Вороной на шестиугольной сетке"
+        },
+        {
+          "value": "brick",
+          "label": "Кирпичная кладка"
+        },
+        {
+          "value": "brickoffset",
+          "label": "Кирпичная кладка со смещением"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_strength": {
+      "key": "wallpattern_strength",
+      "default": 2,
+      "label": "Перемычки между отверстиями",
+      "description": "Расстояние между отверстиями узора, в мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_walls": {
+      "key": "wallpattern_walls",
+      "default": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "label": "Стенки с узором",
+      "description": "Спереди, сзади, слева, справа. 1 — включено, 0 — выключено.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_rotate_grid": {
+      "key": "wallpattern_rotate_grid",
+      "default": false,
+      "label": "Повернуть сетку узора",
+      "description": "Изменить ориентацию сетки отверстий.",
+      "type": "checkbox",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_cell_size": {
+      "key": "wallpattern_cell_size",
+      "default": [
+        10,
+        10
+      ],
+      "label": "Размер ячейки узора",
+      "description": "По ширине и высоте, в мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_dividers_enabled": {
+      "key": "wallpattern_dividers_enabled",
+      "default": "disabled",
+      "label": "Узор на перегородках",
+      "description": "Выбрать горизонтальные, вертикальные или все перегородки.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "disabled",
+          "label": "Выключено"
+        },
+        {
+          "value": "horizontal",
+          "label": "Горизонтальные"
+        },
+        {
+          "value": "vertical",
+          "label": "Вертикальные"
+        },
+        {
+          "value": "both",
+          "label": "Все"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_hole_sides": {
+      "key": "wallpattern_hole_sides",
+      "default": 6,
+      "label": "Форма отверстий",
+      "description": "Квадрат, шестиугольник, восьмиугольник или круг.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": 4,
+          "label": "Квадрат"
+        },
+        {
+          "value": 6,
+          "label": "Шестиугольник"
+        },
+        {
+          "value": 8,
+          "label": "Восьмиугольник"
+        },
+        {
+          "value": 64,
+          "label": "Круг"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_hole_radius": {
+      "key": "wallpattern_hole_radius",
+      "default": 0.5,
+      "label": "Скругление углов отверстий",
+      "description": "Радиус, в мм.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_fill": {
+      "key": "wallpattern_fill",
+      "default": "none",
+      "label": "Заполнение узором",
+      "description": "Распределять отверстия по доступной площади или обрезать их у краёв.",
+      "type": "select",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": [
+        {
+          "value": "none",
+          "label": "Без подгонки"
+        },
+        {
+          "value": "space",
+          "label": "Распределить с интервалами"
+        },
+        {
+          "value": "crop",
+          "label": "Обрезать по краям"
+        },
+        {
+          "value": "crophorizontal",
+          "label": "Обрезать по горизонтали"
+        },
+        {
+          "value": "cropvertical",
+          "label": "Обрезать по вертикали"
+        },
+        {
+          "value": "crophorizontal_spacevertical",
+          "label": "Обрезать по горизонтали, распределить по вертикали"
+        },
+        {
+          "value": "cropvertical_spacehorizontal",
+          "label": "Обрезать по вертикали, распределить по горизонтали"
+        },
+        {
+          "value": "spacevertical",
+          "label": "Распределить по вертикали"
+        },
+        {
+          "value": "spacehorizontal",
+          "label": "Распределить по горизонтали"
+        }
+      ],
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_border": {
+      "key": "wallpattern_border",
+      "default": 0,
+      "label": "Отступ узора от края",
+      "description": "В мм. По умолчанию используется толщина стенки.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_depth": {
+      "key": "wallpattern_depth",
+      "default": 0,
+      "label": "Глубина узора",
+      "description": "В мм. 0 — на всю толщину стенки.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_pattern_grid_chamfer": {
+      "key": "wallpattern_pattern_grid_chamfer",
+      "default": 0,
+      "label": "Фаска отверстий сетки",
+      "description": "Величина фаски узора сетки.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_pattern_voronoi_noise": {
+      "key": "wallpattern_pattern_voronoi_noise",
+      "default": 0.75,
+      "label": "Нерегулярность узора Вороного",
+      "description": "Степень случайного смещения ячеек узора.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_pattern_brick_weight": {
+      "key": "wallpattern_pattern_brick_weight",
+      "default": 5,
+      "label": "Смещение центра кирпичного узора",
+      "description": "Вес центральной области при построении кирпичного узора.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "wallpattern_pattern_quality": {
+      "key": "wallpattern_pattern_quality",
+      "default": 0.4,
+      "label": "Детализация узора",
+      "description": "Минимальный размер грани ($fs), в мм. Меньше значение — выше детализация и дольше расчёт.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Узор стенок корпуса",
+      "currentSubsection": ""
+    },
+    "fa": {
+      "key": "fa",
+      "default": 6,
+      "label": "Минимальный угол сегмента ($fa)",
+      "description": "В градусах. Меньше угол — больше сегментов и более плавные окружности.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Детализация модели",
+      "currentSubsection": ""
+    },
+    "fs": {
+      "key": "fs",
+      "default": 0.1,
+      "label": "Минимальный размер сегмента ($fs)",
+      "description": "В мм. Меньше размер — выше детализация.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Детализация модели",
+      "currentSubsection": ""
+    },
+    "fn": {
+      "key": "fn",
+      "default": 0,
+      "label": "Количество сегментов ($fn)",
+      "description": "При ненулевом значении заменяет настройки $fa и $fs. 0 — автоматический расчёт.",
+      "type": "number",
+      "min": null,
+      "max": null,
+      "step": null,
+      "options": null,
+      "conditions": [],
+      "currentGroup": "Детализация модели",
+      "currentSubsection": ""
+    }
+  },
+  "groups": [
+    {
+      "id": "project.mode",
+      "category": "project",
+      "title": "Режим проекта",
+      "keys": [
+        "size_mode",
+        "case_structure",
+        "flatpack_enabled",
+        "slide_shelves_enabled",
+        "plywood_enabled"
+      ],
+      "custom": "modes",
+      "open": true
+    },
+    {
+      "id": "project.dimensions",
+      "category": "project",
+      "title": "Габариты и толщина стенок",
+      "keys": [
+        "chest_outer_width_mm",
+        "chest_outer_depth_mm",
+        "chest_outer_height_mm",
+        "drawer_inner_width",
+        "drawer_inner_depth",
+        "drawer_inner_height",
+        "chest_wall_thickness"
+      ],
+      "open": true
+    },
+    {
+      "id": "project.structure",
+      "category": "project",
+      "title": "Каркас и панели",
+      "keys": []
+    },
+    {
+      "id": "case.common",
+      "category": "project",
+      "title": "Рамки и рёбра корпуса",
+      "keys": [
+        "frame_border_mm",
+        "frame_rib_mm"
+      ],
+      "open": true,
+      "parent": "project.structure"
+    },
+    {
+      "id": "case.sides",
+      "category": "project",
+      "title": "Боковины",
+      "keys": [
+        "frame_side_vertical",
+        "frame_side_horizontal",
+        "frame_side_bracing",
+        "plywood_sides_mode"
+      ],
+      "parent": "project.structure"
+    },
+    {
+      "id": "case.back",
+      "category": "project",
+      "title": "Задняя стенка",
+      "keys": [
+        "frame_back_vertical",
+        "frame_back_horizontal",
+        "frame_back_bracing",
+        "frame_back_diagonal",
+        "plywood_back_mode"
+      ],
+      "parent": "project.structure"
+    },
+    {
+      "id": "case.top",
+      "category": "project",
+      "title": "Крыша",
+      "keys": [
+        "frame_top_open",
+        "frame_top_vertical",
+        "frame_top_horizontal",
+        "frame_top_bracing",
+        "plywood_top_mode",
+        "chest_top_base_plate_enable_magnets",
+        "chest_top_base_plate_magnet_size",
+        "chest_top_base_plate_reduced_wall_height",
+        "chest_top_base_plate_reduced_wall_taper"
+      ],
+      "parent": "project.structure"
+    },
+    {
+      "id": "case.bottom",
+      "category": "project",
+      "title": "Дно и опорное основание",
+      "keys": [
+        "flatpack_base_mm",
+        "flatpack_belt_mm",
+        "frame_bottom_open",
+        "frame_bottom_vertical",
+        "frame_bottom_horizontal",
+        "frame_bottom_bracing",
+        "plywood_bottom_mode",
+        "magnet_diameter",
+        "screw_depth",
+        "hole_overhang_remedy",
+        "chest_corner_attachments_only",
+        "sub_pitch",
+        "flat_base"
+      ],
+      "parent": "project.structure"
+    },
+    {
+      "id": "case.wood",
+      "category": "project",
+      "title": "Фанера — толщина и посадка",
+      "keys": [
+        "plywood_thickness_mm",
+        "plywood_fit_mm",
+        "plywood_lip_mm",
+        "plywood_rim_mm"
+      ],
+      "context": "wood",
+      "parent": "project.structure"
+    },
+    {
+      "id": "drawers.sizes",
+      "category": "drawers",
+      "title": "Количество, стенки и высоты",
+      "keys": [
+        "drawer_count",
+        "drawer_wall_thickness",
+        "custom_drawer_heights_enabled",
+        "custom_drawer_heights_mm",
+        "drawer_enable_custom_sizes",
+        "drawer_custom_sizes"
+      ],
+      "open": true
+    },
+    {
+      "id": "drawers.fit",
+      "category": "drawers",
+      "title": "Посадка ящиков",
+      "keys": [
+        "chest_clearance",
+        "drawer_clearance"
+      ]
+    },
+    {
+      "id": "drawers.handles",
+      "category": "drawers",
+      "title": "Ручки",
+      "keys": [
+        "handle_size",
+        "handle_vertical_center",
+        "handle_rotate",
+        "handle_cut_factor",
+        "drawer_handle_keepout"
+      ]
+    },
+    {
+      "id": "drawers.bottom",
+      "category": "drawers",
+      "title": "Дно ящиков",
+      "keys": [
+        "drawer_base",
+        "drawer_enable_magnet",
+        "drawer_magnet_size"
+      ]
+    },
+    {
+      "id": "shelves.base",
+      "category": "shelves",
+      "title": "Тип полок и направляющих",
+      "keys": [
+        "chest_drawer_slide_thickness",
+        "chest_drawer_slide_width",
+        "guide_structure",
+        "frame_shelf_bracing",
+        "slide_shelf_fit_mm",
+        "plywood_shelves_mode"
+      ],
+      "open": true
+    },
+    {
+      "id": "shelves.rails",
+      "category": "shelves",
+      "title": "Продольные полозья",
+      "keys": [
+        "guide_rail_count",
+        "guide_rail_width_mm",
+        "guide_end_frame_width_mm",
+        "guide_contact_width"
+      ],
+      "context": "rails"
+    },
+    {
+      "id": "shelves.crossbars",
+      "category": "shelves",
+      "title": "Нижние поперечины",
+      "keys": [
+        "guide_crossbars_enabled",
+        "guide_crossbar_count",
+        "guide_crossbar_width_mm",
+        "guide_crossbar_thickness_mm",
+        "guide_crossbar_recess_mm"
+      ],
+      "context": "rails"
+    },
+    {
+      "id": "perforation.mode",
+      "category": "perforation",
+      "title": "Режим перфорации",
+      "keys": [
+        "perforation_mode"
+      ],
+      "open": true
+    },
+    {
+      "id": "perforation.case",
+      "category": "perforation",
+      "title": "Корпус",
+      "keys": [],
+      "context": "individual",
+      "open": true
+    },
+    {
+      "id": "perforation.case-left",
+      "category": "perforation",
+      "title": "Левая боковина",
+      "keys": [
+        "case_left_perf_enabled",
+        "case_left_perf_style",
+        "case_left_perf_cell",
+        "case_left_perf_web",
+        "case_left_perf_border",
+        "case_left_perf_rotate"
+      ],
+      "parent": "perforation.case"
+    },
+    {
+      "id": "perforation.case-right",
+      "category": "perforation",
+      "title": "Правая боковина",
+      "keys": [
+        "case_right_perf_enabled",
+        "case_right_perf_style",
+        "case_right_perf_cell",
+        "case_right_perf_web",
+        "case_right_perf_border",
+        "case_right_perf_rotate"
+      ],
+      "parent": "perforation.case"
+    },
+    {
+      "id": "perforation.case-back",
+      "category": "perforation",
+      "title": "Задняя стенка",
+      "keys": [
+        "case_back_perf_enabled",
+        "case_back_perf_style",
+        "case_back_perf_cell",
+        "case_back_perf_web",
+        "case_back_perf_border",
+        "case_back_perf_rotate"
+      ],
+      "parent": "perforation.case"
+    },
+    {
+      "id": "perforation.case-top",
+      "category": "perforation",
+      "title": "Крыша",
+      "keys": [
+        "case_top_perf_enabled",
+        "case_top_perf_style",
+        "case_top_perf_cell",
+        "case_top_perf_web",
+        "case_top_perf_border",
+        "case_top_perf_rotate"
+      ],
+      "parent": "perforation.case"
+    },
+    {
+      "id": "perforation.case-bottom",
+      "category": "perforation",
+      "title": "Дно",
+      "keys": [
+        "case_bottom_perf_enabled",
+        "case_bottom_perf_style",
+        "case_bottom_perf_cell",
+        "case_bottom_perf_web",
+        "case_bottom_perf_border",
+        "case_bottom_perf_rotate"
+      ],
+      "parent": "perforation.case"
+    },
+    {
+      "id": "perforation.drawers",
+      "category": "perforation",
+      "title": "Ящики",
+      "keys": [],
+      "context": "individual",
+      "open": true
+    },
+    {
+      "id": "perforation.drawer-front",
+      "category": "perforation",
+      "title": "Передняя стенка",
+      "keys": [
+        "drawer_front_perf_enabled",
+        "drawer_front_perf_style",
+        "drawer_front_perf_cell",
+        "drawer_front_perf_web",
+        "drawer_front_perf_border",
+        "drawer_front_perf_rotate"
+      ],
+      "parent": "perforation.drawers"
+    },
+    {
+      "id": "perforation.drawer-back",
+      "category": "perforation",
+      "title": "Задняя стенка",
+      "keys": [
+        "drawer_back_perf_enabled",
+        "drawer_back_perf_style",
+        "drawer_back_perf_cell",
+        "drawer_back_perf_web",
+        "drawer_back_perf_border",
+        "drawer_back_perf_rotate"
+      ],
+      "parent": "perforation.drawers"
+    },
+    {
+      "id": "perforation.drawer-left",
+      "category": "perforation",
+      "title": "Левая стенка",
+      "keys": [
+        "drawer_left_perf_enabled",
+        "drawer_left_perf_style",
+        "drawer_left_perf_cell",
+        "drawer_left_perf_web",
+        "drawer_left_perf_border",
+        "drawer_left_perf_rotate"
+      ],
+      "parent": "perforation.drawers"
+    },
+    {
+      "id": "perforation.drawer-right",
+      "category": "perforation",
+      "title": "Правая стенка",
+      "keys": [
+        "drawer_right_perf_enabled",
+        "drawer_right_perf_style",
+        "drawer_right_perf_cell",
+        "drawer_right_perf_web",
+        "drawer_right_perf_border",
+        "drawer_right_perf_rotate"
+      ],
+      "parent": "perforation.drawers"
+    },
+    {
+      "id": "perforation.drawer-floor",
+      "category": "perforation",
+      "title": "Дно",
+      "keys": [
+        "drawer_floor_perf_enabled",
+        "drawer_floor_perf_style",
+        "drawer_floor_perf_cell",
+        "drawer_floor_perf_web",
+        "drawer_floor_perf_border",
+        "drawer_floor_perf_rotate"
+      ],
+      "parent": "perforation.drawers"
+    },
+    {
+      "id": "perforation.shelf",
+      "category": "perforation",
+      "title": "Полки",
+      "keys": [
+        "shelf_perf_enabled",
+        "shelf_perf_style",
+        "shelf_perf_cell",
+        "shelf_perf_web",
+        "shelf_perf_border",
+        "shelf_perf_rotate"
+      ],
+      "context": "individual"
+    },
+    {
+      "id": "perforation.legacy",
+      "category": "perforation",
+      "title": "Узоры корпуса",
+      "keys": [
+        "efficient_back",
+        "chest_top_wallpattern_style",
+        "chest_bottom_wallpattern_style",
+        "wallpattern_border_width",
+        "wallpattern_enabled",
+        "wallpattern_style",
+        "wallpattern_strength",
+        "wallpattern_walls",
+        "wallpattern_rotate_grid",
+        "wallpattern_cell_size",
+        "wallpattern_dividers_enabled",
+        "wallpattern_hole_sides",
+        "wallpattern_hole_radius",
+        "wallpattern_fill",
+        "wallpattern_border",
+        "wallpattern_depth",
+        "wallpattern_pattern_grid_chamfer",
+        "wallpattern_pattern_voronoi_noise",
+        "wallpattern_pattern_brick_weight",
+        "wallpattern_pattern_quality"
+      ],
+      "context": "legacy"
+    },
+    {
+      "id": "joints.tabs",
+      "category": "joints",
+      "title": "Шипы и ответные пазы",
+      "keys": [
+        "flatpack_tab_count",
+        "flatpack_tab_count_side",
+        "flatpack_tab_count_back",
+        "flatpack_tab_depth_mm",
+        "flatpack_tab_width_mm",
+        "flatpack_fit_mm"
+      ],
+      "context": "panels",
+      "open": true
+    },
+    {
+      "id": "joints.stack",
+      "category": "joints",
+      "title": "Ножки и ответные гнёзда",
+      "keys": [
+        "stack_system_enabled",
+        "stack_bottom_pegs",
+        "stack_pegs_separate",
+        "stack_top_sockets",
+        "stack_peg_size_mm",
+        "stack_peg_inset_mm",
+        "stack_fit_mm",
+        "chest_top_style",
+        "chest_bottom_grid",
+        "chest_leg_clearance"
+      ],
+      "custom": "stacking",
+      "open": true
+    },
+    {
+      "id": "joints.keys",
+      "category": "joints",
+      "title": "Соединение корпусов ключами",
+      "keys": [
+        "connectors_enabled",
+        "connector_planes",
+        "connector_edges",
+        "connector_ports",
+        "connector_length",
+        "connector_width",
+        "connector_waist",
+        "connector_depth",
+        "connector_skin",
+        "connector_fit",
+        "connector_keepout"
+      ]
+    },
+    {
+      "id": "layout.project",
+      "category": "layout",
+      "title": "Компоновка корпусов",
+      "keys": [
+        "assembly_layout"
+      ],
+      "custom": "layout",
+      "open": true
+    },
+    {
+      "id": "export.part",
+      "category": "export",
+      "title": "Детали и файлы",
+      "keys": [
+        "render_choice",
+        "single_drawer_number",
+        "flatpack_part_index",
+        "slide_shelf_number",
+        "connector_key_count",
+        "position"
+      ],
+      "custom": "export",
+      "open": true
+    },
+    {
+      "id": "export.probes",
+      "category": "export",
+      "title": "Пробники для подбора посадки",
+      "keys": [],
+      "custom": "probes",
+      "open": true
+    },
+    {
+      "id": "export.quality",
+      "category": "export",
+      "title": "Качество поверхности STL",
+      "keys": [
+        "fa",
+        "fs",
+        "fn"
+      ]
+    }
+  ],
+  "mapping": {
+    "assembly_layout": {
+      "current": "Конструктор компоновки и размеров",
+      "proposed": "layout.project",
+      "label": "Чертёж компоновки корпусов"
+    },
+    "perforation_mode": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.mode",
+      "label": "Управление перфорацией"
+    },
+    "case_back_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-back",
+      "label": "Задняя стенка корпуса — перфорация"
+    },
+    "case_back_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-back",
+      "label": "Задняя стенка корпуса — тип узора"
+    },
+    "case_back_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-back",
+      "label": "Задняя стенка корпуса — размер отверстий"
+    },
+    "case_back_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-back",
+      "label": "Задняя стенка корпуса — перемычки"
+    },
+    "case_back_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-back",
+      "label": "Задняя стенка корпуса — сплошная рамка"
+    },
+    "case_back_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-back",
+      "label": "Задняя стенка корпуса — повернуть узор"
+    },
+    "case_left_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-left",
+      "label": "Левая стенка корпуса — перфорация"
+    },
+    "case_left_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-left",
+      "label": "Левая стенка корпуса — тип узора"
+    },
+    "case_left_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-left",
+      "label": "Левая стенка корпуса — размер отверстий"
+    },
+    "case_left_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-left",
+      "label": "Левая стенка корпуса — перемычки"
+    },
+    "case_left_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-left",
+      "label": "Левая стенка корпуса — сплошная рамка"
+    },
+    "case_left_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-left",
+      "label": "Левая стенка корпуса — повернуть узор"
+    },
+    "case_right_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-right",
+      "label": "Правая стенка корпуса — перфорация"
+    },
+    "case_right_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-right",
+      "label": "Правая стенка корпуса — тип узора"
+    },
+    "case_right_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-right",
+      "label": "Правая стенка корпуса — размер отверстий"
+    },
+    "case_right_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-right",
+      "label": "Правая стенка корпуса — перемычки"
+    },
+    "case_right_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-right",
+      "label": "Правая стенка корпуса — сплошная рамка"
+    },
+    "case_right_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-right",
+      "label": "Правая стенка корпуса — повернуть узор"
+    },
+    "case_top_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-top",
+      "label": "Крыша корпуса — перфорация"
+    },
+    "case_top_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-top",
+      "label": "Крыша корпуса — тип узора"
+    },
+    "case_top_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-top",
+      "label": "Крыша корпуса — размер отверстий"
+    },
+    "case_top_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-top",
+      "label": "Крыша корпуса — перемычки"
+    },
+    "case_top_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-top",
+      "label": "Крыша корпуса — сплошная рамка"
+    },
+    "case_top_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-top",
+      "label": "Крыша корпуса — повернуть узор"
+    },
+    "case_bottom_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-bottom",
+      "label": "Дно корпуса — перфорация"
+    },
+    "case_bottom_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-bottom",
+      "label": "Дно корпуса — тип узора"
+    },
+    "case_bottom_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-bottom",
+      "label": "Дно корпуса — размер отверстий"
+    },
+    "case_bottom_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-bottom",
+      "label": "Дно корпуса — перемычки"
+    },
+    "case_bottom_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-bottom",
+      "label": "Дно корпуса — сплошная рамка"
+    },
+    "case_bottom_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.case-bottom",
+      "label": "Дно корпуса — повернуть узор"
+    },
+    "shelf_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.shelf",
+      "label": "Полки и направляющие — перфорация"
+    },
+    "shelf_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.shelf",
+      "label": "Полки и направляющие — тип узора"
+    },
+    "shelf_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.shelf",
+      "label": "Полки и направляющие — размер отверстий"
+    },
+    "shelf_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.shelf",
+      "label": "Полки и направляющие — перемычки"
+    },
+    "shelf_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.shelf",
+      "label": "Полки и направляющие — сплошная рамка"
+    },
+    "shelf_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.shelf",
+      "label": "Полки и направляющие — повернуть узор"
+    },
+    "drawer_front_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-front",
+      "label": "Передняя стенка ящиков — перфорация"
+    },
+    "drawer_front_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-front",
+      "label": "Передняя стенка ящиков — тип узора"
+    },
+    "drawer_front_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-front",
+      "label": "Передняя стенка ящиков — размер отверстий"
+    },
+    "drawer_front_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-front",
+      "label": "Передняя стенка ящиков — перемычки"
+    },
+    "drawer_front_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-front",
+      "label": "Передняя стенка ящиков — сплошная рамка"
+    },
+    "drawer_front_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-front",
+      "label": "Передняя стенка ящиков — повернуть узор"
+    },
+    "drawer_back_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-back",
+      "label": "Задняя стенка ящиков — перфорация"
+    },
+    "drawer_back_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-back",
+      "label": "Задняя стенка ящиков — тип узора"
+    },
+    "drawer_back_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-back",
+      "label": "Задняя стенка ящиков — размер отверстий"
+    },
+    "drawer_back_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-back",
+      "label": "Задняя стенка ящиков — перемычки"
+    },
+    "drawer_back_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-back",
+      "label": "Задняя стенка ящиков — сплошная рамка"
+    },
+    "drawer_back_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-back",
+      "label": "Задняя стенка ящиков — повернуть узор"
+    },
+    "drawer_left_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-left",
+      "label": "Левая стенка ящиков — перфорация"
+    },
+    "drawer_left_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-left",
+      "label": "Левая стенка ящиков — тип узора"
+    },
+    "drawer_left_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-left",
+      "label": "Левая стенка ящиков — размер отверстий"
+    },
+    "drawer_left_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-left",
+      "label": "Левая стенка ящиков — перемычки"
+    },
+    "drawer_left_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-left",
+      "label": "Левая стенка ящиков — сплошная рамка"
+    },
+    "drawer_left_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-left",
+      "label": "Левая стенка ящиков — повернуть узор"
+    },
+    "drawer_right_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-right",
+      "label": "Правая стенка ящиков — перфорация"
+    },
+    "drawer_right_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-right",
+      "label": "Правая стенка ящиков — тип узора"
+    },
+    "drawer_right_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-right",
+      "label": "Правая стенка ящиков — размер отверстий"
+    },
+    "drawer_right_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-right",
+      "label": "Правая стенка ящиков — перемычки"
+    },
+    "drawer_right_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-right",
+      "label": "Правая стенка ящиков — сплошная рамка"
+    },
+    "drawer_right_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-right",
+      "label": "Правая стенка ящиков — повернуть узор"
+    },
+    "drawer_floor_perf_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-floor",
+      "label": "Дно ящиков — перфорация"
+    },
+    "drawer_floor_perf_style": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-floor",
+      "label": "Дно ящиков — тип узора"
+    },
+    "drawer_floor_perf_cell": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-floor",
+      "label": "Дно ящиков — размер отверстий"
+    },
+    "drawer_floor_perf_web": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-floor",
+      "label": "Дно ящиков — перемычки"
+    },
+    "drawer_floor_perf_border": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-floor",
+      "label": "Дно ящиков — сплошная рамка"
+    },
+    "drawer_floor_perf_rotate": {
+      "current": "Независимая перфорация",
+      "proposed": "perforation.drawer-floor",
+      "label": "Дно ящиков — повернуть узор"
+    },
+    "guide_contact_width": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.rails",
+      "label": "Сплошная дорожка направляющей, мм"
+    },
+    "guide_structure": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.base",
+      "label": "Конструкция полок и направляющих"
+    },
+    "guide_rail_count": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.rails",
+      "label": "Количество продольных полозьев"
+    },
+    "guide_rail_width_mm": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.rails",
+      "label": "Ширина продольного полозья, мм"
+    },
+    "guide_end_frame_width_mm": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.rails",
+      "label": "Передняя и задняя перемычки рамки, мм"
+    },
+    "guide_crossbars_enabled": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.crossbars",
+      "label": "Поперечины ниже полозьев"
+    },
+    "guide_crossbar_count": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.crossbars",
+      "label": "Количество нижних поперечин"
+    },
+    "guide_crossbar_width_mm": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.crossbars",
+      "label": "Ширина поперечины по глубине, мм"
+    },
+    "guide_crossbar_thickness_mm": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.crossbars",
+      "label": "Толщина нижней поперечины, мм"
+    },
+    "guide_crossbar_recess_mm": {
+      "current": "Независимая перфорация",
+      "proposed": "shelves.crossbars",
+      "label": "Утопить поперечины от поверхности скольжения, мм"
+    },
+    "drawer_handle_keepout": {
+      "current": "Независимая перфорация",
+      "proposed": "drawers.handles",
+      "label": "Рамка вокруг крепления ручки, мм"
+    },
+    "custom_drawer_heights_enabled": {
+      "current": "Разные высоты и отдельный ящик",
+      "proposed": "drawers.sizes",
+      "label": "Разные высоты ящиков в миллиметрах"
+    },
+    "custom_drawer_heights_mm": {
+      "current": "Разные высоты и отдельный ящик",
+      "proposed": "drawers.sizes",
+      "label": "Внутренние высоты снизу вверх, мм"
+    },
+    "single_drawer_number": {
+      "current": "Разные высоты и отдельный ящик",
+      "proposed": "export.part",
+      "label": "Номер отдельного ящика"
+    },
+    "connectors_enabled": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Утопленные соединительные ключи"
+    },
+    "connector_planes": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Плоскости карманов: сзади, снизу, сверху"
+    },
+    "connector_edges": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Края с ключами: слева, справа, нижний, верхний"
+    },
+    "connector_ports": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Ключей на выбранном краю"
+    },
+    "connector_length": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Длина ключа, мм"
+    },
+    "connector_width": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Ширина ключа, мм"
+    },
+    "connector_waist": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Ширина шейки ключа, мм"
+    },
+    "connector_depth": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Глубина кармана, мм"
+    },
+    "connector_skin": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Остаток стенки за карманом, мм"
+    },
+    "connector_fit": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Посадочный зазор ключа, мм"
+    },
+    "connector_keepout": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "joints.keys",
+      "label": "Сплошная зона вокруг кармана, мм"
+    },
+    "connector_key_count": {
+      "current": "Соединительные ключи без выступов",
+      "proposed": "export.part",
+      "label": "Количество ключей для печати"
+    },
+    "case_structure": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "project.mode",
+      "label": "Конструкция корпуса"
+    },
+    "frame_border_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.common",
+      "label": "Ширина стоек и рамок, мм"
+    },
+    "frame_rib_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.common",
+      "label": "Ширина дополнительных перемычек, мм"
+    },
+    "frame_side_vertical": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.sides",
+      "label": "На каждой боковине — вертикальных перемычек"
+    },
+    "frame_side_horizontal": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.sides",
+      "label": "На каждой боковине — горизонтальных перемычек"
+    },
+    "frame_back_vertical": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.back",
+      "label": "На задней стенке — вертикальных перемычек"
+    },
+    "frame_back_horizontal": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.back",
+      "label": "На задней стенке — горизонтальных перемычек"
+    },
+    "frame_side_bracing": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.sides",
+      "label": "Диагонали боковин"
+    },
+    "frame_back_bracing": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.back",
+      "label": "Диагонали задней стенки"
+    },
+    "frame_shelf_bracing": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "shelves.base",
+      "label": "Диагонали рамочных полок"
+    },
+    "frame_back_diagonal": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.back",
+      "label": "Диагональная связь сзади"
+    },
+    "frame_top_open": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.top",
+      "label": "Открытая рамка вместо крыши корпуса"
+    },
+    "frame_bottom_open": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.bottom",
+      "label": "Открытая рамка вместо дна корпуса"
+    },
+    "frame_top_vertical": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.top",
+      "label": "Крыша — перемычек вдоль глубины"
+    },
+    "frame_top_horizontal": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.top",
+      "label": "Крыша — перемычек вдоль ширины"
+    },
+    "frame_top_bracing": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.top",
+      "label": "Крыша — диагонали"
+    },
+    "frame_bottom_vertical": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.bottom",
+      "label": "Дно корпуса — перемычек вдоль глубины"
+    },
+    "frame_bottom_horizontal": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.bottom",
+      "label": "Дно корпуса — перемычек вдоль ширины"
+    },
+    "frame_bottom_bracing": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.bottom",
+      "label": "Дно корпуса — диагонали"
+    },
+    "stack_system_enabled": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.stack",
+      "label": "Установочные ножки и гнёзда"
+    },
+    "stack_bottom_pegs": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.stack",
+      "label": "Ножки снизу"
+    },
+    "stack_pegs_separate": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.stack",
+      "label": "Печатать установочные ножки отдельно"
+    },
+    "stack_top_sockets": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.stack",
+      "label": "Сквозные гнёзда в крышке"
+    },
+    "stack_peg_size_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.stack",
+      "label": "Ширина квадратной ножки, мм"
+    },
+    "stack_peg_inset_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.stack",
+      "label": "Отступ центра ножки от краёв, мм"
+    },
+    "stack_fit_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.stack",
+      "label": "Зазор гнезда на сторону, мм"
+    },
+    "slide_shelves_enabled": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "project.mode",
+      "label": "Отдельные направляющие в цельном корпусе"
+    },
+    "slide_shelf_fit_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "shelves.base",
+      "label": "Зазор длинных пазов, мм"
+    },
+    "slide_shelf_number": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "export.part",
+      "label": "Номер отдельной съёмной направляющей"
+    },
+    "flatpack_enabled": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "project.mode",
+      "label": "Панельная сборка шип–паз под клей"
+    },
+    "flatpack_base_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.bottom",
+      "label": "Опорный слой дна, мм"
+    },
+    "flatpack_belt_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "case.bottom",
+      "label": "Поясок стенки под окном дна, мм"
+    },
+    "flatpack_tab_count": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.tabs",
+      "label": "Шипов на стыке"
+    },
+    "flatpack_tab_count_side": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.tabs",
+      "label": "Шипов на боковинах"
+    },
+    "flatpack_tab_count_back": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.tabs",
+      "label": "Шипов на задней стенке"
+    },
+    "flatpack_tab_depth_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.tabs",
+      "label": "Глубина шипа, мм"
+    },
+    "flatpack_tab_width_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.tabs",
+      "label": "Ширина шипа, мм"
+    },
+    "flatpack_fit_mm": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "joints.tabs",
+      "label": "Зазор паза на сторону, мм"
+    },
+    "flatpack_part_index": {
+      "current": "Каркас, установочные ножки и панельная сборка",
+      "proposed": "export.part",
+      "label": "Номер отдельной панели"
+    },
+    "plywood_enabled": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "project.mode",
+      "label": "Фанерные вставки в пазах"
+    },
+    "plywood_thickness_mm": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "case.wood",
+      "label": "Толщина фанеры, мм"
+    },
+    "plywood_fit_mm": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "case.wood",
+      "label": "Зазор фанеры на сторону, мм"
+    },
+    "plywood_lip_mm": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "case.wood",
+      "label": "Нахлёст бортика на лист, мм"
+    },
+    "plywood_rim_mm": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "case.wood",
+      "label": "Толщина накладного бортика, мм"
+    },
+    "plywood_sides_mode": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "case.sides",
+      "label": "Боковины: фанера"
+    },
+    "plywood_back_mode": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "case.back",
+      "label": "Задняя стенка: фанера"
+    },
+    "plywood_top_mode": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "case.top",
+      "label": "Крыша: фанера"
+    },
+    "plywood_bottom_mode": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "case.bottom",
+      "label": "Дно корпуса: фанера"
+    },
+    "plywood_shelves_mode": {
+      "current": "Фанера в направляющих пазах",
+      "proposed": "shelves.base",
+      "label": "Фанера промежуточных полок"
+    },
+    "size_mode": {
+      "current": "Размеры и система",
+      "proposed": "project.mode",
+      "label": "Режим размеров"
+    },
+    "chest_outer_width_mm": {
+      "current": "Размеры и система",
+      "proposed": "project.dimensions",
+      "label": "Внешняя ширина корпуса, мм"
+    },
+    "chest_outer_depth_mm": {
+      "current": "Размеры и система",
+      "proposed": "project.dimensions",
+      "label": "Внешняя глубина корпуса, мм"
+    },
+    "chest_outer_height_mm": {
+      "current": "Размеры и система",
+      "proposed": "project.dimensions",
+      "label": "Высота тела корпуса, мм"
+    },
+    "render_choice": {
+      "current": "Отображение модели",
+      "proposed": "export.part",
+      "label": "Что показать"
+    },
+    "position": {
+      "current": "Отображение модели",
+      "proposed": "export.part",
+      "label": "Положение модели"
+    },
+    "drawer_inner_width": {
+      "current": "Корпус и размеры",
+      "proposed": "project.dimensions",
+      "label": "Внутренняя ширина ящика"
+    },
+    "drawer_inner_depth": {
+      "current": "Корпус и размеры",
+      "proposed": "project.dimensions",
+      "label": "Внутренняя глубина ящика"
+    },
+    "drawer_inner_height": {
+      "current": "Корпус и размеры",
+      "proposed": "project.dimensions",
+      "label": "Внутренняя высота ящика"
+    },
+    "drawer_count": {
+      "current": "Корпус и размеры",
+      "proposed": "drawers.sizes",
+      "label": "Количество ящиков"
+    },
+    "drawer_enable_custom_sizes": {
+      "current": "Корпус и размеры",
+      "proposed": "drawers.sizes",
+      "label": "Разная высота ящиков"
+    },
+    "drawer_custom_sizes": {
+      "current": "Корпус и размеры",
+      "proposed": "drawers.sizes",
+      "label": "Высоты отдельных ящиков"
+    },
+    "drawer_clearance": {
+      "current": "Корпус и размеры",
+      "proposed": "drawers.fit",
+      "label": "Зазор для контейнеров внутри ящика"
+    },
+    "chest_clearance": {
+      "current": "Корпус и размеры",
+      "proposed": "drawers.fit",
+      "label": "Зазор между ящиком и корпусом"
+    },
+    "chest_wall_thickness": {
+      "current": "Корпус и размеры",
+      "proposed": "project.dimensions",
+      "label": "Толщина стенок корпуса"
+    },
+    "chest_drawer_slide_thickness": {
+      "current": "Корпус и размеры",
+      "proposed": "shelves.base",
+      "label": "Толщина направляющих"
+    },
+    "chest_drawer_slide_width": {
+      "current": "Корпус и размеры",
+      "proposed": "shelves.base",
+      "label": "Ширина направляющих"
+    },
+    "handle_size": {
+      "current": "Ящик и ручка",
+      "proposed": "drawers.handles",
+      "label": "Размеры ручки"
+    },
+    "handle_vertical_center": {
+      "current": "Ящик и ручка",
+      "proposed": "drawers.handles",
+      "label": "Ручка по центру высоты"
+    },
+    "handle_cut_factor": {
+      "current": "Ящик и ручка",
+      "proposed": "drawers.handles",
+      "label": "Коэффициент выреза ручки"
+    },
+    "handle_rotate": {
+      "current": "Ящик и ручка",
+      "proposed": "drawers.handles",
+      "label": "Повернуть ручку"
+    },
+    "drawer_wall_thickness": {
+      "current": "Ящик и ручка",
+      "proposed": "drawers.sizes",
+      "label": "Толщина стенок ящика"
+    },
+    "drawer_base": {
+      "current": "Ящик и ручка",
+      "proposed": "drawers.bottom",
+      "label": "Дно ящика"
+    },
+    "drawer_enable_magnet": {
+      "current": "Ящик и ручка",
+      "proposed": "drawers.bottom",
+      "label": "Магниты в ящике"
+    },
+    "drawer_magnet_size": {
+      "current": "Ящик и ручка",
+      "proposed": "drawers.bottom",
+      "label": "Размер магнитов ящика"
+    },
+    "chest_top_wallpattern_style": {
+      "current": "Верхняя панель корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Узор верхней панели"
+    },
+    "chest_top_style": {
+      "current": "Верхняя панель корпуса",
+      "proposed": "joints.stack",
+      "label": "Сверху — гнёзда и крепление"
+    },
+    "chest_top_base_plate_enable_magnets": {
+      "current": "Верхняя панель корпуса",
+      "proposed": "case.top",
+      "label": "Магниты в верхней плите"
+    },
+    "chest_top_base_plate_magnet_size": {
+      "current": "Верхняя панель корпуса",
+      "proposed": "case.top",
+      "label": "Размер магнитов верхней плиты"
+    },
+    "chest_top_base_plate_reduced_wall_height": {
+      "current": "Верхняя панель корпуса",
+      "proposed": "case.top",
+      "label": "Уменьшенная высота бортика"
+    },
+    "chest_top_base_plate_reduced_wall_taper": {
+      "current": "Верхняя панель корпуса",
+      "proposed": "case.top",
+      "label": "Скос уменьшенного бортика"
+    },
+    "chest_bottom_wallpattern_style": {
+      "current": "Основание корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Узор нижней панели"
+    },
+    "chest_bottom_grid": {
+      "current": "Основание корпуса",
+      "proposed": "joints.stack",
+      "label": "Снизу — ножки и крепление"
+    },
+    "chest_leg_clearance": {
+      "current": "Основание корпуса",
+      "proposed": "joints.stack",
+      "label": "Посадочный зазор ножек"
+    },
+    "magnet_diameter": {
+      "current": "Основание корпуса",
+      "proposed": "case.bottom",
+      "label": "Диаметр магнитов основания"
+    },
+    "screw_depth": {
+      "current": "Основание корпуса",
+      "proposed": "case.bottom",
+      "label": "Глубина отверстий под винты"
+    },
+    "hole_overhang_remedy": {
+      "current": "Основание корпуса",
+      "proposed": "case.bottom",
+      "label": "Компенсация нависаний отверстий"
+    },
+    "chest_corner_attachments_only": {
+      "current": "Основание корпуса",
+      "proposed": "case.bottom",
+      "label": "Крепления только по углам корпуса"
+    },
+    "sub_pitch": {
+      "current": "Основание корпуса",
+      "proposed": "case.bottom",
+      "label": "Дробный шаг основания"
+    },
+    "flat_base": {
+      "current": "Основание корпуса",
+      "proposed": "case.bottom",
+      "label": "Плоское основание"
+    },
+    "wallpattern_border_width": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Ширина рамки узора"
+    },
+    "efficient_back": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Облегчённая задняя стенка"
+    },
+    "wallpattern_enabled": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Перфорация стенок"
+    },
+    "wallpattern_style": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Тип узора стенок"
+    },
+    "wallpattern_strength": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Перемычки между отверстиями"
+    },
+    "wallpattern_walls": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Стенки с узором"
+    },
+    "wallpattern_rotate_grid": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Повернуть сетку узора"
+    },
+    "wallpattern_cell_size": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Размер ячейки узора"
+    },
+    "wallpattern_dividers_enabled": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Узор на перегородках"
+    },
+    "wallpattern_hole_sides": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Форма отверстий"
+    },
+    "wallpattern_hole_radius": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Скругление углов отверстий"
+    },
+    "wallpattern_fill": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Заполнение узором"
+    },
+    "wallpattern_border": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Отступ узора от края"
+    },
+    "wallpattern_depth": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Глубина узора"
+    },
+    "wallpattern_pattern_grid_chamfer": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Фаска отверстий сетки"
+    },
+    "wallpattern_pattern_voronoi_noise": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Нерегулярность узора Вороного"
+    },
+    "wallpattern_pattern_brick_weight": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Смещение центра кирпичного узора"
+    },
+    "wallpattern_pattern_quality": {
+      "current": "Узор стенок корпуса",
+      "proposed": "perforation.legacy",
+      "label": "Детализация узора"
+    },
+    "fa": {
+      "current": "Детализация модели",
+      "proposed": "export.quality",
+      "label": "Минимальный угол сегмента ($fa)"
+    },
+    "fs": {
+      "current": "Детализация модели",
+      "proposed": "export.quality",
+      "label": "Минимальный размер сегмента ($fs)"
+    },
+    "fn": {
+      "current": "Детализация модели",
+      "proposed": "export.quality",
+      "label": "Количество сегментов ($fn)"
+    }
+  }
+}

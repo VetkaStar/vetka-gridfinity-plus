@@ -1,0 +1,44 @@
+<header class="topbar">
+  <div class="brand">VETKA Gridfinity Plus<small>Параметрический генератор</small></div>
+  <select id="ui-language" class="language-switch" aria-label="Язык интерфейса"><option value="ru">RU</option><option value="en">EN</option></select><div class="grow"></div>
+  <span class="preset-name" id="active-preset-name">Без пресета</span>
+  <div class="actions row"><button id="presets-open">Пресеты</button><button id="preset-save-as">Сохранить как…</button><button id="preset-save" class="primary">Сохранить</button></div>
+</header>
+<main class="shell">
+  <aside class="preview-pane">
+    <div class="preview-controls">
+      <label for="view-mode">Режим просмотра</label>
+      <select id="view-mode">
+        <option value="assembly">Вся сборка — корпус, ящики и фанера</option>
+        <option value="case">Корпус с фанерой, без ящиков</option>
+        <option value="frame">Только печатный корпус</option>
+        <option value="drawers">Только ящики</option>
+        <option value="wood">Только фанерные вставки</option>
+      </select>
+    </div>
+    <div id="live-preview"></div>
+    <p class="minor-note">Просмотр и скрытие деталей не меняют состав файлов для печати.</p>
+    <div class="facts"><div class="fact"><small>Размеры корпуса</small><strong id="dimensions-summary"></strong></div><div class="fact"><small>Ящиков</small><strong id="drawer-summary"></strong></div></div>
+    <p class="preview-note" id="height-note"></p><p id="context-badge" class="preview-note"></p>
+  </aside>
+  <section class="settings-pane">
+    <div class="settings-head"><h1>Настройки проекта</h1><p>Сначала режим и размеры, затем — нужная деталь.</p>
+      <div class="navigation-tools"><input id="settings-search" type="search" placeholder="Найти настройку, например зазор" aria-label="Поиск настройки"><div class="layout-choice" aria-label="Вариант организации разделов"><button id="layout-tabs" aria-pressed="true">Вкладки</button><button id="layout-all" aria-pressed="false">Все разделы</button></div></div>
+      <nav class="category-nav" aria-label="Разделы настроек" id="category-nav"></nav>
+      <div class="fold-tools"><span id="visible-summary" class="muted"></span><div><button id="fold-close">Свернуть всё</button><button id="fold-open">Развернуть всё</button></div></div>
+    </div>
+    <div id="settings-content"></div>
+    <footer class="control-footer"><span>Настройки сохраняются в адресе и пресетах.</span><button id="reset-demo" class="quiet">Сбросить настройки</button></footer>
+    <div id="notice" hidden><span></span><button id="notice-undo">Отменить</button></div>
+  </section>
+</main>
+<dialog id="compatibility-dialog" aria-labelledby="compatibility-title">
+  <div class="dialog-head"><h2 id="compatibility-title">Переключить режим?</h2><p id="compatibility-intro"></p></div>
+  <div class="dialog-body"><div id="conflict-list"></div><p class="minor-note">Размеры проекта и остальные настройки сохранятся. До подтверждения новый режим не применяется.</p></div>
+  <div class="dialog-footer"><button id="compatibility-cancel">Остаться в текущем</button><button id="compatibility-apply" class="primary">Сбросить несовместимые и переключить</button></div>
+</dialog>
+<dialog id="presets-dialog" aria-labelledby="presets-title">
+  <div class="dialog-head"><div class="row"><h2 class="grow" id="presets-title">Пресеты</h2><button class="modal-close" data-close="presets-dialog" aria-label="Закрыть пресеты">Закрыть</button></div><p>Ваши сохранённые профили доступны здесь. JSON позволяет сохранить копию и перенести её.</p></div>
+  <div class="dialog-body"><div id="preset-list"></div><div class="preset-file-tools row"><button id="preset-import">Импортировать JSON</button><button id="preset-new">Сохранить текущие как новый</button><input id="preset-file" type="file" accept=".json,application/json" hidden></div><p id="preset-feedback" class="minor-note" role="status"></p></div>
+</dialog>
+<dialog id="name-dialog" aria-labelledby="name-title"><div class="dialog-head"><h2 id="name-title">Сохранить пресет</h2></div><form id="name-form"><div class="dialog-body rename-form"><label for="preset-name-input">Название</label><input id="preset-name-input" required maxlength="80" autocomplete="off"></div><div class="dialog-footer"><button type="button" data-close="name-dialog">Отмена</button><button type="submit" class="primary">Сохранить</button></div></form></dialog>

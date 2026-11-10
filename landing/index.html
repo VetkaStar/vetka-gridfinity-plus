@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="VETKA Gridfinity Plus — генератор корпусов и ящиков: Gridfinity и произвольные размеры.">
+  <meta name="theme-color" content="#f3f1eb">
+  <title>VETKA Gridfinity Plus — генератор ящиков</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js" defer></script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+<header class="header wrap">
+  <a class="brand" href="#top" aria-label="VETKA Gridfinity Plus — наверх"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>VETKA<br><b>GRIDFINITY PLUS</b></span></a>
+  <nav aria-label="Навигация"><a href="#features">Возможности</a><a href="#gridfinity">Gridfinity</a><a href="#story">О проекте</a></nav>
+  <a class="header-link generator-link" href="./generator/">К генератору <span>↗</span></a>
+</header>
+<main id="top">
+  <section class="hero wrap" id="generator">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="dot"></span> VETKA GRIDFINITY PLUS / ПРОЕКТ ДЛЯ МАСТЕРСКОЙ</div>
+      <h1>Порядок<br>начинается<br><em>с ящика.</em></h1>
+      <p class="lead">Спроектируйте корпус и ящики под своё пространство. VETKA Gridfinity Plus — мой генератор для Gridfinity и проектов со своими размерами. Он подготовит детали для печати и раскроя.</p>
+      <div class="actions"><a class="button primary generator-link" href="./generator/">Открыть генератор <span>↗</span></a><a class="button secondary github-link" href="https://github.com/VetkaStar/vetka-gridfinity-plus">Исходники на GitHub <span>↗</span></a></div>
+      <p class="link-status" id="link-status" hidden></p>
+    </div>
+    <div class="hero-visual">
+      <div class="visual-top"><span>ИНСТРУМЕНТ ДЛЯ ВАШИХ ИДЕЙ</span><span>01 / 03</span></div>
+      <div class="image-frame"><img src="assets/generator.png" alt="Настройки и трёхмерный просмотр работающего генератора VETKA Gridfinity Plus"></div>
+      <div class="visual-bottom"><span><b>01</b> НАСТРОЙКИ</span><span><b>02</b> ПРОСМОТР</span><span><b>03</b> ПЕЧАТЬ</span></div>
+      <span class="corner-label">СНИМОК ИНТЕРФЕЙСА</span>
+    </div>
+  </section>
+  <div class="ticker" aria-hidden="true"><div>СВОЙ РАЗМЕР <span>✳</span> СВОЯ КОМПОНОВКА <span>✳</span> СВОЯ МАСТЕРСКАЯ <span>✳</span> VETKA GRIDFINITY PLUS <span>✳</span></div></div>
+  <section class="intro wrap" id="features">
+    <div><p class="section-index">01 / ВОЗМОЖНОСТИ</p><h2>От идеи<br>до <em>готовых деталей.</em></h2></div>
+    <div class="intro-text"><p>Один генератор — множество вариантов хранения. Настройте размеры, конструкцию и детали так, как удобно именно вам.</p><a class="text-link" href="#workflow">Посмотреть процесс <span>↓</span></a></div>
+  </section>
+  <section class="feature-list wrap" aria-label="Возможности генератора">
+    <article><span class="feature-num">01</span><div><h3>Две системы размеров</h3><p>Работайте в ячейках Gridfinity или задавайте внешние размеры корпуса в миллиметрах. Высоту каждого ящика можно настроить отдельно.</p></div><span class="feature-icon">↗</span></article>
+    <article><span class="feature-num">02</span><div><h3>Панели и листовые вставки</h3><p>Для корпусов в миллиметрах доступны печатные панели под склейку и вставки из листового материала, например фанеры или переплётного картона. Контуры для раскроя — в SVG и CSV.</p></div><span class="feature-icon">⌗</span></article>
+    <article><span class="feature-num">03</span><div><h3>Сборка под контролем</h3><p>Рассмотрите сборку целиком, скрывайте и раздвигайте детали. Настройте перфорацию, направляющие, ножки и соединители.</p></div><span class="feature-icon">◉</span></article>
+    <article><span class="feature-num">04</span><div><h3>Сохраните и изготовьте</h3><p>Сохраняйте пресеты в браузере или переносите их через JSON. Экспортируйте отдельные STL или комплект деталей в ZIP.</p></div><span class="feature-icon">↓</span></article>
+  </section>
+  <section class="gridfinity-section" id="gridfinity"><div class="wrap gridfinity-inner">
+    <div><p class="section-index">02 / ДВА ПОДХОДА</p><h2>Gridfinity<br><em>и больше свободы.</em></h2><p class="gridfinity-lead">Генератор сохраняет работу с системой Gridfinity и даёт возможность создавать корпуса под другие размеры. Оба направления остаются частью проекта.</p></div>
+    <div class="size-modes"><article><span class="mode-number">01 / GRIDFINITY</span><h3>По сетке Gridfinity</h3><p>Проектируйте в привычных ячейках с шагом 42 мм. Доступны элементы Gridfinity, в том числе решётка, базовая плита и места для магнитов.</p><small>Режим Gridfinity будет развиваться дальше.</small></article><article><span class="mode-number">02 / СВОЙ РАЗМЕР</span><h3>По вашим размерам</h3><p>Задавайте ширину, глубину и высоту корпуса в миллиметрах. В этом режиме доступны панели под склейку и листовые вставки.</p><small>В режиме ячеек панельная сборка пока недоступна.</small></article></div>
+  </div></section>
+  <section class="workflow" id="workflow"><div class="wrap workflow-inner"><div><p class="section-index">03 / ПРОЦЕСС</p><h2>Из браузера —<br><em>в мастерскую.</em></h2><p class="workflow-lead">Гибкая настройка, понятный просмотр и файлы, готовые к следующему шагу.</p></div><div class="steps"><div><span>01</span><p><b>Настройте</b>Задайте размер, количество и высоту ящиков, конструкцию корпуса.</p></div><div><span>02</span><p><b>Проверьте</b>Посмотрите модель и отдельные детали до изготовления.</p></div><div><span>03</span><p><b>Создайте</b>Скачайте файлы для 3D-печати и контуры для раскроя.</p></div></div></div></section>
+  <section class="story wrap" id="story"><div class="story-heading"><p class="section-index">04 / ИСТОРИЯ ПРОЕКТА</p><h2>Всё началось<br><em>с моей студии.</em></h2><div class="story-signature"><span class="signature-mark">V</span><span>VETKA<br><small>автор проекта</small></span></div></div><div class="story-copy"><p class="story-opening">Я искала стеллажи для своей студии, но в продаже не нашла подходящих.</p><p>Тогда я задумалась о 3D-печати. Готовые модели тоже не подошли, а моделировать всё под стеллаж с нуля было лень. Так я наткнулась на генератор ящиков из Gridfinity Extended.</p><p>Его возможностей мне не хватало, поэтому я начала создавать более свободный генератор под свои задачи. Потом появилась идея сделать изготовление дешевле: добавить листовые вставки из фанеры или переплётного картона. А дальше — новые настройки, просмотр сборки и другие возможности.</p><p>Сегодня VETKA Gridfinity Plus — мой развивающийся проект для тех, кто тоже хочет сделать хранение под себя.</p><div class="author-links"><a class="profile-github-link" aria-disabled="true">Мой GitHub <span>↗</span></a><a class="youtube-link" aria-disabled="true">YouTube <span>↗</span></a><a class="boosty-link" aria-disabled="true">Boosty <span>↗</span></a></div><p class="social-note">Ссылки на другие проекты и площадки появятся здесь позже.</p></div></section>
+  <section class="cta wrap"><div><p class="section-index">ВАШ ПРОЕКТ НАЧИНАЕТСЯ ЗДЕСЬ</p><h2>Найдите место<br><em>для каждой детали.</em></h2></div><div><p>Попробуйте генератор и создайте систему хранения под свои задачи.</p><a class="button primary generator-link" href="./generator/">Открыть генератор <span>↗</span></a></div></section>
+</main>
+<footer id="credits"><div class="wrap footer-grid"><div><a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>VETKA<br><b>GRIDFINITY PLUS</b></span></a><p>Авторский проект VETKA с открытым исходным кодом.</p></div><div><b>С чего начался проект</b><p>Основан на <a href="https://github.com/ostat/gridfinity_extended_openscad">Gridfinity Extended</a> от ostat и участников проекта; оригинальный дизайн ящиков — @monniasza.</p><p>Веб-редактор основан на <a href="https://github.com/yawkat/web-openscad-editor">web-openscad-editor</a> от Jonas Konrad.</p><p>GNU GPL v3. Лицензии компонентов сохраняются.</p></div><div class="footer-links"><b>VETKA и проект</b><a class="github-link" aria-disabled="true">Исходники проекта ↗</a><a class="profile-github-link" aria-disabled="true">Мой GitHub ↗</a><a class="youtube-link" aria-disabled="true">YouTube ↗</a><a class="boosty-link" aria-disabled="true">Boosty ↗</a></div></div></footer>
+</body>
+</html>

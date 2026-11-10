@@ -1,0 +1,23 @@
+{
+  "headers_matching_except_expanded_keywords": 3585,
+  "different_or_generated_headers": [
+    "version.h",
+    "license/generate_files.cmake",
+    "license/gpl.h.in",
+    "license/README.md",
+    "Test/test_root_of_traits.h",
+    "Test/_test_algebraic_structure.h",
+    "Test/_test_bigfloat_interval_traits.h",
+    "Test/_test_coercion_traits.h",
+    "Test/_test_convert_to_bfi.h",
+    "Test/_test_fraction_traits.h",
+    "Test/_test_interval_traits.h",
+    "Test/_test_polynomial_traits_d.h",
+    "Test/_test_rational_traits.h",
+    "Test/_test_real_embeddable.h",
+    "Testsuite/DerivedSurfaceMesh.h",
+    "Testsuite/use.h",
+    "Testsuite/vc_debug_hook.h",
+    "Testsuite/Triangulation_23/test_move_semantic.h"
+  ]
+}

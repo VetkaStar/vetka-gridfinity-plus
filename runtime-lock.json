@@ -1,0 +1,14 @@
+{
+  "version": "2026.01.19",
+  "url": "https://files.openscad.org/snapshots/OpenSCAD-2026.01.19-WebAssembly-web.zip",
+  "archive_sha256": "f875ae170d0003acf1cde0df7d113e1144a2fa359b24714942bee2be192e6f10",
+  "files": {
+    "openscad.js": "49756dc6ea1118e31b1b91eb05844cbe8dffbd4c3d9123c9cb87d61f8c7ff1a8",
+    "openscad.wasm": "051f096c82e40b49948299a7c9b55172af4df4ba8a14791e205b1e15da13321e"
+  },
+  "source_project": "https://github.com/openscad/openscad/tree/6df8653d514cd099503ed53bc603dc1ba13eb2ab",
+  "source_build_scripts": "https://github.com/openscad/openscad-wasm/tree/40a33fa533659eb30fc3bcccbf0c347fe0a41bec",
+  "source_manifest": "third_party/openscad/source-lock.json",
+  "source_download": "source/openscad-2026.01.19-source.zip",
+  "openscad_commit": "6df8653d514cd099503ed53bc603dc1ba13eb2ab"
+}
