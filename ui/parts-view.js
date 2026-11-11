@@ -1,4 +1,23 @@
 import {planPreview,previewVertices} from './parts-view-math.js';
+import {matchingStarter} from './starter-presets.js';
+
+async function readStarterMeshes(name, bundle, signal){
+    const response=await fetch(`./${bundle.directory}/${name}.stl.gz`,{signal});
+    if(!response.ok)throw new Error(`Starter model HTTP ${response.status}`);
+    let bytes=new Uint8Array(await response.arrayBuffer());
+    if(bytes[0]===0x1f&&bytes[1]===0x8b){
+        const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        bytes=new Uint8Array(await new Response(stream).arrayBuffer());
+    }
+    const meshes=new Map();
+    let offset=0;
+    for(const [part,length] of bundle.presets[name].parts){
+        meshes.set(part,bytes.subarray(offset,offset+length));
+        offset+=length;
+    }
+    if(offset!==bytes.length)throw new Error('Invalid starter model size');
+    return meshes;
+}
 
 // All visibility and offsets live here, separately from CAD parameters/profiles.
 export function initPartsView(customization,renderer){
@@ -46,6 +65,8 @@ export function initPartsView(customization,renderer){
     pane.append(panel);
     const $=id=>document.getElementById(id),state=new Map();
     const neutralColor='#8996a5';
+    const bundle=window.__STARTER_MODELS__;
+    const unavailable=new Set();
     let scene=null,controller=null,generation=0,lastReady=null,cacheKey='',descriptors=[],plan=null;
     const snapshot=()=>JSON.stringify(customization.getCurrentCustomization());
     function show(active,preparing=false){
@@ -94,7 +115,7 @@ export function initPartsView(customization,renderer){
         rows();apply(true);
     }
     window.addEventListener('gridfinity-view-mode',useViewMode);
-    async function load(raw){
+    async function load(raw,starter){
         const key=JSON.stringify(raw);if(key!==snapshot())return;
         let next;
         try{next=planPreview(raw);}catch(error){
@@ -110,17 +131,20 @@ export function initPartsView(customization,renderer){
         try{
             if(!scene){const {createPartsScene}=await import('./parts-scene.js');if(token!==generation||local.signal.aborted)return;scene=createPartsScene(canvas);}
             if(key!==snapshot()||local.signal.aborted)return;
-            if(renderer.isBusy())await new Promise((resolve,reject)=>{
+            if(!starter&&renderer.isBusy())await new Promise((resolve,reject)=>{
                 const clean=()=>{window.removeEventListener('gridfinity-render-state',check);local.signal.removeEventListener('abort',abort);};
                 const check=()=>{if(!renderer.isBusy()){clean();resolve();}};
                 const abort=()=>{clean();reject(new Error('Подготовка остановлена'));};
                 window.addEventListener('gridfinity-render-state',check);local.signal.addEventListener('abort',abort,{once:true});check();
             });
             if(key!==snapshot()||local.signal.aborted)return;
-            const meshes=new Map();let bytes=0;
-            await renderer.exportParts(next.parts,{signal:local.signal,onPart:(name,data)=>{
-                bytes+=data.byteLength;if(bytes>256*1024*1024)throw new Error('Слишком большая сборка для раздельного просмотра');meshes.set(name,data);
-            },onProgress:(done,total)=>status(`Подготовка деталей: ${done} из ${total}`)});
+            const meshes=starter?await readStarterMeshes(starter,bundle,local.signal):new Map();
+            if(!starter){
+                let bytes=0;
+                await renderer.exportParts(next.parts,{signal:local.signal,onPart:(name,data)=>{
+                    bytes+=data.byteLength;if(bytes>256*1024*1024)throw new Error('Слишком большая сборка для раздельного просмотра');meshes.set(name,data);
+                },onProgress:(done,total)=>status(`Подготовка деталей: ${done} из ${total}`)});
+            }
             if(token!==generation||key!==snapshot()||local.signal.aborted)return;
             plan=next;
             scene.clear();descriptors=[...plan.parts];
@@ -128,9 +152,22 @@ export function initPartsView(customization,renderer){
             plan.wood.forEach((plane,i)=>descriptors.push(scene.wood(plan,plane,i)));
             cacheKey=key;show(true);useViewMode();applyColors();
         }catch(error){
+            if(starter&&token===generation&&!local.signal.aborted&&key===snapshot()){
+                unavailable.add(starter);
+                show(false);
+                renderer.startRender();
+                return;
+            }
             if(token===generation){show(false);status(local.signal.aborted?'Подготовка остановлена':error.message,true);}
         }finally{if(controller===local)controller=null;}
     }
+    renderer.setPreparedPreviewHandler(raw=>{
+        const starter=bundle&&matchingStarter(window.__WOSE_MODEL__.defaultCustomization,raw);
+        if(!starter||!bundle.presets[starter]||unavailable.has(starter))return false;
+        lastReady=raw;
+        load(raw,starter);
+        return true;
+    });
     $('parts-enabled').addEventListener('change',applyColors);
     $('parts-explode').addEventListener('input',()=>apply(true));
     $('parts-fit').addEventListener('click',()=>scene?.fit());

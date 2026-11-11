@@ -1,0 +1,92 @@
+{
+  "fingerprint": "04840271bafcb0aef4b7be0fa99a4ca84deb740a595400bd0cd7e5137aae170a",
+  "presets": {
+    "gridfinity": {
+      "sha256": "0d373a172e78736b298580425292f9b88f5566bdceee04c811892dc4d79bcdaa",
+      "parts": [
+        [
+          "korpus.stl",
+          19684
+        ],
+        [
+          "yashchik_01.stl",
+          1042284
+        ],
+        [
+          "yashchik_02.stl",
+          1042284
+        ],
+        [
+          "yashchik_03.stl",
+          1042284
+        ]
+      ]
+    },
+    "solid": {
+      "sha256": "a6cd1b7d0493e3d792641fd43a3377bcf26f709acf7fd7ec220826d4728496b0",
+      "parts": [
+        [
+          "korpus.stl",
+          874284
+        ],
+        [
+          "yashchik_01.stl",
+          38484
+        ],
+        [
+          "yashchik_02.stl",
+          38484
+        ],
+        [
+          "yashchik_03.stl",
+          38484
+        ]
+      ]
+    },
+    "panels": {
+      "sha256": "17a0d56274760c1ca476e831a20a056a4a2d9c7a1b7f26316c9e456528c6b2e1",
+      "parts": [
+        [
+          "krysha.stl",
+          326784
+        ],
+        [
+          "dno.stl",
+          9184
+        ],
+        [
+          "levaya_stenka.stl",
+          173084
+        ],
+        [
+          "pravaya_stenka.stl",
+          172984
+        ],
+        [
+          "zadnyaya_stenka.stl",
+          228384
+        ],
+        [
+          "polka_01.stl",
+          5484
+        ],
+        [
+          "polka_02.stl",
+          5484
+        ],
+        [
+          "yashchik_01.stl",
+          38484
+        ],
+        [
+          "yashchik_02.stl",
+          38484
+        ],
+        [
+          "yashchik_03.stl",
+          38484
+        ]
+      ]
+    }
+  }
+}

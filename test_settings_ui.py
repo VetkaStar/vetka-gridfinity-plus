@@ -14,6 +14,14 @@ with sync_playwright() as pw:
     browser=pw.chromium.launch(channel='msedge',headless=True)
     page=browser.new_page(viewport={'width':1440,'height':1080},accept_downloads=True);errors=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
+    page.add_init_script('''
+        window.cadBuilds = 0;
+        const postMessage = Worker.prototype.postMessage;
+        Worker.prototype.postMessage = function(message, ...args) {
+            if (message?.type === 'render') window.cadBuilds++;
+            return postMessage.call(this, message, ...args);
+        };
+    ''')
     page.add_init_script('if(!localStorage.getItem('+json.dumps(STORE)+'))localStorage.setItem('+json.dumps(STORE)+','+json.dumps(json.dumps({'profiles':{'old':old}},ensure_ascii=False))+');')
     page.goto(URL);page.wait_for_selector('#mode-size');page.locator('#auto-render').uncheck()
     def tab(id):page.locator('#category-nav [data-category="'+id+'"]').click()
@@ -33,7 +41,15 @@ with sync_playwright() as pw:
     expect(page.locator('#model')).to_be_hidden()
     choose('view-mode','drawers')
     page.wait_for_selector('#parts-panel[data-ready="true"]',timeout=240000)
-    assert page.locator('#parts-rows .parts-row').count()==4
+    expect(page.locator('#mode-size')).to_have_value('custom')
+    expect(page.locator('#mode-build')).to_have_value('panels')
+    expect(page.locator('[data-preview-size-mode="custom"]')).to_have_attribute('aria-pressed','true')
+    for surface in ['case_left','case_right','case_back','case_top']:
+        expect(page.locator('#parameter_'+surface+'_perf_enabled')).to_be_checked()
+        expect(page.locator('#parameter_'+surface+'_perf_style')).to_have_value('"hex"')
+    for surface in ['shelf','drawer_front','drawer_back','drawer_left','drawer_right','drawer_floor']:
+        expect(page.locator('#parameter_'+surface+'_perf_enabled')).not_to_be_checked()
+    assert page.locator('#parts-rows .parts-row').count()==10
     assert page.locator('#parts-rows input[type=checkbox]:checked').count()==3
     page.locator('#parts-enabled').uncheck()
     expect(page.locator('#parts-canvas')).to_be_visible()
@@ -41,7 +57,20 @@ with sync_playwright() as pw:
     assert page.locator('#parts-rows input[type=checkbox]:checked').count()==3
     page.locator('#parts-enabled').check()
     choose('view-mode','assembly')
+    choose('mode-build','solid')
+    expect(page.locator('#parts-rows .parts-row')).to_have_count(4)
+    page.locator('[data-preview-size-mode="gridfinity"]').click()
+    expect(page.locator('#mode-size')).to_have_value('gridfinity')
+    expect(page.locator('#parts-panel')).to_have_attribute('data-ready','true')
+    page.locator('[data-preview-size-mode="custom"]').click()
+    expect(page.locator('#mode-build')).to_have_value('panels')
+    expect(page.locator('#parts-rows .parts-row')).to_have_count(10)
+    expect(page.locator('#parts-panel')).to_have_attribute('data-ready','true')
+    assert page.evaluate('window.cadBuilds')==0
+    page.locator('[data-preview-size-mode="gridfinity"]').click()
+    expect(page.locator('#parts-panel')).to_have_attribute('data-ready','true')
     page.screenshot(path=str(REPORT/'production-grid-ru.png'),full_page=True)
+    page.evaluate('window.setValueFromButton("drawer_inner_width",5)')
     choose('mode-size','custom');expect(page.locator('#compatibility-dialog')).to_be_visible()
     page.locator('#compatibility-cancel').click();expect(page.locator('#mode-size')).to_have_value('gridfinity')
     choose('mode-size','custom');page.locator('#compatibility-apply').click()

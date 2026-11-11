@@ -8,6 +8,7 @@ from size_mode_ui import SIZE_PARAMETERS, extend_page
 from feature_schema import PARAMETERS as FEATURE_PARAMETERS, extend_features
 from assembly_schema import UI_PARAMETERS, extend_assembly
 from settings_ui import extend_settings
+from prepare_starter_models import package_starter_models
 
 ROOT = Path(__file__).resolve().parent
 LOCALE = json.loads((ROOT / 'ru.json').read_text(encoding='utf-8'))
@@ -18,6 +19,8 @@ def patch_parts_renderer(text):
     text = 'import { createPartsBridge } from "./parts-bridge.js";\n' + text
     marker = '    let isInitialRender = true;'
     bridge = '''
+    let preparedPreviewHandler = () => false;
+    let hasPreparedPreview = false;
     const notifyRenderState = () => window.dispatchEvent(new Event('gridfinity-render-state'));
     const partsBridge = createPartsBridge({
         worker, isRendering: () => isRendering, getCustomization, getAdditionalParamNames,
@@ -29,7 +32,7 @@ def patch_parts_renderer(text):
         },
         onUnlock() {
             dom.renderButton.disabled = isRendering;
-            dom.downloadStlButton.disabled = isRendering || lastResult === null;
+            dom.downloadStlButton.disabled = isRendering || (lastResult === null && !hasPreparedPreview);
             notifyRenderState();
             if (isDirty) { isDirty = false; startRender(); }
         },
@@ -39,16 +42,40 @@ def patch_parts_renderer(text):
     text = text.replace(marker,marker+bridge)
     text = text.replace('    function setRendering(rendering) {','    function setRendering(rendering) {\n        queueMicrotask(notifyRenderState);')
     text = text.replace('dom.renderButton.disabled = rendering;', 'dom.renderButton.disabled = rendering || partsBridge.busy;')
-    text = text.replace('dom.downloadStlButton.disabled = rendering || lastResult === null;', 'dom.downloadStlButton.disabled = rendering || partsBridge.busy || lastResult === null;')
+    text = text.replace('dom.downloadStlButton.disabled = rendering || lastResult === null;', 'dom.downloadStlButton.disabled = rendering || partsBridge.busy || (lastResult === null && !hasPreparedPreview);')
     guard='if (isRendering) { isDirty = true; return; }'
     assert text.count(guard)==1
     text=text.replace(guard,'if (isRendering || partsBridge.busy) { isDirty = true; return; }')
+    start = '    function startRender() {\n'
+    prepared = '''    function showPreparedPreview(params) {
+        if (!preparedPreviewHandler(params)) return false;
+        lastResult = null;
+        hasPreparedPreview = true;
+        clearRenderError(dom);
+        setRendering(false);
+        return true;
+    }
+
+'''
+    text = text.replace(start, prepared + start)
+    guard = '        if (isRendering || partsBridge.busy) { isDirty = true; return; }\n'
+    text = text.replace(guard, guard + '''        if (showPreparedPreview(getCustomization())) return;
+        hasPreparedPreview = false;
+''')
+    auto = '    function triggerAutoRender() {\n'
+    text = text.replace(auto, auto + '        hasPreparedPreview = false;\n')
+    manual = '        if (!dom.autoRenderCheckbox.checked) {\n            return;\n        }'
+    assert text.count(manual) == 1
+    text = text.replace(manual, '''        if (!dom.autoRenderCheckbox.checked) {
+            if (!isRendering && !partsBridge.busy) showPreparedPreview(getCustomization());
+            return;
+        }''')
     ready='            clearRenderError(dom);\n            setRendering(false);'
     assert text.count(ready)==1
     text=text.replace(ready,ready+'''\n            if (lastResult !== null) window.dispatchEvent(new CustomEvent('gridfinity-preview-ready', {detail: {params: structuredClone(getCustomization())}}));''')
     marker='    return {\n        startRender,'
     assert text.count(marker)==1
-    return text.replace(marker,'    return {\n        isBusy: () => isRendering || partsBridge.busy,\n        exportParts: partsBridge.run,\n        startRender,')
+    return text.replace(marker,'    return {\n        isBusy: () => isRendering || partsBridge.busy,\n        exportParts: partsBridge.run,\n        setPreparedPreviewHandler: handler => { preparedPreviewHandler = handler; },\n        startRender,')
 
 
 def build():
@@ -116,7 +143,8 @@ def build():
     for old, new in static.items():
         assert old in page, f'Upstream HTML changed: {old}'
         page = page.replace(old, new)
-    page = extend_settings(extend_assembly(extend_features(extend_page(page))))
+    starter_models = package_starter_models(SITE)
+    page = extend_settings(extend_assembly(extend_features(extend_page(page))), starter_models)
     names = {key: value[0] for key, value in LOCALE['parameters'].items()}
     names.update({key: spec['label'] for key, spec in SIZE_PARAMETERS.items()})
     names.update({key: spec['label'] for key, spec in FEATURE_PARAMETERS.items()})
@@ -161,6 +189,8 @@ def build():
         if path.name == 'main.js':
             text='import { initSettingsApp } from "./settings-app.js";\n'+text
             text=text.replace('    renderer.startRender();','    window.startSettingsApp?.();\n    renderer.startRender();')
+            text=text.replace('customization.applyCustomization(merged, { reset: true });',
+                              'customization.applyCustomization(merged, { reset: true, notify: false });')
             text = 'import { initPartsView } from "./parts-view.js";\n' + text
             text = 'import { initSizeModeUi } from "./size-mode.js";\nimport { initFeatureUi } from "./features.js";\nimport { initAssemblyUi } from "./assembly.js";\nimport { initSettingsSections } from "./sections.js";\nimport { initPartsExport } from "./parts-export.js";\n' + text
             text = text.replace('onChanged() {\n        renderer.triggerAutoRender();', 'onChanged() {\n        window.onAssemblyChanged?.();\n        window.updateSizeModeUi?.();\n        window.onSettingsChanged?.();\n        window.dispatchEvent(new Event("gridfinity-settings-changed"));\n        renderer.triggerAutoRender();')
@@ -210,9 +240,10 @@ initSettingsApp(customization, renderer, config);
     (destination / 'features.js').write_text(feature_js, encoding='utf-8')
     for name in ('assembly.js', 'assembly-math.js', 'sections.js', 'parts-bridge.js', 'parts-export.js', 'parts-view.js', 'parts-view-math.js', 'parts-scene.js', 'mesh-cleanup.js'):
         (destination / name).write_text((ROOT/'ui'/name).read_text(encoding='utf-8'),encoding='utf-8')
-    for name in ('settings-app.js','settings.css','i18n.js','en.json'):
+    for name in ('settings-app.js','settings.css','i18n.js','en.json','starter-presets.js'):
         (destination/name).write_text((ROOT/'ui'/name).read_text(encoding='utf-8'),encoding='utf-8')
     print(f'Built RU/EN UI: {len(seen) + len(SIZE_PARAMETERS) + len(FEATURE_PARAMETERS) + len(UI_PARAMETERS)} parameters. Patched worker: {worker_url}')
+    return starter_models
 
 
 if __name__ == '__main__':

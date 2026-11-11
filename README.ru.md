@@ -1,5 +1,7 @@
 # VETKA Gridfinity Plus
 
+Автор проекта - [Vetka_Star](https://github.com/VetkaStar).
+
 [Сайт проекта](https://vetkastar.github.io/vetka-gridfinity-plus/) · [Открыть генератор](https://vetkastar.github.io/vetka-gridfinity-plus/generator/)
 
 Улучшенная независимая версия генератора ящиков Gridfinity Extended: русский и английский интерфейс, произвольные размеры корпуса, каркасные панели под склейку, фанерные вставки и компоновка нескольких корпусов.

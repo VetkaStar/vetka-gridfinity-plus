@@ -2,6 +2,7 @@ import {loadProfilesState} from './profiles.js';
 import {assemblyEffectiveParams,assemblyDrawers,assemblyBox,assemblyPack} from './assembly-math.js';
 import {normaliseBinaryStl,makePartsZip} from './parts-export.js';
 import {initI18n} from './i18n.js';
+import {starterSettings,matchingStarter} from './starter-presets.js';
 export function initSettingsApp(customization,renderer,config){
 const legacy=document.getElementById('pane-right'),live=document.getElementById('pane-left'),bareOnOpen=!location.hash;
 const shell=document.createElement('div');shell.id='settings-app';shell.innerHTML=window.__SETTINGS_LAYOUT__;document.body.prepend(shell);legacy.hidden=true;document.getElementById('live-preview').append(live);
@@ -19,7 +20,7 @@ const $=id=>document.getElementById(id),clone=x=>JSON.parse(JSON.stringify(x)),d
 const categories=[['project','Проект'],['drawers','Ящики'],['shelves','Полки'],['perforation','Перфорация'],['joints','Соединения'],['layout','Компоновка'],['export','Печать']];
 let state=clone(customization.getCurrentCustomization());
 const VIEW_STORE='gridfinity:settings-ui:v2:'+config.scadInputPath;let savedView={};try{savedView=JSON.parse(localStorage.getItem(VIEW_STORE)||'{}');if(!savedView||typeof savedView!=='object'||Array.isArray(savedView))savedView={};}catch{}
-const initial=clone(config.defaultCustomization),folds=new Map(Object.entries(savedView.folds||{})),globalFolds=new Map(Object.entries(savedView.globalFolds||{}));let category=savedView.category||'project',layout=savedView.layout==='all'?'all':'tabs',query='',pending=null,undo=null,activePreset=savedView.activePreset||null,nameOperation=null,presetDirty=false,viewMode='assembly',probeChoice='bottom_joint_probe';
+const initial=starterSettings(defaults,'panels'),folds=new Map(Object.entries(savedView.folds||{})),globalFolds=new Map(Object.entries(savedView.globalFolds||{}));let category=savedView.category||'project',layout=savedView.layout==='all'?'all':'tabs',query='',pending=null,undo=null,activePreset=savedView.activePreset||null,nameOperation=null,presetDirty=false,viewMode='assembly',probeChoice='bottom_joint_probe';
 const STORE='wose.profiles.v1:'+config.scadInputPath;
 let profilesState=loadProfilesState(config.scadInputPath),presets=Object.entries(profilesState.profiles).map(([id,p])=>({id,name:p.name,settings:clone(p.customization),openByDefault:p.applyByDefault}));
 if(!presets.some(p=>p.id===activePreset))activePreset=null;
@@ -90,6 +91,7 @@ function outputAllowed(v,s=state){
 function present(k,value){if(typeof value==='boolean')return value?'Включено':'Выключено';if(k==='case_structure')return value==='frame'?'Каркас':'Сплошные стенки';if(k==='assembly_layout')return 'Выключить чертёж, сохранив корпуса';const o=M[k]?.options?.find(o=>JSON.stringify(o.value)===JSON.stringify(value));return o?o.label:typeof value==='number'?fmt(value):Array.isArray(value)?value.join('; '):String(value);}
 function geometrySummary(){let p=state;try{p=assemblyEffectiveParams(state);}catch{}const box=assemblyBox({base:p},{x:0,z:0,params:{}});return [box.w,box.d,box.h];}
 function updateSummary(){
+ for(const [mode,button] of sizeButtons)button.setAttribute('aria-pressed',String(mode===state.size_mode));
  $('dimensions-summary').textContent=geometrySummary().map(fmt).join(' × ')+' мм';$('drawer-summary').textContent=drawerCount();
  $('context-badge').textContent=[isCustom()?'Миллиметры':'Gridfinity',state.flatpack_enabled?'Панели':state.slide_shelves_enabled?'Съёмные полки':'Цельный',frame()?'Каркас':'Стенки'].join(' · ');
  $('height-note').textContent=isCustom()&&state.flatpack_enabled?`Высота в настройках: ${fmt(state.chest_outer_height_mm)} + опорный слой ${fmt(state.flatpack_base_mm)} + поясок ${fmt(state.flatpack_belt_mm)} мм.`:'';
@@ -140,10 +142,33 @@ function parameterChange(k,value){
  if(k==='drawer_count'&&next.drawer_count<2){next.slide_shelves_enabled=false;next.guide_structure='pattern';}
  apply(next);
 }
+function changeSizeMode(mode){
+ if(mode===state.size_mode)return;
+ const label=mode==='custom'?'Размеры в миллиметрах':'Gridfinity';
+ if(!activePreset&&matchingStarter(defaults,state)){
+  request(starterSettings(defaults,mode==='custom'?'panels':'gridfinity'),label);
+  return;
+ }
+ const next={...clone(state),size_mode:mode};
+ if(mode==='custom'){
+  next.flatpack_enabled=true;
+  next.slide_shelves_enabled=false;
+ }
+ request(next,label);
+}
+const sizeControls=el('div',{class:'preview-size-modes',role:'group','aria-label':'Система размеров'});
+const sizeButtons=new Map();
+for(const [mode,label] of [['gridfinity','Gridfinity'],['custom','Миллиметры']]){
+ const button=el('button',{type:'button',class:'btn btn-outline-secondary','data-preview-size-mode':mode},label);
+ button.onclick=()=>changeSizeMode(mode);
+ sizeButtons.set(mode,button);
+ sizeControls.append(button);
+}
+$('auto-render').closest('label').after(sizeControls);
 function modeControls(host){
  const grid=el('div',{class:'mode-grid'});
  function select(id,title,value,options,onchange){const label=el('label',{},title),s=el('select',{id});for(const [v,t,disabled]of options){const o=el('option',{value:v},t);o.disabled=!!disabled;s.append(o);}s.value=value;s.onchange=()=>onchange(s.value);label.append(s);grid.append(label);}
- select('mode-size','Система размеров',state.size_mode,[['custom','Произвольные размеры · мм'],['gridfinity','Gridfinity · ячейки']],v=>{const n=clone(state);n.size_mode=v;request(n,v==='custom'?'Размеры в миллиметрах':'Gridfinity');});
+ select('mode-size','Система размеров',state.size_mode,[['custom','Произвольные размеры · мм'],['gridfinity','Gridfinity · ячейки']],changeSizeMode);
  select('mode-build','Как собирать',state.flatpack_enabled?'panels':state.slide_shelves_enabled?'slides':'solid',isCustom()?[['panels','Отдельные панели под клей'],['solid','Цельный корпус'],['slides','Цельный корпус, съёмные полки']]:[['solid','Цельный корпус'],['panels','Отдельные панели под клей — Скоро',true]],v=>{
    const n=clone(state),extra=[];
    if(v==='slides'&&n.flatpack_enabled)extra.push({key:'flatpack_enabled',before:true,after:false,why:'Съёмные направляющие и полная панельная сборка — разные варианты.'});
@@ -303,6 +328,22 @@ $('view-mode').onchange=()=>{
 };
 window.addEventListener('gridfinity-parts-visibility',event=>{viewMode=event.detail.mode;window.gridfinityViewMode=viewMode;const select=$('view-mode');if(!select.querySelector('[value="custom"]'))select.append(el('option',{value:'custom'},'Свой набор — выбранные детали'));select.value=viewMode;});
 window.onSettingsInputsApplied=window.onSettingsChanged=()=>{if(applying)return;state=clone(customization.getCurrentCustomization());render();};
-window.startSettingsApp=()=>{state=clone(customization.getCurrentCustomization());printChoice=normaliseExportChoice(state.render_choice==='everything'?(savedView.printChoice||'chest'):state.render_choice);const auto=presets.filter(p=>p.openByDefault);if(bareOnOpen&&auto.length===1)activePreset=auto[0].id;const adapted=isCustom()&&state.perforation_mode==='legacy';if(adapted)state.perforation_mode='individual';state.render_choice='everything';window.gridfinityViewMode='assembly';apply(state,{notify:false});const selected=presets.find(p=>p.id===activePreset);presetDirty=adapted||!!selected&&Object.entries(selected.settings).some(([k,v])=>JSON.stringify(k==='render_choice'&&['everything','plywood_preview'].includes(v)?'chest':v)!==JSON.stringify(k==='render_choice'?printChoice:state[k]));updateSummary();if(adapted)announce('В произвольных размерах выбраны независимые узоры. Параметры узоров корпуса и сохранённые пресеты не изменены.');};
+window.startSettingsApp=()=>{
+ state=clone(customization.getCurrentCustomization());
+ const auto=presets.filter(p=>p.openByDefault);
+ if(bareOnOpen){
+  if(auto.length===1)activePreset=auto[0].id;
+  else{if(!auto.length)state=clone(initial);activePreset=null;}
+ }
+ printChoice=normaliseExportChoice(state.render_choice==='everything'?(savedView.printChoice||'chest'):state.render_choice);
+ const adapted=isCustom()&&state.perforation_mode==='legacy';
+ if(adapted)state.perforation_mode='individual';
+ window.gridfinityViewMode='assembly';
+ apply(state,{notify:false});
+ const selected=presets.find(p=>p.id===activePreset);
+ presetDirty=adapted||!!selected&&Object.entries(selected.settings).some(([k,v])=>JSON.stringify(k==='render_choice'&&['everything','plywood_preview'].includes(v)?'chest':v)!==JSON.stringify(k==='render_choice'?printChoice:state[k]));
+ updateSummary();
+ if(adapted)announce('В произвольных размерах выбраны независимые узоры. Параметры узоров корпуса и сохранённые пресеты не изменены.');
+};
 initI18n();window.addEventListener('gridfinity-language-changed',()=>{window.refreshAssemblyUi?.();render();window.refreshUiLanguage?.();});render();
 }

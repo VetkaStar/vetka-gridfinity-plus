@@ -1,5 +1,7 @@
 # VETKA Gridfinity Plus
 
+Developed by [Vetka_Star](https://github.com/VetkaStar).
+
 An improved, independent version of the Gridfinity Extended drawer generator, with a bilingual RU/EN interface, custom cabinet sizes and printable panel assemblies.
 
 [Project site](https://vetkastar.github.io/vetka-gridfinity-plus/) · [Open generator](https://vetkastar.github.io/vetka-gridfinity-plus/generator/) · [Русское описание](README.ru.md) · [Licenses and credits](THIRD_PARTY_NOTICES.md)

@@ -4,7 +4,8 @@
     'generator-link': links.generator,
     'github-link': links.github,
     'profile-github-link': links.profileGithub,
-    'youtube-link': links.youtube,
+    'youtube-craft-link': links.youtubeCraft,
+    'youtube-dev-link': links.youtubeDev,
     'boosty-link': links.boosty
   };
   for (const [className, url] of Object.entries(mappings)) {

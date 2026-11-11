@@ -35,7 +35,7 @@ def build_release(output, *, with_landing=False):
         output = publication / 'generator'
     sources = verify_sources()
     ensure_runtime()
-    build()
+    starter_models = build()
     output.mkdir(parents=True, exist_ok=True)
     site = ROOT / 'site'
     model = json.loads((site / 'model-build.json').read_text(encoding='utf-8'))
@@ -44,6 +44,9 @@ def build_release(output, *, with_landing=False):
     for name in ['index.html', 'model-build.json', model['worker']]:
         shutil.copyfile(site / name, output / name)
     shutil.copytree(site / 'static.34e2cb4f1210', output / 'static.34e2cb4f1210')
+    if starter_models:
+        directory = starter_models['directory']
+        shutil.copytree(site / directory, output / directory)
     (output / 'cas').mkdir()
     used = set(re.findall(r'\./cas/([a-f0-9]{64})', worker.read_text(encoding='utf-8')))
     for name in used:
@@ -93,6 +96,8 @@ def build_release(output, *, with_landing=False):
     layout = json.loads(match[2])
     link = '<a href="./licenses.html" target="_blank" rel="noopener">Лицензии и исходники</a>'
     layout = layout.replace('<footer class="control-footer">', '<footer class="control-footer">' + link)
+    if with_landing:
+        layout = layout.replace('<select id="ui-language"', '<a class="project-home" href="../">На лендинг</a><select id="ui-language"', 1)
     text = text[:match.start(2)] + json.dumps(layout, ensure_ascii=False) + text[match.end(2):]
     index.write_text(text, encoding='utf-8')
     licenses = sorted(path.relative_to(output).as_posix() for directory in ['LICENSES', 'runtime-licenses']
@@ -102,8 +107,8 @@ def build_release(output, *, with_landing=False):
 <title>VETKA Gridfinity Plus - Licenses and source / Лицензии и исходники</title>
 <style>body{font:17px/1.6 system-ui;max-width:950px;margin:40px auto;padding:0 20px;color:#202735}a{color:#174dc7}li{margin:8px 0}code{overflow-wrap:anywhere}</style>
 <h1>Licenses and source code<br>Лицензии и исходный код</h1>
-<p>VETKA Gridfinity Plus is an independent derivative of Gridfinity Extended and Web OpenSCAD Editor. Original credits and licenses are retained.</p>
-<p>VETKA Gridfinity Plus - независимая доработка Gridfinity Extended и Web OpenSCAD Editor. Исходные авторы и лицензии сохранены.</p>
+<p>VETKA Gridfinity Plus by Vetka_Star builds on Gridfinity Extended and Web OpenSCAD Editor. Original credits and licenses are retained.</p>
+<p>VETKA Gridfinity Plus - проект Vetka_Star на основе Gridfinity Extended и Web OpenSCAD Editor. Исходные авторы и лицензии сохранены.</p>
 <ul><li><a href="source/gridfinity-drawers-source.zip">Generator source / Исходники генератора</a></li>
 <li><a href="source/openscad-2026.01.19-source.zip">OpenSCAD source, libraries and build instructions / Исходники OpenSCAD, библиотеки и инструкции сборки</a></li>
 <li><a href="LICENSE">GNU GPL v3 - generator / генератор</a></li><li><a href="THIRD_PARTY_NOTICES.md">Credits and notices / Авторы и уведомления</a></li>
