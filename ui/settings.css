@@ -13,4 +13,14 @@ body{display:block!important;width:auto;height:auto!important;overflow:auto!impo
 
 .preview-size-modes{display:flex;gap:.3rem;flex-wrap:wrap}
 .preview-size-modes .btn[aria-pressed=true]{background:var(--soft);border-color:var(--accent);color:var(--text)}
-.project-home{color:var(--text);font-size:.875rem;white-space:nowrap}
+.project-nav{display:flex;align-items:center;flex-wrap:wrap;gap:4px 13px}
+.project-nav a,.project-nav button{color:var(--text);padding:6px 0;white-space:nowrap}
+.project-nav button{border:0;background:none;text-decoration:underline;text-underline-offset:3px}
+.project-nav a:hover,.project-nav button:hover{color:var(--accent)}
+.project-nav a:focus-visible,.about-links a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.about-links section{border-top:1px solid var(--line);padding:14px 0}
+.about-links h3{margin:0;font-size:14px;font-weight:600}
+.about-links p{margin:7px 0 0;line-height:1.5;color:var(--muted)}
+.about-links ul{display:flex;flex-wrap:wrap;gap:8px 16px;list-style:none;padding:0;margin:9px 0 0}
+.about-links a{color:var(--accent);text-underline-offset:3px}
+@media(max-width:850px){.project-nav{flex-basis:100%}.topbar>.grow{display:none}}

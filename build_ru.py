@@ -2,6 +2,7 @@
 import html
 import json
 import re
+import shutil
 from pathlib import Path
 from build_model import build_model
 from size_mode_ui import SIZE_PARAMETERS, extend_page
@@ -242,6 +243,7 @@ initSettingsApp(customization, renderer, config);
         (destination / name).write_text((ROOT/'ui'/name).read_text(encoding='utf-8'),encoding='utf-8')
     for name in ('settings-app.js','settings.css','i18n.js','en.json','starter-presets.js'):
         (destination/name).write_text((ROOT/'ui'/name).read_text(encoding='utf-8'),encoding='utf-8')
+    shutil.copyfile(ROOT / 'landing/config.js', destination / 'project-links.js')
     print(f'Built RU/EN UI: {len(seen) + len(SIZE_PARAMETERS) + len(FEATURE_PARAMETERS) + len(UI_PARAMETERS)} parameters. Patched worker: {worker_url}')
     return starter_models
 

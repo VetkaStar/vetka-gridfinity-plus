@@ -1,16 +1,17 @@
 (() => {
-  const links = window.LANDING_LINKS || {};
+  const links = window.PROJECT_LINKS || {};
   const mappings = {
     'generator-link': links.generator,
     'github-link': links.github,
     'profile-github-link': links.profileGithub,
     'youtube-craft-link': links.youtubeCraft,
     'youtube-dev-link': links.youtubeDev,
-    'boosty-link': links.boosty
+    'boosty-link': links.boosty,
+    'feedback-link': links.feedback
   };
   for (const [className, url] of Object.entries(mappings)) {
     document.querySelectorAll(`.${className}`).forEach(link => {
-      if (url) { link.href = url; link.removeAttribute('aria-disabled'); }
+      if (url) { link.href = url; link.removeAttribute('aria-disabled'); link.hidden = false; }
       else { link.removeAttribute('href'); link.setAttribute('aria-disabled', 'true'); }
     });
   }

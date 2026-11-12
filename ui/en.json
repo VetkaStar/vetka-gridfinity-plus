@@ -900,5 +900,16 @@
   "Выключить чертёж, сохранив корпуса": "Disable the layout and keep the cabinets",
   "Левая и правая поверхности": "Left and right surfaces",
   "На лендинг": "Project home",
-  "Лицензии и исходники": "Licenses and source"
+  "Лицензии и исходники": "Licenses and source",
+  "Навигация по проекту": "Project navigation",
+  "О проекте": "About the project",
+  "Обратная связь": "Feedback",
+  "VETKA Gridfinity Plus помогает создавать ящики и корпуса для 3D-печати по сетке Gridfinity и по своим размерам.": "VETKA Gridfinity Plus creates 3D-printable drawers and cabinets using the Gridfinity grid or custom dimensions.",
+  "Сайт проекта": "Project website",
+  "Исходники на GitHub": "Source code on GitHub",
+  "Автор проекта · Vetka_Star": "Created by Vetka_Star",
+  "YouTube · Крафт": "YouTube · Craft",
+  "YouTube · Разработка": "YouTube · Software development",
+  "Лицензии и исходные проекты": "Licenses and upstream projects",
+  "Генератор распространяется по GNU GPL v3. Компоненты сохраняют свои лицензии.": "The generator is distributed under the GNU GPL v3. Components retain their own licenses."
 }

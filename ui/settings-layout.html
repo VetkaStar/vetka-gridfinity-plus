@@ -1,6 +1,11 @@
 <header class="topbar">
   <div class="brand">VETKA Gridfinity Plus<small>Параметрический генератор</small></div>
-  <select id="ui-language" class="language-switch" aria-label="Язык интерфейса"><option value="ru">RU</option><option value="en">EN</option></select><div class="grow"></div>
+  <select id="ui-language" class="language-switch" aria-label="Язык интерфейса"><option value="ru">RU</option><option value="en">EN</option></select>
+  <nav class="project-nav" aria-label="Навигация по проекту">
+    <button id="about-open" type="button" aria-haspopup="dialog">О проекте</button>
+    <a data-project-link="feedback" hidden target="_blank" rel="noopener noreferrer">Обратная связь</a>
+  </nav>
+  <div class="grow"></div>
   <span class="preset-name" id="active-preset-name">Без пресета</span>
   <div class="actions row"><button id="presets-open">Пресеты</button><button id="preset-save-as">Сохранить как…</button><button id="preset-save" class="primary">Сохранить</button></div>
 </header>
@@ -32,6 +37,40 @@
     <div id="notice" hidden><span></span><button id="notice-undo">Отменить</button></div>
   </section>
 </main>
+<dialog id="about-dialog" aria-labelledby="about-title">
+  <div class="dialog-head">
+    <div class="row"><h2 class="grow" id="about-title">О проекте</h2><button type="button" class="modal-close" data-close="about-dialog" autofocus>Закрыть</button></div>
+    <p>VETKA Gridfinity Plus помогает создавать ящики и корпуса для 3D-печати по сетке Gridfinity и по своим размерам.</p>
+  </div>
+  <div class="dialog-body about-links">
+    <section>
+      <h3>Проект</h3>
+      <ul>
+        <li><a data-project-link="home">Сайт проекта</a></li>
+        <li><a data-project-link="github" target="_blank" rel="noopener noreferrer">Исходники на GitHub</a></li>
+        <li hidden><a data-project-link="feedback" target="_blank" rel="noopener noreferrer">Обратная связь</a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Автор проекта · Vetka_Star</h3>
+      <ul>
+        <li><a data-project-link="profileGithub" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a data-project-link="youtubeCraft" target="_blank" rel="noopener noreferrer">YouTube · Крафт</a></li>
+        <li><a data-project-link="youtubeDev" target="_blank" rel="noopener noreferrer">YouTube · Разработка</a></li>
+        <li><a data-project-link="boosty" target="_blank" rel="noopener noreferrer">Boosty</a></li>
+      </ul>
+    </section>
+    <section>
+      <h3>Лицензии и исходные проекты</h3>
+      <p>Генератор распространяется по GNU GPL v3. Компоненты сохраняют свои лицензии.</p>
+      <ul>
+        <li><a data-project-link="licenses" target="_blank" rel="noopener noreferrer">Лицензии и исходники</a></li>
+        <li><a data-project-link="gridfinityExtended" target="_blank" rel="noopener noreferrer">Gridfinity Extended</a></li>
+        <li><a data-project-link="webOpenScadEditor" target="_blank" rel="noopener noreferrer">Web OpenSCAD Editor</a></li>
+      </ul>
+    </section>
+  </div>
+</dialog>
 <dialog id="compatibility-dialog" aria-labelledby="compatibility-title">
   <div class="dialog-head"><h2 id="compatibility-title">Переключить режим?</h2><p id="compatibility-intro"></p></div>
   <div class="dialog-body"><div id="conflict-list"></div><p class="minor-note">Размеры проекта и остальные настройки сохранятся. До подтверждения новый режим не применяется.</p></div>

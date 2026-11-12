@@ -85,8 +85,7 @@ def build_release(output, *, with_landing=False):
                    or part in {'reports', 'backups', 'dist'} for part in Path(name).parts):
                 raise ValueError('Unexpected local file in publication index')
             archive.write(ROOT / name, name)
-    # Expose the source link in the actual settings shell, which is mounted by
-    # JavaScript after startup. Its bilingual label works in either language.
+    # Point the settings shell at the files included with this release.
     index = output / 'index.html'
     text = index.read_text(encoding='utf-8')
     pattern = r'(window\.__SETTINGS_LAYOUT__=)("(?:[^"\\]|\\.)*")'
@@ -94,10 +93,10 @@ def build_release(output, *, with_landing=False):
     if not match:
         raise ValueError('Could not locate the settings layout')
     layout = json.loads(match[2])
-    link = '<a href="./licenses.html" target="_blank" rel="noopener">Лицензии и исходники</a>'
-    layout = layout.replace('<footer class="control-footer">', '<footer class="control-footer">' + link)
+    layout = layout.replace('data-project-link="licenses"', 'href="./licenses.html"', 1)
     if with_landing:
-        layout = layout.replace('<select id="ui-language"', '<a class="project-home" href="../">На лендинг</a><select id="ui-language"', 1)
+        layout = layout.replace('<button id="about-open"', '<a class="project-home" href="../">На лендинг</a><button id="about-open"', 1)
+        layout = layout.replace('data-project-link="home"', 'href="../"', 1)
     text = text[:match.start(2)] + json.dumps(layout, ensure_ascii=False) + text[match.end(2):]
     index.write_text(text, encoding='utf-8')
     licenses = sorted(path.relative_to(output).as_posix() for directory in ['LICENSES', 'runtime-licenses']

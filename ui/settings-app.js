@@ -17,6 +17,14 @@ function normaliseExportChoice(choice){if(['plywood_probe','shelf_probe','joint_
 
 const DATA=window.__SETTINGS_DATA__,M=DATA.metadata,G=DATA.groups;
 const $=id=>document.getElementById(id),clone=x=>JSON.parse(JSON.stringify(x)),defaults=clone(config.defaultCustomization);
+for (const link of shell.querySelectorAll('a[data-project-link]')) {
+ const url=window.PROJECT_LINKS?.[link.dataset.projectLink];
+ if (!url) continue;
+ link.href=url;
+ link.hidden=false;
+ if (link.parentElement.matches('li[hidden]')) link.parentElement.hidden=false;
+}
+$('about-open').onclick=()=>$('about-dialog').showModal();
 const categories=[['project','Проект'],['drawers','Ящики'],['shelves','Полки'],['perforation','Перфорация'],['joints','Соединения'],['layout','Компоновка'],['export','Печать']];
 let state=clone(customization.getCurrentCustomization());
 const VIEW_STORE='gridfinity:settings-ui:v2:'+config.scadInputPath;let savedView={};try{savedView=JSON.parse(localStorage.getItem(VIEW_STORE)||'{}');if(!savedView||typeof savedView!=='object'||Array.isArray(savedView))savedView={};}catch{}
