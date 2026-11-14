@@ -11,7 +11,7 @@ export function createPartsScene(container){
     const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=false;
     scene.add(new THREE.HemisphereLight(0xffffff,0x8a92a0,2));
     for(const [x,y,z,intensity] of [[1,-2,3,2.1],[-2,-1,1,1.3],[1,2,1,.8]]){const light=new THREE.DirectionalLight(0xffffff,intensity);light.position.set(x*1000,y*1000,z*1000);scene.add(light);}
-    const objects=new Map();let lastFrame=null;
+    const objects=new Map();let lastFrame=null,pending=new Set();
     function draw(){renderer.render(scene,camera);}
     controls.addEventListener('change',draw);
     function add(id,label,color,vertices,direction){
@@ -23,7 +23,8 @@ export function createPartsScene(container){
         for(const mesh of objects.values())mesh.material.color.set(color??mesh.userData.color);
         draw();
     }
-    function clear(){for(const mesh of objects.values()){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose();}objects.clear();draw();}
+    function clear(){for(const mesh of objects.values()){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose();}objects.clear();pending.clear();draw();}
+    function setPreparing(ids){pending=new Set(ids);for(const [id,mesh]of objects)if(pending.has(id))mesh.visible=false;draw();}
     function fit(){
         if(container.clientWidth&&container.clientHeight){renderer.setSize(container.clientWidth,container.clientHeight,false);camera.aspect=container.clientWidth/container.clientHeight;}
         const box=new THREE.Box3();for(const mesh of objects.values())if(mesh.visible)box.expandByObject(mesh);
@@ -34,7 +35,7 @@ export function createPartsScene(container){
         controls.target.copy(center);camera.position.copy(center).addScaledVector(direction,distance);camera.near=Math.max(.01,distance/10000);camera.far=Math.max(10000,distance*100);camera.updateProjectionMatrix();controls.update();draw();
     }
     function update(state,explode,span){
-        for(const [id,mesh] of objects){const s=state.get(id)||{visible:true,offset:0};mesh.visible=s.visible;mesh.position.fromArray(mesh.userData.direction).multiplyScalar(explode*span*.6/100+s.offset);mesh.updateMatrixWorld();}
+        for(const [id,mesh] of objects){const s=state.get(id)||{visible:true,offset:0};mesh.visible=s.visible&&!pending.has(id);mesh.position.fromArray(mesh.userData.direction).multiplyScalar(explode*span*.6/100+s.offset);mesh.updateMatrixWorld();}
         draw();
     }
     function wood(plan,plane,index){
@@ -61,5 +62,5 @@ export function createPartsScene(container){
         add(id,label,color,vertices,direction);return {id,label,color,direction,kind:'wood'};
     }
     const observer=new ResizeObserver(()=>{const w=container.clientWidth,h=container.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();if(objects.size)fit();else draw();});observer.observe(container);
-    return {add,clear,update,fit,wood,setColorOverride,objects,renderer,camera,controls};
+    return {add,clear,update,fit,wood,setColorOverride,setPreparing,objects,renderer,camera,controls};
 }

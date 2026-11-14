@@ -5,6 +5,7 @@ export const PART_COLORS=['#9b7ad4','#548fda','#42aa98','#e79a61','#d76d8c','#84
 const labels=['Крыша','Дно','Левая стенка','Правая стенка','Задняя стенка'];
 const directions=[[0,0,1],[0,0,-1],[-1,0,0],[1,0,0],[0,1,0]];
 const colorFor=i=>PART_COLORS[i]||`hsl(${Math.round(i*137.508)%360},45%,58%)`;
+const drawerOnlyParameters=new Set(['handle_size','handle_vertical_center','handle_cut_factor','handle_rotate','drawer_handle_keepout']);
 const panelSurfaceRules=[
  ['case_back_perf_',part=>part.kind==='panel'&&part.index===4],['case_left_perf_',part=>part.kind==='panel'&&part.index===2],['case_right_perf_',part=>part.kind==='panel'&&part.index===3],
  ['case_top_perf_',part=>part.kind==='panel'&&part.index===0],['case_bottom_perf_',part=>part.kind==='panel'&&part.index===1],['shelf_perf_',part=>part.kind==='panel'&&part.index>=5],
@@ -15,6 +16,7 @@ const panelSurfaceRules=[
 export function partCacheKey(part){
  const params=structuredClone(part.params);
  if(part.localPlan||!['panel','drawer'].includes(part.kind))return JSON.stringify(params);
+ if(part.kind==='panel')for(const key of drawerOnlyParameters)delete params[key];
  for(const [prefix,owns]of panelSurfaceRules)if(!owns(part))for(const key of Object.keys(params))if(key.startsWith(prefix))delete params[key];
  return JSON.stringify(params);
 }

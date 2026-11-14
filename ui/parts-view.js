@@ -71,7 +71,7 @@ export function initPartsView(customization,renderer){
     const snapshot=()=>JSON.stringify(customization.getCurrentCustomization());
     function show(active,preparing=false){
         canvas.hidden=!active;
-        panel.dataset.ready=String(active);
+        panel.dataset.ready=String(active&&!preparing);
         stage.toggleAttribute('data-preparing-parts',preparing);
     }
     function status(text,error=false){
@@ -127,7 +127,7 @@ export function initPartsView(customization,renderer){
         $('parts-explode').closest('label').hidden=next.flat;
         if(cacheKey===key&&scene){show(true);apply();return;}
         controller?.abort();const local=new AbortController(),token=++generation;controller=local;
-        show(false,true);status('Подготовка отдельных деталей…');
+        show(!!scene,true);status('Подготовка отдельных деталей…');
         try{
             if(!scene){const {createPartsScene}=await import('./parts-scene.js');if(token!==generation||local.signal.aborted)return;scene=createPartsScene(canvas);}
             if(key!==snapshot()||local.signal.aborted)return;
@@ -144,6 +144,7 @@ export function initPartsView(customization,renderer){
             if(!starter){
                 const missing=[];
                 for(const part of next.parts){const cached=meshCache.get(part.name);if(cached?.key===cacheKeys.get(part.name))addMesh(part.name,cached.data);else missing.push(part);}
+                scene.setPreparing(missing.map(part=>part.id));show(true,true);
                 if(missing.length)await renderer.exportParts(missing,{signal:local.signal,onPart:addMesh,onProgress:(done,total)=>status(`Подготовка деталей: ${done} из ${total}`)});
             }
             if(token!==generation||key!==snapshot()||local.signal.aborted)return;
@@ -177,7 +178,7 @@ export function initPartsView(customization,renderer){
     $('parts-fit').addEventListener('click',()=>scene?.fit());
     $('parts-reset').addEventListener('click',()=>{for(const s of state.values()){s.visible=true;s.offset=0;}$('parts-explode').value='0';window.dispatchEvent(new CustomEvent('gridfinity-parts-visibility',{detail:{mode:'assembly'}}));rows();apply(true);});
     window.addEventListener('gridfinity-preview-ready',e=>{lastReady=e.detail.params;queueMicrotask(()=>load(lastReady));});
-    function invalidate(){if(lastReady&&JSON.stringify(lastReady)!==snapshot()){controller?.abort();++generation;cacheKey='';model.hidden=true;show(false);status('Настройки изменены — ожидается построение');}}
+    function invalidate(){if(lastReady&&JSON.stringify(lastReady)!==snapshot()){controller?.abort();++generation;cacheKey='';model.hidden=true;scene?.setPreparing([]);if(scene&&plan){show(true);apply();}else show(false);status('Настройки изменены — ожидается построение');}}
     document.getElementById('pane-right').addEventListener('input',()=>queueMicrotask(invalidate));
     document.getElementById('pane-right').addEventListener('change',()=>queueMicrotask(invalidate));
     window.addEventListener('hashchange',()=>queueMicrotask(invalidate));
