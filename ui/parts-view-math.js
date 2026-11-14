@@ -5,6 +5,19 @@ export const PART_COLORS=['#9b7ad4','#548fda','#42aa98','#e79a61','#d76d8c','#84
 const labels=['Крыша','Дно','Левая стенка','Правая стенка','Задняя стенка'];
 const directions=[[0,0,1],[0,0,-1],[-1,0,0],[1,0,0],[0,1,0]];
 const colorFor=i=>PART_COLORS[i]||`hsl(${Math.round(i*137.508)%360},45%,58%)`;
+const panelSurfaceRules=[
+ ['case_back_perf_',part=>part.kind==='panel'&&part.index===4],['case_left_perf_',part=>part.kind==='panel'&&part.index===2],['case_right_perf_',part=>part.kind==='panel'&&part.index===3],
+ ['case_top_perf_',part=>part.kind==='panel'&&part.index===0],['case_bottom_perf_',part=>part.kind==='panel'&&part.index===1],['shelf_perf_',part=>part.kind==='panel'&&part.index>=5],
+ ['frame_side_',part=>part.kind==='panel'&&(part.index===2||part.index===3)],['frame_back_',part=>part.kind==='panel'&&part.index===4],['frame_shelf_bracing',part=>part.kind==='panel'&&part.index>=5],
+ ['frame_top_',part=>part.kind==='panel'&&part.index===0],['frame_bottom_',part=>part.kind==='panel'&&part.index===1],
+ ...['front','back','left','right','floor'].map(surface=>['drawer_'+surface+'_perf_',part=>part.kind==='drawer'])
+];
+export function partCacheKey(part){
+ const params=structuredClone(part.params);
+ if(part.localPlan||!['panel','drawer'].includes(part.kind))return JSON.stringify(params);
+ for(const [prefix,owns]of panelSurfaceRules)if(!owns(part))for(const key of Object.keys(params))if(key.startsWith(prefix))delete params[key];
+ return JSON.stringify(params);
+}
 export function planPreview(raw,nested=false){
     const p=assemblyEffectiveParams(raw);
     if(!['chest','everything','plywood_preview','panels','panel','drawers'].includes(p.render_choice))return null;

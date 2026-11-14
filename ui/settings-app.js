@@ -172,7 +172,17 @@ for(const [mode,label] of [['gridfinity','Gridfinity'],['custom','Миллиме
  sizeButtons.set(mode,button);
  sizeControls.append(button);
 }
-$('auto-render').closest('label').after(sizeControls);
+const autoRender=$('auto-render'),autoRenderLabel=autoRender.closest('label'),delayOptions=[0,0.5,1,1.5,2,3,5],DELAY_STORE='gridfinity:auto-render-delay';
+let autoRenderDelay=1.5;
+try{const saved=localStorage.getItem(DELAY_STORE);if(saved!==null&&delayOptions.includes(Number(saved)))autoRenderDelay=Number(saved);}catch{}
+const delaySelect=el('select',{id:'auto-render-delay',class:'form-select form-select-sm','aria-label':'Пауза автоперестроения, секунды'});
+for(const value of delayOptions)delaySelect.append(el('option',{value:String(value)},String(value)));
+delaySelect.value=String(autoRenderDelay);
+const delayLabel=el('label',{class:'btn btn-secondary auto-render-delay',for:'auto-render-delay',title:'Пауза после последнего изменения'},'Пауза, с');delayLabel.append(delaySelect);
+function updateAutoRenderDelay(){delayLabel.hidden=!autoRender.checked;}
+autoRender.addEventListener('change',updateAutoRenderDelay);
+delaySelect.onchange=()=>{autoRenderDelay=Number(delaySelect.value);renderer.setAutoRenderDelay(autoRenderDelay);try{localStorage.setItem(DELAY_STORE,String(autoRenderDelay));}catch{}};
+renderer.setAutoRenderDelay(autoRenderDelay);updateAutoRenderDelay();autoRenderLabel.after(delayLabel,sizeControls);
 function modeControls(host){
  const grid=el('div',{class:'mode-grid'});
  function select(id,title,value,options,onchange){const label=el('label',{},title),s=el('select',{id});for(const [v,t,disabled]of options){const o=el('option',{value:v},t);o.disabled=!!disabled;s.append(o);}s.value=value;s.onchange=()=>onchange(s.value);label.append(s);grid.append(label);}

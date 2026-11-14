@@ -22,6 +22,8 @@ def patch_parts_renderer(text):
     bridge = '''
     let preparedPreviewHandler = () => false;
     let hasPreparedPreview = false;
+    let autoRenderTimer = null;
+    let autoRenderDelayMs = 1500;
     const notifyRenderState = () => window.dispatchEvent(new Event('gridfinity-render-state'));
     const partsBridge = createPartsBridge({
         worker, isRendering: () => isRendering, getCustomization, getAdditionalParamNames,
@@ -35,21 +37,30 @@ def patch_parts_renderer(text):
             dom.renderButton.disabled = isRendering;
             dom.downloadStlButton.disabled = isRendering || (lastResult === null && !hasPreparedPreview);
             notifyRenderState();
-            if (isDirty) { isDirty = false; startRender(); }
+            if (isDirty) { isDirty = false; triggerAutoRender(); }
         },
     });
 '''
     assert text.count(marker)==1
     text = text.replace(marker,marker+bridge)
     text = text.replace('    function setRendering(rendering) {','    function setRendering(rendering) {\n        queueMicrotask(notifyRenderState);')
+    dirty = '''            if (isDirty) {
+                isDirty = false;
+                startRender();
+            }'''
+    assert text.count(dirty) == 1
+    text = text.replace(dirty, '''            if (isDirty) {
+                isDirty = false;
+                triggerAutoRender();
+            }''')
     text = text.replace('dom.renderButton.disabled = rendering;', 'dom.renderButton.disabled = rendering || partsBridge.busy;')
     text = text.replace('dom.downloadStlButton.disabled = rendering || lastResult === null;', 'dom.downloadStlButton.disabled = rendering || partsBridge.busy || (lastResult === null && !hasPreparedPreview);')
     guard='if (isRendering) { isDirty = true; return; }'
     assert text.count(guard)==1
     text=text.replace(guard,'if (isRendering || partsBridge.busy) { isDirty = true; return; }')
     start = '    function startRender() {\n'
-    prepared = '''    function showPreparedPreview(params) {
-        if (!preparedPreviewHandler(params)) return false;
+    prepared = '''    function showPreparedPreview(params, cachedOnly = false) {
+        if (!preparedPreviewHandler(params, cachedOnly)) return false;
         lastResult = null;
         hasPreparedPreview = true;
         clearRenderError(dom);
@@ -59,24 +70,70 @@ def patch_parts_renderer(text):
 
 '''
     text = text.replace(start, prepared + start)
+    text = text.replace(start, start + '''        clearTimeout(autoRenderTimer);
+        autoRenderTimer = null;
+''')
     guard = '        if (isRendering || partsBridge.busy) { isDirty = true; return; }\n'
     text = text.replace(guard, guard + '''        if (showPreparedPreview(getCustomization())) return;
         hasPreparedPreview = false;
 ''')
-    auto = '    function triggerAutoRender() {\n'
-    text = text.replace(auto, auto + '        hasPreparedPreview = false;\n')
-    manual = '        if (!dom.autoRenderCheckbox.checked) {\n            return;\n        }'
-    assert text.count(manual) == 1
-    text = text.replace(manual, '''        if (!dom.autoRenderCheckbox.checked) {
-            if (!isRendering && !partsBridge.busy) showPreparedPreview(getCustomization());
+    auto = '''    function triggerAutoRender() {
+        lastResult = null;
+        dom.downloadStlButton.disabled = true;
+        dom.modelViewer.classList.add("is-outdated");
+        if (!dom.autoRenderCheckbox.checked) {
             return;
-        }''')
+        }
+        if (isRendering) {
+            isDirty = true;
+        } else {
+            startRender();
+        }
+    }
+'''
+    assert text.count(auto) == 1
+    text = text.replace(auto, '''    function setAutoRenderDelay(seconds) {
+        const value = Number(seconds);
+        autoRenderDelayMs = Number.isFinite(value) ? Math.max(0, value) * 1000 : 1500;
+    }
+
+    function triggerAutoRender() {
+        lastResult = null;
+        dom.downloadStlButton.disabled = true;
+        dom.modelViewer.classList.add("is-outdated");
+        hasPreparedPreview = false;
+        if (!dom.autoRenderCheckbox.checked) {
+            clearTimeout(autoRenderTimer);
+            autoRenderTimer = null;
+            if (!isRendering && !partsBridge.busy) showPreparedPreview(getCustomization(), true);
+            return;
+        }
+        clearTimeout(autoRenderTimer);
+        autoRenderTimer = setTimeout(() => {
+            autoRenderTimer = null;
+            if (!dom.autoRenderCheckbox.checked) return;
+            if (isRendering || partsBridge.busy) isDirty = true;
+            else startRender();
+        }, autoRenderDelayMs);
+    }
+''')
+    handler = '    dom.renderButton.addEventListener("click", function () {'
+    assert text.count(handler) == 1
+    text = text.replace(handler, '''    dom.autoRenderCheckbox.addEventListener("change", function () {
+        if (!this.checked) {
+            clearTimeout(autoRenderTimer);
+            autoRenderTimer = null;
+            isDirty = false;
+        }
+    });
+
+''' + handler)
     ready='            clearRenderError(dom);\n            setRendering(false);'
     assert text.count(ready)==1
     text=text.replace(ready,ready+'''\n            if (lastResult !== null) window.dispatchEvent(new CustomEvent('gridfinity-preview-ready', {detail: {params: structuredClone(getCustomization())}}));''')
     marker='    return {\n        startRender,'
     assert text.count(marker)==1
-    return text.replace(marker,'    return {\n        isBusy: () => isRendering || partsBridge.busy,\n        exportParts: partsBridge.run,\n        setPreparedPreviewHandler: handler => { preparedPreviewHandler = handler; },\n        startRender,')
+    return text.replace(marker,'    return {\n        isBusy: () => isRendering || partsBridge.busy,\n        exportParts: partsBridge.run,\n        setPreparedPreviewHandler: handler => { preparedPreviewHandler = handler; },\n        setAutoRenderDelay,\n        startRender,')
 
 
 def build():

@@ -1,4 +1,4 @@
-import {planPreview,previewVertices} from './parts-view-math.js';
+import {planPreview,previewVertices,partCacheKey} from './parts-view-math.js';
 import {matchingStarter} from './starter-presets.js';
 
 async function readStarterMeshes(name, bundle, signal){
@@ -67,7 +67,7 @@ export function initPartsView(customization,renderer){
     const neutralColor='#8996a5';
     const bundle=window.__STARTER_MODELS__;
     const unavailable=new Set();
-    let scene=null,controller=null,generation=0,lastReady=null,cacheKey='',descriptors=[],plan=null;
+    let scene=null,controller=null,generation=0,lastReady=null,cacheKey='',descriptors=[],plan=null,meshCache=new Map();
     const snapshot=()=>JSON.stringify(customization.getCurrentCustomization());
     function show(active,preparing=false){
         canvas.hidden=!active;
@@ -138,18 +138,20 @@ export function initPartsView(customization,renderer){
                 window.addEventListener('gridfinity-render-state',check);local.signal.addEventListener('abort',abort,{once:true});check();
             });
             if(key!==snapshot()||local.signal.aborted)return;
-            const meshes=starter?await readStarterMeshes(starter,bundle,local.signal):new Map();
+            const meshes=starter?await readStarterMeshes(starter,bundle,local.signal):new Map(),cacheKeys=new Map(next.parts.map(part=>[part.name,partCacheKey(part)]));
+            let bytes=0;
+            function addMesh(name,data){bytes+=data.byteLength;if(bytes>256*1024*1024)throw new Error('Слишком большая сборка для раздельного просмотра');meshes.set(name,data);}
             if(!starter){
-                let bytes=0;
-                await renderer.exportParts(next.parts,{signal:local.signal,onPart:(name,data)=>{
-                    bytes+=data.byteLength;if(bytes>256*1024*1024)throw new Error('Слишком большая сборка для раздельного просмотра');meshes.set(name,data);
-                },onProgress:(done,total)=>status(`Подготовка деталей: ${done} из ${total}`)});
+                const missing=[];
+                for(const part of next.parts){const cached=meshCache.get(part.name);if(cached?.key===cacheKeys.get(part.name))addMesh(part.name,cached.data);else missing.push(part);}
+                if(missing.length)await renderer.exportParts(missing,{signal:local.signal,onPart:addMesh,onProgress:(done,total)=>status(`Подготовка деталей: ${done} из ${total}`)});
             }
             if(token!==generation||key!==snapshot()||local.signal.aborted)return;
             plan=next;
             scene.clear();descriptors=[...plan.parts];
             for(const d of plan.parts)scene.add(d.id,d.label,d.color,previewVertices(plan,d,meshes.get(d.name)),d.direction);
             plan.wood.forEach((plane,i)=>descriptors.push(scene.wood(plan,plane,i)));
+            meshCache=new Map(next.parts.map(part=>[part.name,{key:cacheKeys.get(part.name),data:meshes.get(part.name)}]));
             cacheKey=key;show(true);useViewMode();applyColors();
         }catch(error){
             if(starter&&token===generation&&!local.signal.aborted&&key===snapshot()){
@@ -161,11 +163,13 @@ export function initPartsView(customization,renderer){
             if(token===generation){show(false);status(local.signal.aborted?'Подготовка остановлена':error.message,true);}
         }finally{if(controller===local)controller=null;}
     }
-    renderer.setPreparedPreviewHandler(raw=>{
-        const starter=bundle&&matchingStarter(window.__WOSE_MODEL__.defaultCustomization,raw);
-        if(!starter||!bundle.presets[starter]||unavailable.has(starter))return false;
-        lastReady=raw;
-        load(raw,starter);
+    renderer.setPreparedPreviewHandler((raw,cachedOnly=false)=>{
+        const starter=bundle&&matchingStarter(window.__WOSE_MODEL__.defaultCustomization,raw),prepared=starter&&bundle.presets[starter]&&!unavailable.has(starter)?starter:null;
+        if(cachedOnly&&!prepared&&JSON.stringify(raw)!==cacheKey)return false;
+        let supported;try{supported=!!planPreview(raw);}catch{return false;}
+        if(!supported)return false;
+        lastReady=structuredClone(raw);
+        load(raw,prepared);
         return true;
     });
     $('parts-enabled').addEventListener('change',applyColors);
